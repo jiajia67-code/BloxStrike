@@ -328,7 +328,7 @@ end
 -- Intercept Humanoid property changes
 function Bypass.interceptHumanoidProps()
     pcall(function()
-        local h = BS.hum()
+        local h = BS.hum and BS.hum()
         if not h then return end
 
         -- Store original values
@@ -515,8 +515,8 @@ end
 -- SECTION 11: TELEPORT DETECTION BYPASS
 
 function Bypass.trackPosition()
-    if not BS.alive() then return end
-    local hrp = BS.hrp()
+    if not BS.alive and BS.alive() then return end
+    local hrp = BS.hrp and BS.hrp()
     if not hrp then return end
     local currentPos = hrp.Position
     local currentVel = hrp.AssemblyLinearVelocity
@@ -537,8 +537,8 @@ function Bypass.isTeleport(newPos)
 end
 
 function Bypass.smoothTeleport(targetPos, duration)
-    if not BS.alive() then return false end
-    local hrp = BS.hrp()
+    if not BS.alive and BS.alive() then return false end
+    local hrp = BS.hrp and BS.hrp()
     if not hrp then return false end
     duration = duration or 0.3
     if not Bypass.validateCFrame(CFrame.new(targetPos)) then return false end
@@ -582,8 +582,8 @@ end
 -- SECTION 13: BEHAVIORAL ANALYSIS BYPASS
 
 function Bypass.humanizeMovement()
-    if not BS.alive() then return end
-    local h = BS.hum()
+    if not BS.alive and BS.alive() then return end
+    local h = BS.hum and BS.hum()
     if not h then return end
     local baseSpeed = h.WalkSpeed
     local jitter = (math.random() - 0.5) * 1.0
@@ -591,7 +591,7 @@ function Bypass.humanizeMovement()
     task.wait(0.1)
     h.WalkSpeed = baseSpeed
     if math.random() < 0.1 then
-        local hrp = BS.hrp()
+        local hrp = BS.hrp and BS.hrp()
         if hrp then
             local microAdjust = CFrame.Angles(0, (math.random() - 0.5) * 0.05, 0)
             hrp.CFrame = hrp.CFrame * microAdjust
@@ -855,7 +855,7 @@ function Bypass.checkIntegrity()
         end
 
         -- 3. Check if character is healthy
-        if BS.alive and not BS.alive() then
+        if BS.alive and not BS.alive and BS.alive() then
             table.insert(issues, "Character dead/missing")
         end
 
@@ -868,7 +868,7 @@ function Bypass.checkIntegrity()
         end
 
         -- 5. Check humanoid properties
-        local h = BS.hum()
+        local h = BS.hum and BS.hum()
         if h then
             if h.WalkSpeed < 0 or h.WalkSpeed > 500 then
                 table.insert(issues, "WalkSpeed extreme: " .. h.WalkSpeed)
@@ -889,7 +889,7 @@ function Bypass.checkIntegrity()
                 end)
             elseif issue:find("WalkSpeed") or issue:find("JumpPower") then
                 pcall(function()
-                    local h = BS.hum()
+                    local h = BS.hum and BS.hum()
                     if h then
                         h.WalkSpeed = math.clamp(h.WalkSpeed, 0, 100)
                         h.JumpPower = math.clamp(h.JumpPower, 0, 200)

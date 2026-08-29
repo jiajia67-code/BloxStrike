@@ -544,8 +544,8 @@ end
 task.spawn(function()
     while true do
         task.wait(0.3)
-        if not BS.alive() then continue end
-        local h = BS.hum()
+        if not BS.alive and BS.alive() then continue end
+        local h = BS.hum and BS.hum()
         if not h then continue end
 
         -- Only spoof when features are active
@@ -670,7 +670,7 @@ local function deepScanForAC()
         if Flags.StealthDetectPropMon then
             pcall(function()
                 -- Some AC use Changed events on humanoid properties
-                local h = BS.hum()
+                local h = BS.hum and BS.hum()
                 if h then
                     local conns = getconnections and getconnections(h.Changed)
                     if conns and #conns > 3 then
@@ -779,9 +779,9 @@ end
 task.spawn(function()
     while true do
         task.wait(0.3)
-        if Flags.StealthRandomMove and BS.alive() then
+        if Flags.StealthRandomMove and BS.alive and BS.alive() then
             pcall(function()
-                local h = BS.hum()
+                local h = BS.hum and BS.hum()
                 if h and h.WalkSpeed > 16 then
                     -- Micro-variations in speed
                     local base = h.WalkSpeed
@@ -932,7 +932,7 @@ end)
  -- Behavior Randomization Engine
 task.spawn(function()
     while true do task.wait(Flags.StealthBehInt or 10)
-        if Flags.StealthBehavior and BS.alive() then
+        if Flags.StealthBehavior and BS.alive and BS.alive() then
             pcall(function()
                 local h=hum()
                 if h then
@@ -950,7 +950,7 @@ end)
  -- Emergency Disconnect Engine
 task.spawn(function()
     while true do task.wait(1)
-        if Flags.StealthEmgDisconnect and BS.alive() then
+        if Flags.StealthEmgDisconnect and BS.alive and BS.alive() then
             pcall(function()
                 local h=hum()
                 if h and h.Health<h.MaxHealth*((Flags.StealthEmgHP or 15)/100) then
@@ -1149,7 +1149,7 @@ page:Button({Name=" EMERGENCY: Nuclear Disable", Color=Color3.fromRGB(200, 0, 0)
     end
     -- Restore all properties
     pcall(function()
-        local h = BS.hum()
+        local h = BS.hum and BS.hum()
         if h then
             h.WalkSpeed = 16
             h.JumpPower = 50
@@ -1221,7 +1221,7 @@ UserInputService.InputBegan:Connect(function(input, gpe)
             Flags[key] = false
         end
         pcall(function()
-            local h = BS.hum()
+            local h = BS.hum and BS.hum()
             if h then
                 h.WalkSpeed = 16
                 h.JumpPower = 50
@@ -1455,7 +1455,7 @@ end)
  -- Movement Legitimacy: Human-like movement patterns
 task.spawn(function()
     while true do task.wait(0.5)
-        if Flags.HVHSafeMode and Flags.HVHMoveLegit and BS.alive() then
+        if Flags.HVHSafeMode and Flags.HVHMoveLegit and BS.alive and BS.alive() then
             pcall(function()
                 local h = hum()
                 if not h then return end
@@ -1721,10 +1721,10 @@ local ssvlState = {
 -- Velocity + Acceleration capping: keep within server-reasonable limits
 task.spawn(function()
     while true do task.wait(0.05)
-        if not Flags.SSVL or not BS.alive() then continue end
-        local hrp = BS.hrp()
+        if not Flags.SSVL or not BS.alive and BS.alive() then continue end
+        local hrp = BS.hrp and BS.hrp()
         if not hrp then continue end
-        local h = BS.hum()
+        local h = BS.hum and BS.hum()
         if not h then continue end
 
         -- Velocity cap: clamp AssemblyLinearVelocity
@@ -2039,14 +2039,14 @@ end
 -- Micro pauses: small idle moments like a real player
 task.spawn(function()
     while true do task.wait(0.1)
-        if Flags.MLEvasion and Flags.MLMicroPause and BS.alive() then
+        if Flags.MLEvasion and Flags.MLMicroPause and BS.alive and BS.alive() then
             mlState.MicroPauseTimer = mlState.MicroPauseTimer + 0.1
             -- Every 8-20 seconds, pause briefly
             local pauseInterval = 8 + math.random() * 12
             if mlState.MicroPauseTimer > pauseInterval then
                 mlState.MicroPauseTimer = 0
                 -- Brief stillness
-                local h = BS.hum()
+                local h = BS.hum and BS.hum()
                 if h then
                     local origSpeed = h.WalkSpeed
                     h.WalkSpeed = 0

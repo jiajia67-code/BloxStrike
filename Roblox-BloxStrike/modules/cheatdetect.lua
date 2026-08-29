@@ -1088,7 +1088,7 @@ end
 function CD.fullScan()
     if not Flags.CheatDetect then return end
 
-    local myHRP = BS.hrp()
+    local myHRP = BS.hrp and BS.hrp()
     local myTeam = BS.team()
 
     for _, player in pairs(Players:GetPlayers()) do
@@ -1600,7 +1600,7 @@ end
 local cdHUD = nil
 task.spawn(function()
     while true do task.wait(0.5)
-        if Flags.CheatDetect and BS.alive() then
+        if Flags.CheatDetect and BS.alive and BS.alive() then
             -- Find highest scoring suspect
             local worst = nil
             local worstScore = 0
@@ -1646,7 +1646,7 @@ end)
  -- Suspect Marker Update Loop
 task.spawn(function()
     while true do task.wait(0.2)
-        if Flags.CheatDetect and BS.alive() then
+        if Flags.CheatDetect and BS.alive and BS.alive() then
             pcall(function() updateSuspectMarkers() end)
         end
     end

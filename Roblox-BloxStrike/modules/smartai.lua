@@ -271,8 +271,8 @@ local function detectPlaystyle()
         end
     end
 
-    -- D.      if BS.alive() then
-        local h = BS.hum()
+    -- D.      if BS.alive and BS.alive() then
+        local h = BS.hum and BS.hum()
         if h and h.WalkSpeed > 20 then scores.Runner = scores.Runner + 10 end
         if h and h.WalkSpeed > 30 then scores.Runner = scores.Runner + 10 end
     end
@@ -325,7 +325,7 @@ local function assessLobbySkill()
     local enemies = BS.enemies and BS.enemies() or {}
     if #enemies == 0 then return end
 
-    local myHRP = BS.hrp()
+    local myHRP = BS.hrp and BS.hrp()
     local skillScore = 50
     local indicators = {}
 
@@ -1442,7 +1442,7 @@ local function analyzeEnemyBehavior()
     if not Flags.AI_CounterAim then return end
 
     local enemies = BS.enemies and BS.enemies() or {}
-    local myHRP = BS.hrp()
+    local myHRP = BS.hrp and BS.hrp()
 
     for _, e in ipairs(enemies) do
         if e.Player and e.HRP then
@@ -1981,7 +1981,7 @@ end)
     local aiHUD = nil
 task.spawn(function()
     while true do task.wait(0.3)
-        if Flags.SmartAI and BS.alive() then
+        if Flags.SmartAI and BS.alive and BS.alive() then
             if not aiHUD then
                 pcall(function()
                     local _Compat = _G.BS and _G.BS.Compat; if _Compat and _Compat.DrawingNew then aiHUD = _Compat.DrawingNew("Text") else pcall(function() aiHUD = Drawing.new("Text") end) end

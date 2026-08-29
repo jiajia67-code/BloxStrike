@@ -490,8 +490,8 @@ task.spawn(function()
         if not Flags.PingAdapt or not Flags.MovePingAdapt then continue end
         pcall(function()
             -- Adjust speed based on ping
-            if Flags.SpeedBoost and BS.alive() then
-                local h = BS.hum()
+            if Flags.SpeedBoost and BS.alive and BS.alive() then
+                local h = BS.hum and BS.hum()
                 if h then
                     local targetSpeed = 22 -- base boosted speed
                     local adaptedSpeed = PA.getAdaptSpeed(targetSpeed)

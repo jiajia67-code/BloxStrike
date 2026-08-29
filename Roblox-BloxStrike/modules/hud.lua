@@ -478,8 +478,8 @@ RunService.RenderStepped:Connect(function()
         local hp = 0
         local maxHp = 100
         local speed = 16
-        if BS.alive() then
-            local h = BS.hum()
+        if BS.alive and BS.alive() then
+            local h = BS.hum and BS.hum()
             if h then
                 hp = h.Health
                 maxHp = h.MaxHealth
@@ -488,7 +488,7 @@ RunService.RenderStepped:Connect(function()
         end
         plrObj.Text = string.format("HP: %d/%d | Speed: %.0f | Pos: %s",
             math.floor(hp), math.floor(maxHp), speed,
-            BS.hrp() and string.format("(%.0f,%.0f,%.0f)", BS.hrp().Position.X, BS.hrp().Position.Y, BS.hrp().Position.Z) or "N/A")
+            BS.hrp and BS.hrp() and string.format("(%.0f,%.0f,%.0f)", BS.hrp and BS.hrp().Position.X, BS.hrp and BS.hrp().Position.Y, BS.hrp and BS.hrp().Position.Z) or "N/A")
         plrObj.Size = size
         plrObj.Position = getHUDPosition(1, featLine)
         plrObj.Color = hp > maxHp * 0.6 and C_GREEN or hp > maxHp * 0.3 and C_YELLOW or C_RED
@@ -533,9 +533,9 @@ RunService.RenderStepped:Connect(function()
         combatLine = combatLine + 1
     end
 
-    if Flags.HUDVelocity and BS.alive() then
+    if Flags.HUDVelocity and BS.alive and BS.alive() then
         local velObj = getHUDObject("velocity")
-        local hrp = BS.hrp()
+        local hrp = BS.hrp and BS.hrp()
         if hrp then
             local vel = hrp.AssemblyLinearVelocity
             local speed = vel.Magnitude
@@ -548,9 +548,9 @@ RunService.RenderStepped:Connect(function()
         end
     end
 
-    if Flags.HUDSpeed and BS.alive() then
+    if Flags.HUDSpeed and BS.alive and BS.alive() then
         local spdObj = getHUDObject("speed")
-        local h = BS.hum()
+        local h = BS.hum and BS.hum()
         if h then
             spdObj.Text = string.format("Speed: %.0f studs/s", h.WalkSpeed * 3)
             spdObj.Size = size
@@ -562,9 +562,9 @@ RunService.RenderStepped:Connect(function()
     end
 
      -- Health Crosshair
-    if Flags.HUDHealthCross and BS.alive() then
+    if Flags.HUDHealthCross and BS.alive and BS.alive() then
         local hcObj = getHUDObject("healthcross")
-        local h = BS.hum()
+        local h = BS.hum and BS.hum()
         if h then
             local pct = h.Health / h.MaxHealth * 100
             hcObj.Text = string.format(" %d", math.floor(h.Health))

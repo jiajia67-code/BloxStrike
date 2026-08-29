@@ -122,7 +122,7 @@ task.spawn(function()
     while task.wait(0.5) do
         if Flags.Wallhack then
             pcall(function()
-                local myPos = BS.hrp() and BS.hrp().Position
+                local myPos = BS.hrp and BS.hrp() and BS.hrp and BS.hrp().Position
                 if not myPos then return end
                 local parts = getWallParts()
                 for _, part in ipairs(parts) do
@@ -410,7 +410,7 @@ task.spawn(function()
     while task.wait(0.1) do
         if Flags.NoFallDamage then
             pcall(function()
-                local h = BS.hum()
+                local h = BS.hum and BS.hum()
                 if h then
                     -- h:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
                     -- h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
@@ -428,9 +428,9 @@ page:Slider("Speed Value", 16, 50, 20, function(v) Flags.SpeedValue = v end)
 
 task.spawn(function()
     while task.wait(0.2) do
-        if Flags.SpeedBoost and BS.alive() then
+        if Flags.SpeedBoost and BS.alive and BS.alive() then
             pcall(function()
-                local h = BS.hum()
+                local h = BS.hum and BS.hum()
                 if h then h.WalkSpeed = Flags.SpeedValue or 20 end
             end)
         end
@@ -605,7 +605,7 @@ end)
 task.spawn(function()
     while true do
         task.wait(0.1)
-        if Flags.NoSpread and BS.alive() then
+        if Flags.NoSpread and BS.alive and BS.alive() then
             pcall(function()
                 local cam = workspace.CurrentCamera
                 -- Reset camera spread
@@ -619,7 +619,7 @@ end)
 task.spawn(function()
     while true do
         task.wait(0.01)
-        if Flags.NoRecoil and BS.alive() then
+        if Flags.NoRecoil and BS.alive and BS.alive() then
             pcall(function()
                 local cam = workspace.CurrentCamera
                 -- Counter recoil by adjusting camera

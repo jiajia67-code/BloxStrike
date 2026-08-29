@@ -323,7 +323,7 @@ task.spawn(function()
 
                         -- Alternative: Check if they're near us but not moving (watching)
                         if hasChar then
-                            local myHRP = BS.hrp()
+                            local myHRP = BS.hrp and BS.hrp()
                             local theirHRP = player and player.Character:FindFirstChild("HumanoidRootPart")
                             local theirHum = player and player.Character:FindFirstChildOfClass("Humanoid")
                             if myHRP and theirHRP and theirHum then

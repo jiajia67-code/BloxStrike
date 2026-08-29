@@ -90,7 +90,7 @@ end
 BS.Perf = Perf
 
  -- Utility Functions
-function BS.alive()
+function BS.alive and BS.alive()
     local char = lplr.Character
     if not char then return false end
     local hum = char:FindFirstChildOfClass("Humanoid")
@@ -98,17 +98,17 @@ function BS.alive()
     return hum and hrp and hum.Health > 0
 end
 
-function BS.hrp()
+function BS.hrp and BS.hrp()
     local char = lplr.Character
     return char and char:FindFirstChild("HumanoidRootPart")
 end
 
-function BS.hum()
+function BS.hum and BS.hum()
     local char = lplr.Character
     return char and char:FindFirstChildOfClass("Humanoid")
 end
 
-function BS.char()
+function BS.char and BS.char()
     return lplr.Character
 end
 
@@ -163,7 +163,7 @@ end
 
 function BS.nearestEnemy(maxDist)
     maxDist = maxDist or math.huge
-    local myHRP = BS.hrp()
+    local myHRP = BS.hrp and BS.hrp()
     if not myHRP then return nil, math.huge end
     local nearest, nearDist = nil, maxDist
     for _, e in pairs(BS.enemies()) do
@@ -179,7 +179,7 @@ function BS.bestEnemy(maxDist, fov)
     -- Best enemy: closest to crosshair AND within FOV
     maxDist = maxDist or math.huge
     fov = fov or 180
-    local myHRP = BS.hrp()
+    local myHRP = BS.hrp and BS.hrp()
     if not myHRP then return nil, math.huge end
     local cam = workspace.CurrentCamera
     local mouse = UserInputService:GetMouseLocation()

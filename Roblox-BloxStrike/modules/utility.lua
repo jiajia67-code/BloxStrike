@@ -87,10 +87,10 @@ local bhopMaxSpeed = 0
 task.spawn(function()
     while true do
         task.wait()
-        if not (Flags.Bhop and BS.alive()) then continue end
+        if not (Flags.Bhop and BS.alive and BS.alive()) then continue end
         pcall(function()
-            local h = BS.hum()
-            local hrp = BS.hrp()
+            local h = BS.hum and BS.hum()
+            local hrp = BS.hrp and BS.hrp()
             if not h or not hrp then return end
 
             local mode = Flags.BhopMode or "Auto"
@@ -425,7 +425,7 @@ task.spawn(function()
     while true do
         task.wait(0.15)
         pcall(function()
-            if not (Flags.Bhop and Flags.BhopSpeedInd and BS.alive()) then
+            if not (Flags.Bhop and Flags.BhopSpeedInd and BS.alive and BS.alive()) then
                 if bhopHudGui then bhopHudGui.Enabled = false end
                 -- return
             end
@@ -644,11 +644,11 @@ end)
 
 task.spawn(function()
     while task.wait(0.5) do
-        if Flags.AutoDefuse and BS.alive() then
+        if Flags.AutoDefuse and BS.alive and BS.alive() then
             pcall(function()
                 local bomb = BS.api and BS.api.getBomb and BS.api.getBomb()
                 if not bomb then return end
-                local myHrp = BS.hrp()
+                local myHrp = BS.hrp and BS.hrp()
                 if not myHrp then return end
                 local dist = (myHrp.Position - bomb.Position).Magnitude
                 if dist <= (Flags.DefuseRange or 5) then
@@ -656,7 +656,7 @@ task.spawn(function()
                         pcall(function() BS.equipTool("defuse") end)
                         task.wait(0.1)
                     end
-                    local h = BS.hum()
+                    local h = BS.hum and BS.hum()
                     if h then h:MoveTo(bomb.Position) end
                     if BS.api.defuseBomb then BS.api.defuseBomb() end
                 end
@@ -667,12 +667,12 @@ end)
 
 task.spawn(function()
     while task.wait(1) do
-        if Flags.AutoPlant and BS.alive() then
+        if Flags.AutoPlant and BS.alive and BS.alive() then
             pcall(function()
                 if not BS.api.hasBomb or not BS.api.hasBomb() then return end
                 local sites = workspace:FindFirstChild("BombSites") or workspace:FindFirstChild("Map")
                 if not sites then return end
-                local myHrp = BS.hrp()
+                local myHrp = BS.hrp and BS.hrp()
                 if not myHrp then return end
                 local nearestSite, nearestDist = nil, math.huge
                 for _, site in pairs(sites:GetChildren()) do
@@ -684,7 +684,7 @@ task.spawn(function()
                     end
                 end
                 if nearestSite and nearestDist < 30 then
-                    local h = BS.hum()
+                    local h = BS.hum and BS.hum()
                     if h then h:MoveTo(nearestSite:GetPrimaryPartCFrame().Position) end
                     task.wait(1)
                     if BS.api.plantBomb then BS.api.plantBomb(nearestSite.Name) end
@@ -765,7 +765,7 @@ BS.GrenadePreview = GrenadePreview
 function GrenadePreview:DrawTrajectory()
     if not Flags.GrenadePreview then return end
     pcall(function()
-        local hrp = BS.hrp()
+        local hrp = BS.hrp and BS.hrp()
         if not hrp then return end
         local cam = workspace.CurrentCamera
         if not cam then return end
@@ -802,8 +802,8 @@ end
 -- ═══════════════════════════════════════════════════════════════
 BS.JumpThrow = function()
     pcall(function()
-        local hrp = BS.hrp()
-        local hum = BS.hum()
+        local hrp = BS.hrp and BS.hrp()
+        local hum = BS.hum and BS.hum()
         if hrp and hum then
             -- Jump
             hum.Jump = true

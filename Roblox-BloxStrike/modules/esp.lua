@@ -200,9 +200,9 @@ local SoundObjs = {}
 task.spawn(function()
     while true do
         task.wait(0.2)
-        if Flags.ESP_Sound and BS.alive() then
+        if Flags.ESP_Sound and BS.alive and BS.alive() then
             pcall(function()
-                local myHrp = BS.hrp()
+                local myHrp = BS.hrp and BS.hrp()
                 if not myHrp then return end
                 local range = (Flags.ESP_SoundRange or 50) * 3
                 local cam = workspace.CurrentCamera
@@ -253,7 +253,7 @@ local GlowObjs = {}
 task.spawn(function()
     while true do
         task.wait(0.1)
-        if Flags.ESP_Glow and BS.alive() then
+        if Flags.ESP_Glow and BS.alive and BS.alive() then
             pcall(function()
                 local cam = workspace.CurrentCamera
                 local myTeam = lplr.Team
@@ -648,7 +648,7 @@ end
 
  -- Distance (with unit)
 local function drawDistance(hrp, color)
-    local myHrp = BS.hrp()
+    local myHrp = BS.hrp and BS.hrp()
     if not myHrp then return end
     local pos, vis = w2s(workspace.CurrentCamera, hrp.Position - V3_UP)
     if not vis then return end
@@ -967,7 +967,7 @@ local function drawBombESP()
         local t2=poolText(); t2.Position=v2(pos.X,pos.Y); t2.Text=string.format("%.1fs",timer); t2.Color=timer<10 and C_RED or C_YELLOW; t2.Size=14; t2.Visible=true
     end
     if Flags.ESP_BombDist then
-        local myHrp = BS.hrp()
+        local myHrp = BS.hrp and BS.hrp()
         if myHrp then
             local d = mFloor((myHrp.Position - bomb.Position).Magnitude)
             local t3=poolText(); t3.Position=v2(pos.X,pos.Y+15); t3.Text=d.."m"; t3.Color=C_GREY; t3.Size=11; t3.Visible=true
@@ -990,7 +990,7 @@ local function drawGrenadeESP()
                     elseif obj.Name:find("Molotov") then label = "" end
                     local t=poolText(); t.Position=v2(pos.X,pos.Y-15); t.Text=label.." "..obj.Name; t.Color=C_YELLOW; t.Size=12; t.Visible=true
                     if Flags.ESP_GrenadeLine then
-                        local myHrp = BS.hrp()
+                        local myHrp = BS.hrp and BS.hrp()
                         if myHrp then
                             local p1,v1 = w2s(workspace.CurrentCamera, myHrp.Position)
                             if v1 then local l=poolLine(); l.From=v2(p1.X,p1.Y); l.To=v2(pos.X,pos.Y); l.Color=C_ORANGE; l.Thickness=1; l.Visible=true end
@@ -1025,7 +1025,7 @@ local function updateRadar()
     local ch1=Instance.new("Frame"); ch1.Size=UDim2.new(1,0,0,1); ch1.Position=UDim2.new(0,0,0.5,0); ch1.BackgroundColor3=RGB(80,80,80); ch1.BorderSizePixel=0; ch1.Parent=bg
     local ch2=Instance.new("Frame"); ch2.Size=UDim2.new(0,1,1,0); ch2.Position=UDim2.new(0.5,0,0,0); ch2.BackgroundColor3=RGB(80,80,80); ch2.BorderSizePixel=0; ch2.Parent=bg
 
-    local myPos = BS.hrp() and BS.hrp().Position or V3_ZERO
+    local myPos = BS.hrp and BS.hrp() and BS.hrp and BS.hrp().Position or V3_ZERO
     local myTeam = BS.team()
     for _, player in ipairs(Players:GetPlayers()) do
         if player == lplr then continue end
@@ -1125,7 +1125,7 @@ local dispFrame = 0
 -- MAIN RENDER LOOP  Single RenderStepped, zero delay
 
 RunService.RenderStepped:Connect(function()
-    if not BS.alive() then return end
+    if not BS.alive and BS.alive() then return end
 
     -- Ping Adapt: skip frames on high ping for performance
     local skipFrames = 1
@@ -1138,7 +1138,7 @@ RunService.RenderStepped:Connect(function()
 
     resetPool()
 
-    local myHrp = BS.hrp()
+    local myHrp = BS.hrp and BS.hrp()
     local myTeam = BS.team()
     local cam = workspace.CurrentCamera
     local thick = Flags.ESP_BoxThick or 1
@@ -1278,7 +1278,7 @@ end) end) end
 RunService.RenderStepped:Connect(function(dt)
     pcall(function()
         local cam = workspace.CurrentCamera
-        local hrp = BS.hrp()
+        local hrp = BS.hrp and BS.hrp()
         if not cam or not hrp then return end
 
         if Flags.ThirdPerson then
@@ -1382,7 +1382,7 @@ function ContainerESP:Update()
     pcall(function()
         for _, obj in ipairs(Workspace:GetDescendants()) do
             if obj:IsA("BasePart") and (obj.Name:lower():find("crate") or obj.Name:lower():find("loot") or obj.Name:lower():find("supply") or obj.Name:lower():find("chest")) then
-                local hrp = BS.hrp()
+                local hrp = BS.hrp and BS.hrp()
                 if hrp then
                     local dist = (hrp.Position - obj.Position).Magnitude
                     if dist < (Flags.ContainerESPRange or 200) then
@@ -1414,7 +1414,7 @@ function VehicleESP:Update()
     pcall(function()
         for _, obj in ipairs(Workspace:GetDescendants()) do
             if obj:IsA("VehicleSeat") or obj:IsA("Seat") then
-                local hrp = BS.hrp()
+                local hrp = BS.hrp and BS.hrp()
                 if hrp then
                     local dist = (hrp.Position - obj.Position).Magnitude
                     if dist < (Flags.VehicleESPRange or 300) then

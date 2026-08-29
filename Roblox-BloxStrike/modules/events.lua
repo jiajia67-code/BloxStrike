@@ -150,7 +150,7 @@ task.spawn(function()
             if currentRound ~= prevRound and prevRound > 0 then
                 -- Round changed - check if we won or lost
                 -- This is a heuristic based on survival
-                if BS.alive() then
+                if BS.alive and BS.alive() then
                     Stats.RoundWins = Stats.RoundWins + 1
                     if BS.Webhook and Flags.WebhookOnRoundEnd then
                         BS.Webhook.onRoundWin(Stats.Kills, Stats.Deaths,

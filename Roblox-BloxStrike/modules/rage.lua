@@ -17,9 +17,9 @@ local page = BS.Win:Tab("暴力")
 if not page or not page.Toggle then warn("[Rage] Failed to create tab!") return end
 
 -- Shortcuts
-    local function alive() return BS.alive() end
-local function hrp() return BS.hrp() end
-local function hum() return BS.hum() end
+    local function alive() return BS.alive and BS.alive() end
+local function hrp() return BS.hrp and BS.hrp() end
+local function hum() return BS.hum and BS.hum() end
 local function head() local c = lplr.Character; return c and c:FindFirstChild("Head") end
 
 -- Compat layer
@@ -723,9 +723,9 @@ local autoPeekDir = nil
 task.spawn(function()
     while true do
         task.wait(0.01)
-        if Flags.AutoPeek and BS.alive() then
+        if Flags.AutoPeek and BS.alive and BS.alive() then
             pcall(function()
-                local myHrp = BS.hrp()
+                local myHrp = BS.hrp and BS.hrp()
                 if not myHrp then return end
                 
                 local mode = Flags.AutoPeekMode or "Hold Key"
@@ -775,9 +775,9 @@ end)
 task.spawn(function()
     while true do
         task.wait(0.1)
-        if Flags.EdgeAA and BS.alive() then
+        if Flags.EdgeAA and BS.alive and BS.alive() then
             pcall(function()
-                local myHrp = BS.hrp()
+                local myHrp = BS.hrp and BS.hrp()
                 if not myHrp then return end
                 
                 local range = Flags.EdgeAADist or 20
@@ -1077,7 +1077,7 @@ end)
 task.spawn(function()
     while true do
         task.wait()
-        if Flags.SilentAim and BS.alive() then
+        if Flags.SilentAim and BS.alive and BS.alive() then
             pcall(function()
                 local cam=workspace.CurrentCamera; local myH=hrp()
                 if not cam or not myH then return end

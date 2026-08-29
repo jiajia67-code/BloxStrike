@@ -21,13 +21,13 @@ end
 
  -- Performance shortcuts
 local function alive()
-    return BS.alive()
+    return BS.alive and BS.alive()
 end
 local function hrp()
-    return BS.hrp()
+    return BS.hrp and BS.hrp()
 end
 local function hum()
-    return BS.hum()
+    return BS.hum and BS.hum()
 end
 
 -- Compat layer for Drawing/mouse APIs
@@ -1029,7 +1029,7 @@ local lastAutoPistolShot = 0
 task.spawn(function()
     while true do
         task.wait(0.01)
-        if Flags.AutoPistol and BS.alive() then
+        if Flags.AutoPistol and BS.alive and BS.alive() then
             pcall(function()
                 local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
                 if tool and tool:FindFirstChild("RemoteEvent") then
@@ -1054,7 +1054,7 @@ local lastRapidShot = 0
 task.spawn(function()
     while true do
         task.wait(0.01)
-        if Flags.RapidFire and BS.alive() then
+        if Flags.RapidFire and BS.alive and BS.alive() then
             pcall(function()
                 local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
                 if tool and tool:FindFirstChild("RemoteEvent") then
@@ -1104,7 +1104,7 @@ local lastShotTime = 0
 task.spawn(function()
     while true do
         task.wait(0.01)
-        if (Flags.KnifeAfterShot or Flags.AutoReloadEmpty) and BS.alive() then
+        if (Flags.KnifeAfterShot or Flags.AutoReloadEmpty) and BS.alive and BS.alive() then
             pcall(function()
                 local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
                 if tool and tool:FindFirstChild("RemoteEvent") then
@@ -1141,7 +1141,7 @@ pcall(function() Combat.checkMinDamage = checkMinDamage end)
 task.spawn(function()
     while true do
         task.wait(0.01)
-        if Flags.AutoScope and BS.alive() then
+        if Flags.AutoScope and BS.alive and BS.alive() then
             pcall(function()
                 if not UIS:IsKeyDown(Enum.KeyCode.LeftShift) then
                     local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
@@ -1161,9 +1161,9 @@ end)
 task.spawn(function()
     while true do
         task.wait(0.1)
-        if Flags.KnifeBot and BS.alive() then
+        if Flags.KnifeBot and BS.alive and BS.alive() then
             pcall(function()
-                local myHrp = BS.hrp()
+                local myHrp = BS.hrp and BS.hrp()
                 if not myHrp then return end
                 local range = Flags.KnifeRange or 10
                 for _, p in pairs(Players:GetPlayers()) do
@@ -1197,9 +1197,9 @@ end)
 task.spawn(function()
     while true do
         task.wait(0.1)
-        if Flags.ZeusBot and BS.alive() then
+        if Flags.ZeusBot and BS.alive and BS.alive() then
             pcall(function()
-                local myHrp = BS.hrp()
+                local myHrp = BS.hrp and BS.hrp()
                 if not myHrp then return end
                 local range = Flags.ZeusRange or 30
                 for _, p in pairs(Players:GetPlayers()) do
@@ -1231,7 +1231,7 @@ end)
 task.spawn(function()
     while true do
         task.wait(0.1)
-        if Flags.AutoKnifeAfterKill and BS.alive() then
+        if Flags.AutoKnifeAfterKill and BS.alive and BS.alive() then
             pcall(function()
                 -- Switch to knife after getting a kill
                 local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
@@ -1248,7 +1248,7 @@ end)
 task.spawn(function()
     while true do
         task.wait(0.01)
-        if Flags.RapidFire and BS.alive() then
+        if Flags.RapidFire and BS.alive and BS.alive() then
             pcall(function()
                 local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
                 if tool and tool:FindFirstChild("RemoteEvent") then
@@ -1265,7 +1265,7 @@ end)
 task.spawn(function()
     while true do
         task.wait(0.01)
-        if Flags.AutoPistol and BS.alive() then
+        if Flags.AutoPistol and BS.alive and BS.alive() then
             pcall(function()
                 local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
                 if tool and tool:FindFirstChild("RemoteEvent") then
@@ -1391,7 +1391,7 @@ task.spawn(function()
     while task.wait(0.1) do
         pcall(function()
             if not Flags.LegitAA then return end
-            local hrp = BS.hrp()
+            local hrp = BS.hrp and BS.hrp()
             if not hrp then return end
             local angle = Flags.LegitAAAngle or 15
             local mode = Flags.LegitAAMode or "Sway"
