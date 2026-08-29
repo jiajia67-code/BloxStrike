@@ -1663,8 +1663,10 @@ task.spawn(function()
 end)
 
 -- Cleanup on player leaving
--- Players.PlayerRemoving:Connect(function(player)
-    PlayerData[player.UserId] = nil
+pcall(function()
+    Players.PlayerRemoving:Connect(function(player)
+        PlayerData[player.UserId] = nil
+    end)
 end)
 
  -- Expose

@@ -1211,7 +1211,8 @@ page:Button({Name=" EMERGENCY: Nuclear Disable", Color=Color3.fromRGB(200, 0, 0)
 end)
 
  -- Emergency Keybinds
-UIS.InputBegan:Connect(function(input, gpe)
+pcall(function()
+UserInputService.InputBegan:Connect(function(input, gpe)
     if gpe then return end
 
     -- F10 = Nuclear disable
@@ -1265,6 +1266,7 @@ UIS.InputBegan:Connect(function(input, gpe)
             end
         end)
     end
+end)
 end)
 
 -- SECTION 12: RISK MONITOR

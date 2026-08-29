@@ -737,6 +737,7 @@ task.spawn(function()
                         autoPeekActive = true
                     else
                         autoPeekActive = false
+                    end
                 elseif mode == "Toggle" then
                     -- Toggle handled by keybind system
                 

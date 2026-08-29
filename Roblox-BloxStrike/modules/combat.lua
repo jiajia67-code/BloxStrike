@@ -927,7 +927,7 @@ task.spawn(function()
 
                 -- Buy defuse kit (CT side)
                 if Flags.BuyKit and BS.team() and BS.team().Name == "CT" then
-                    BS.api and BS.api.buyEquipment("Defuse Kit")
+                    pcall(function() if BS.api then BS.api.buyEquipment("Defuse Kit") end end)
                 end
 
                 -- Buy grenades

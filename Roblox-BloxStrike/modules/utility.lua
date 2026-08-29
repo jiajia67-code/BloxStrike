@@ -676,7 +676,8 @@ task.spawn(function()
                 if not myHrp then return end
                 local nearestSite, nearestDist = nil, math.huge
                 for _, site in pairs(sites:GetChildren()) do
-                    local sitePos = site:GetPrimaryPartCFrame and site:GetPrimaryPartCFrame().Position
+                    local ok, cf = pcall(function() return site:GetPrimaryPartCFrame() end)
+                    local sitePos = ok and cf and cf.Position
                     if sitePos then
                         local dist = (myHrp.Position - sitePos).Magnitude
                         if dist < nearestDist then nearestSite = site; nearestDist = dist end

@@ -339,11 +339,13 @@ task.spawn(function()
 end)
 
 -- Toggle perf monitor with F3
-BS.UserInputService.InputBegan:Connect(function(input, gpe)
-    if gpe then return end
-    if input.KeyCode == Enum.KeyCode.F3 then
-        Flags.PerfMonitor = not Flags.PerfMonitor
-    end
+pcall(function()
+    UserInputService.InputBegan:Connect(function(input, gpe)
+        if gpe then return end
+        if input.KeyCode == Enum.KeyCode.F3 then
+            Flags.PerfMonitor = not Flags.PerfMonitor
+        end
+    end)
 end)
 
 print("[Events] BloxStrike Events module loaded")

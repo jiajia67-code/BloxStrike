@@ -1066,8 +1066,9 @@ function AI.autoSelectMode()
         safeScore = safeScore + 50
     end
 
-    -- 3. ?     if perf < 20 then aggrScore = aggrScore + 25 -- elseif perf < 40 then aggrScore = aggrScore + 15; balScore = balScore + 10
-    elseif perf > 80 then balScore = balScore + 15 -- 
+    if perf < 20 then aggrScore = aggrScore + 25
+    elseif perf < 40 then aggrScore = aggrScore + 15; balScore = balScore + 10
+    elseif perf > 80 then balScore = balScore + 15
     end
 
     -- 4. 30 ?     local recentPerf = 0

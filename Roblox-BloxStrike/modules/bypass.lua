@@ -1439,6 +1439,7 @@ end
 
 -- Send a camouflaged InvokeServer
 function Bypass.camouflagedInvoke(remote, ...)
+    local args = {...}
     if not remote or not remote:IsA("RemoteFunction") then return nil end
     if not Bypass.validateRemote(remote) then return nil end
 
@@ -1447,7 +1448,7 @@ function Bypass.camouflagedInvoke(remote, ...)
     if jitter > 0 then task.wait(jitter) end
 
     local result = nil
-    pcall(function() result = {remote:InvokeServer(...)} end)
+    pcall(function() result = {remote:InvokeServer(unpack(args))} end)
     return result and result[1] or nil
 end
 

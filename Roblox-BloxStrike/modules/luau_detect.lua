@@ -344,8 +344,9 @@ Luau.ifFeature = function(featureName, fn, fallback)
         return fn()
     elseif fallback then
         return fallback()
-
+    end
     return nil
+end
 
 
 -- ═══ PHASE 6: Print Diagnostics ═══
