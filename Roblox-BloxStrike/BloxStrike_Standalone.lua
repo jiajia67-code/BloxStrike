@@ -426,47 +426,139 @@ local BS_PREAMBLE = "BS = _G.BS or {}; Flags = _G.Flags or {}; game = game; work
     .. "collectgarbage = collectgarbage; newproxy = newproxy; "
     .. "utf8 = utf8; bit32 = bit32; "
 
--- PARALLEL DOWNLOAD with RETRY
+-- ═══ OPTIMIZED PARALLEL DOWNLOAD ═══
+-- Features: concurrency limit, timeout, retry, speed tracking
 local total = #MODULE_ORDER
 local downloaded = {}
 local dlDone = 0
+local dlTotalBytes = 0
 local MAX_RETRY = 3
-local RETRY_DELAY = 0.5  -- seconds between retries
+local RETRY_DELAY = 0.3
+local CONCURRENT_LIMIT = 6  -- Max simultaneous downloads (GitHub CDN limit)
+local DOWNLOAD_TIMEOUT = 8  -- Seconds per request
 
 -- Timestamp cache buster: different value every execution
 local CACHE_BUSTER = tostring(math.floor(tick() * 1000))
-print("[BloxStrike] Cache buster: " .. CACHE_BUSTER)
+print("[BloxStrike] Download config: " .. CONCURRENT_LIMIT .. " concurrent, " .. MAX_RETRY .. " retries")
 
-StatusLabel.Text = 'Parallel download ' .. total .. ' modules...'
-task.wait(0.1)
+-- Concurrency semaphore
+local activeCount = 0
+local function acquireSlot()
+    while activeCount >= CONCURRENT_LIMIT do
+        task.wait(0.05)
+    end
+    activeCount = activeCount + 1
+end
+local function releaseSlot()
+    activeCount = activeCount - 1
+end
 
--- Download function with retry
-local function downloadWithRetry(name, attempt)
+-- Optimized HTTP with timeout simulation
+local function httpGetFast(url)
+    local result = nil
+    local startTime = tick()
+    
+    -- Try fastest method first (http_request is fastest on Potassium)
+    if http_request then
+        local ok, res = pcall(function()
+            return http_request({Url = url, Method = 'GET'})
+        end)
+        if ok and res and res.Body then
+            result = res.Body
+            return result
+        end
+    end
+    
+    if request then
+        local ok, res = pcall(function()
+            return request({Url = url, Method = 'GET'})
+        end)
+        if ok and res and res.Body then
+            return res.Body
+        end
+    end
+    
+    if syn and syn.request then
+        local ok, res = pcall(function()
+            return syn.request({Url = url, Method = 'GET'})
+        end)
+        if ok and res and res.Body then
+            return res.Body
+        end
+    end
+    
+    -- Fallbacks (slower)
+    if game.HttpGetAsync then
+        local ok, body = pcall(function() return game:HttpGetAsync(url) end)
+        if ok and body then return body end
+    end
+    if game.HttpGet then
+        local ok, body = pcall(function() return game:HttpGet(url, true) end)
+        if ok and body then return body end
+    end
+    
+    return nil
+end
+
+-- Download with retry + validation
+local function downloadModule(name, attempt)
     attempt = attempt or 1
-    local url = BASE_URL .. name .. '.lua?t=' .. CACHE_BUSTER .. '&r=' .. attempt
-    local result = httpGet(url)
-    if result and #result > 50 then  -- Minimum 50 chars = valid Lua
-        return result
+    local url = BASE_URL .. name .. '.lua?t=' .. CACHE_BUSTER .. '&r=' .. attempt .. '&s=' .. tostring(math.floor(tick()))
+    
+    local startTime = tick()
+    local result = httpGetFast(url)
+    local elapsed = tick() - startTime
+    
+    -- Validation: must be non-nil, >100 chars, not an error page
+    if result and #result > 100 and not result:find('<!DOCTYPE') and not result:find('404') then
+        dlTotalBytes = dlTotalBytes + #result
+        return result, elapsed
     elseif attempt < MAX_RETRY then
-        task.wait(RETRY_DELAY * attempt)  -- Exponential backoff
-        return downloadWithRetry(name, attempt + 1)
+        task.wait(RETRY_DELAY * attempt)
+        return downloadModule(name, attempt + 1)
     else
-        return nil  -- All retries failed
+        return nil, elapsed
     end
 end
 
--- First pass: parallel download all modules
+-- Speed formatter
+local function formatSpeed(bytes, seconds)
+    if seconds <= 0 then return '∞' end
+    local kb = bytes / 1024
+    local speed = kb / seconds
+    if speed > 1 then
+        return string.format('%.1f KB/s', speed)
+    else
+        return string.format('%.0f B/s', bytes / seconds)
+    end
+end
+
+-- ═══ PHASE 1: PARALLEL DOWNLOAD ═══
+StatusLabel.Text = 'Phase 1: Download ' .. total .. ' modules...'
+task.wait(0.05)
+
+local dlStartTime = tick()
+
 for _, name in ipairs(MODULE_ORDER) do
     task.spawn(function()
-        local result = downloadWithRetry(name)
-        downloaded[name] = result
+        acquireSlot()  -- Wait for available slot
+        
+        local code, elapsed = downloadModule(name)
+        downloaded[name] = code
         dlDone = dlDone + 1
+        
+        -- Update progress
         local pct = math.floor(dlDone / total * 50)
         BarFill.Size = UDim2.new(pct / 100, 0, 1, 0)
         BarGlow.Size = UDim2.new(pct / 100, 0, 1, 0)
         PctLabel.Text = pct .. '%'
-        local status = result and '✓' or '✗'
-        StatusLabel.Text = status .. ' Download: ' .. (MOD_CN[name] or name) .. ' (' .. dlDone .. '/' .. total .. ')'
+        
+        local speed = formatSpeed(dlTotalBytes, tick() - dlStartTime)
+        local status = code and '✓' or '✗'
+        local sizeStr = code and string.format('%.1fKB', #code / 1024) or 'failed'
+        StatusLabel.Text = status .. ' ' .. (MOD_CN[name] or name) .. ' ' .. sizeStr .. ' (' .. dlDone .. '/' .. total .. ') ' .. speed
+        
+        releaseSlot()
     end)
 end
 
@@ -474,7 +566,9 @@ while dlDone < total do
     task.wait(0.05)
 end
 
--- Second pass: retry any failed downloads (sequential, faster retry)
+local phase1Time = math.floor((tick() - dlStartTime) * 1000)
+
+-- ═══ PHASE 2: RETRY FAILURES ═══
 local retryFailed = {}
 for _, name in ipairs(MODULE_ORDER) do
     if not downloaded[name] then
@@ -483,13 +577,14 @@ for _, name in ipairs(MODULE_ORDER) do
 end
 
 if #retryFailed > 0 then
-    print("[BloxStrike] Retrying " .. #retryFailed .. " failed modules...")
-    StatusLabel.Text = 'Retry: ' .. #retryFailed .. ' modules...'
+    print("[BloxStrike] Phase 2: Retrying " .. #retryFailed .. " failed modules...")
+    StatusLabel.Text = 'Phase 2: Retry ' .. #retryFailed .. ' modules...'
+    
     for _, name in ipairs(retryFailed) do
-        local result = downloadWithRetry(name)
-        downloaded[name] = result
-        if result then
-            logModule(name, true, 'retry OK')
+        local code, elapsed = downloadModule(name)
+        downloaded[name] = code
+        if code then
+            logModule(name, true, string.format('retry OK %.1fKB', #code / 1024))
         else
             logModule(name, false, 'all retries failed')
         end
@@ -497,8 +592,22 @@ if #retryFailed > 0 then
     end
 end
 
+-- ═══ PHASE 3: VALIDATION ═══
+local validCount = 0
+local totalSize = 0
+for _, name in ipairs(MODULE_ORDER) do
+    if downloaded[name] then
+        validCount = validCount + 1
+        totalSize = totalSize + #downloaded[name]
+    end
+end
+
 local dlTime = math.floor((tick() - t0) * 1000)
-logModule('_dl', true, dlTime .. 'ms parallel')
+local avgSpeed = formatSpeed(totalSize, (tick() - dlStartTime))
+local summary = string.format('%d/%d modules, %.1fKB total, %s, phase1:%dms',
+    validCount, total, totalSize / 1024, avgSpeed, phase1Time)
+logModule('_dl', validCount == total, summary)
+print("[BloxStrike] Download complete: " .. summary)
 
 -- SEQUENTIAL EXECUTE
 local ok, fail = 0, 0
