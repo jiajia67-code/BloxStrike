@@ -344,15 +344,17 @@ class AutoFixer:
                     if old in line: line = line.replace(old, new); changed = True
             
             elif issue.category == "Nil":
-                for old, new in [
-                    ('BS.alive()','BS.alive and BS.alive()'),
-                    ('BS.hrp()','BS.hrp and BS.hrp()'),
-                    ('BS.hum()','BS.hum and BS.hum()'),
-                    ('BS.char()','BS.char and BS.char()'),
-                    ('BS.cam()','BS.cam and BS.cam()'),
-                ]:
-                    if old in line and new not in line:
-                        line = line.replace(old, new); changed = True
+                # Skip function definitions: function BS.xxx()
+                if not re.match(r'\s*function\s', line):
+                    for old, new in [
+                        ('BS.alive()','BS.alive and BS.alive()'),
+                        ('BS.hrp()','BS.hrp and BS.hrp()'),
+                        ('BS.hum()','BS.hum and BS.hum()'),
+                        ('BS.char()','BS.char and BS.char()'),
+                        ('BS.cam()','BS.cam and BS.cam()'),
+                    ]:
+                        if old in line and new not in line:
+                            line = line.replace(old, new); changed = True
             
             if changed:
                 lines[issue.line - 1] = line
