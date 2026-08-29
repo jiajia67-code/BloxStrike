@@ -698,16 +698,18 @@ end)
 -- U:Label("  Safety ")
 -- U:Toggle("恐慌鍵 (INSERT)", false, function(v) Flags.PanicEnabled = v end)
 
-UIS.InputBegan:Connect(function(input, gpe)
-    if gpe then return end
-    if Flags.PanicEnabled and input.KeyCode == Enum.KeyCode.Insert then
-        for key, _ in pairs(Flags) do
-            if key ~= "PanicEnabled" and key ~= "TeamCheck" and key ~= "FriendCheck" and key ~= "ESP_TeamCheck" then
-                Flags[key] = false
+pcall(function()
+    UserInputService.InputBegan:Connect(function(input, gpe)
+        if gpe then return end
+        if Flags.PanicEnabled and input.KeyCode == Enum.KeyCode.Insert then
+            for key, _ in pairs(Flags) do
+                if key ~= "PanicEnabled" and key ~= "TeamCheck" and key ~= "FriendCheck" and key ~= "ESP_TeamCheck" then
+                    Flags[key] = false
+                end
             end
+            print("[Panic] All features disabled!")
         end
-        print("[Panic] All features disabled!")
-    end
+    end)
 end)
 
  -- SERVER

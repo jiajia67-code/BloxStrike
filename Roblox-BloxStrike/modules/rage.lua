@@ -739,42 +739,33 @@ task.spawn(function()
                         autoPeekActive = false
                     end
                 elseif mode == "Toggle" then
-                    -- Toggle handled by keybind system
-                
-                if autoPeekActive then
-                    -- Move right/left based on nearest enemy
+                    -- Toggle handled by keybind system                if autoPeekActive then
                     local cam = workspace.CurrentCamera
                     local lookDir = cam.CFrame.LookVector
                     local rightDir = cam.CFrame.RightVector
-                    
-                    -- Find nearest enemy
                     local nearest = nil
                     local nearDist = math.huge
                     for _, p in pairs(Players:GetPlayers()) do
                         if p ~= lplr and p.Character then
-                            local eHrp = p and p.Character:FindFirstChild("HumanoidRootPart")
+                            local eHrp = p.Character:FindFirstChild("HumanoidRootPart")
                             if eHrp then
                                 local d = (eHrp.Position - myHrp.Position).Magnitude
                                 if d < nearDist then
                                     nearDist = d
                                     nearest = eHrp
-                    
+                                end
+                            end
+                        end
+                    end
                     if nearest then
                         local toEnemy = (nearest.Position - myHrp.Position).Unit
                         local cross = lookDir:Cross(toEnemy)
                         local peekSide = cross.Y > 0 and rightDir or -rightDir
-                        
-                        -- Move to peek position
-                        local peekPos = myHrp.Position + peekSide * (dist / 50)
                         myHrp.Velocity = peekSide * 50
-                        
-                        -- Jiggle if enabled
-                        if Flags.AutoPeekJiggle then
-                            local angle = (Flags.AutoPeekAngle or 30) / 100
-                            task.wait(0.05)
-                            myHrp.Velocity = -peekSide * 50 * angle
-                else
-                    myHrp.Velocity = Vector3.new(0, myHrp.Velocity.Y, 0)
+                    else
+                        myHrp.Velocity = Vector3.new(0, myHrp.Velocity.Y, 0)
+                    end
+                end
             end)
 end)
 

@@ -1090,26 +1090,26 @@ function AI.autoSelectMode()
         end
     end
 
-    -- 5.      if style == "Aggressive" then aggrScore = aggrScore + 15
+    if style == "Aggressive" then aggrScore = aggrScore + 15
     elseif style == "Tactical" then balScore = balScore + 15
     elseif style == "Sniper" then balScore = balScore + 10
     elseif style == "Runner" then aggrScore = aggrScore + 10
     elseif style == "Passive" then safeScore = safeScore + 10
     end
 
-    -- 6. ?     if risk > 70 then safeScore = safeScore + 40
+    if risk > 70 then safeScore = safeScore + 40
     elseif risk > 50 then safeScore = safeScore + 20
     elseif risk > 30 then balScore = balScore + 10
     end
 
-    -- 7. Ping     if ping > 250 then safeScore = safeScore + 20
+    if ping > 250 then safeScore = safeScore + 20
     elseif ping > 150 then safeScore = safeScore + 10
     elseif ping < 30 then aggrScore = aggrScore + 10 end
 
-    -- 8. /     local recentKills = #deathAnalysis.RecentKills
+    local recentKills = #deathAnalysis.RecentKills
     local recentDeaths = #deathAnalysis.RecentDeaths
-    if recentKills > 4 then aggrScore = aggrScore + 15 -- 
-    elseif recentDeaths > 3 then safeScore = safeScore + 15 -- 
+    if recentKills > 4 then aggrScore = aggrScore + 15
+    elseif recentDeaths > 3 then safeScore = safeScore + 15
     end
 
     -- 9.      local placeId = game.PlaceId

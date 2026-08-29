@@ -914,15 +914,15 @@ task.spawn(function()
             pcall(function()
                 -- Buy primary
                 local primary = Flags.BuyPrimary or "AK-47"
-                BS.api and BS.api.buyWeapon(primary)
+                pcall(function() if BS.api then BS.api.buyWeapon(primary) end end)
 
                 -- Buy secondary
                 local secondary = Flags.BuySecondary or "Deagle"
-                BS.api and BS.api.buyWeapon(secondary)
+                pcall(function() if BS.api then BS.api.buyWeapon(secondary) end end)
 
                 -- Buy armor
                 if Flags.BuyArmor then
-                    BS.api and BS.api.buyEquipment("Armor")
+                    pcall(function() if BS.api then BS.api.buyEquipment("Armor") end end)
                 end
 
                 -- Buy defuse kit (CT side)
@@ -932,9 +932,9 @@ task.spawn(function()
 
                 -- Buy grenades
                 if Flags.BuyGrenades then
-                    BS.api and BS.api.buyWeapon("Flashbang")
-                    BS.api and BS.api.buyWeapon("Smoke")
-                    BS.api and BS.api.buyWeapon("HE Grenade")
+                    pcall(function() if BS.api then BS.api.buyWeapon("Flashbang") end end)
+                    pcall(function() if BS.api then BS.api.buyWeapon("Smoke") end end)
+                    pcall(function() if BS.api then BS.api.buyWeapon("HE Grenade") end end)
                 end
             end)
         end

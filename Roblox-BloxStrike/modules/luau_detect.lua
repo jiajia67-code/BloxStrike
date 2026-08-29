@@ -365,7 +365,7 @@ local function printDiagnostics()
         .. " drawing=" .. tostring(Luau.canDrawing))
     print("  http=" .. tostring(Luau.canHttp)
         .. " bit=" .. tostring(Luau.canBit))
-
+end
 
 -- Run diagnostics
 pcall(printDiagnostics)
