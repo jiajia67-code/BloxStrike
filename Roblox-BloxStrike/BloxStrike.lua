@@ -8,7 +8,33 @@
     - Graceful degradation (failed modules don't crash others)
     - Automatic retry on loadstring failures
     - Detailed error reporting with solutions
+    - Game restriction: BloxStrike only
 ]]
+
+-- ═══════════════════════════════════════════════════════════════
+-- PHASE 0: GAME CHECK
+-- ═══════════════════════════════════════════════════════════════
+
+local VALID_PLACE_IDS = {
+    [114234929420007] = true,  -- BloxStrike
+}
+
+local currentPlaceId = game.PlaceId
+if not VALID_PLACE_IDS[currentPlaceId] then
+    warn("")
+    warn("╔══════════════════════════════════════════════╗")
+    warn("║  ❌ BloxStrike can only run in BloxStrike!  ║")
+    warn("╚══════════════════════════════════════════════╝")
+    warn("")
+    local success, info = pcall(function() return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId) end)
+    local gameName = success and info.Name or "Unknown"
+    warn("Current game: " .. game.PlaceId .. " (" .. gameName .. ")")
+    warn("Required: 114234929420007 (BloxStrike)")
+    warn("")
+    warn("Join BloxStrike here:")
+    warn("https://www.roblox.com/games/114234929420007/BloxStrike")
+    return
+end
 
 -- ═══════════════════════════════════════════════════════════════
 -- PHASE 1: GLOBAL SETUP
