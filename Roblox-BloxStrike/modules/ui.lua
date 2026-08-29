@@ -192,10 +192,17 @@ local function wrapTab(rayfieldTab, tabName)
     return page
 end
 
+local tabCache = {}
+
 BS.Win = {
     Tab = function(self, tabName)
+        if tabCache[tabName] then
+            return tabCache[tabName]
+        end
         local rayfieldTab = Window:CreateTab(tabName, nil)
-        return wrapTab(rayfieldTab, tabName)
+        local page = wrapTab(rayfieldTab, tabName)
+        tabCache[tabName] = page
+        return page
     end
 }
 
