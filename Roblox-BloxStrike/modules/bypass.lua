@@ -1212,7 +1212,7 @@ local executorFingerprint = {
     Spoofed = false,
 }
 
--- [optimized] function Bypass.spoofExecutorFingerprint()
+function Bypass.spoofExecutorFingerprint()
     pcall(function()
         if executorFingerprint.Spoofed then return end
 
@@ -1275,7 +1275,7 @@ local executorFingerprint = {
     end)
 end
 
--- [optimized] function Bypass.restoreExecutorFingerprint()
+function Bypass.restoreExecutorFingerprint()
     pcall(function()
         for name, value in pairs(executorFingerprint.Originals) do
             if name:sub(1, 5) == "genv_" then

@@ -322,11 +322,11 @@ end
 
 -- CONTROLLER SHORTCUTS
 
--- [optimized] function api.startSprint()
+function api.startSprint()
     pcall(function() api.bw.SprintController:startSprinting() end)
 end
 
--- [optimized] function api.stopSprint()
+function api.stopSprint()
     pcall(function() api.bw.SprintController:stopSprinting() end)
 end
 

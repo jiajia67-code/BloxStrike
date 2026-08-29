@@ -3012,7 +3012,7 @@ lplr.CharacterRemoving:Connect(function()
     if vizTgtLine then vizTgtLine.Visible=false end
     if saFovCircle then saFovCircle.Visible=false end
     if aaVizCircle then aaVizCircle.Visible=false end
--- [optimized] end)print("[Rage] BloxStrike Rage v3.0 - CS2 HVH Edition")
+end)print("[Rage] BloxStrike Rage v3.0 - CS2 HVH Edition")
 print("[Rage] All features loaded successfully")
 -- [optimized] print("[Rage] 1  Ragebot (HC, Bone, Sort, Double Tap, Triple Tap)")
 -- [optimized] print("[Rage] 1A Multipoint + Safe Point + Damage Override + Force Aim")
