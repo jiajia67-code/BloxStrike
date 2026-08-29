@@ -1,0 +1,22 @@
+# Other projects
+CS2-HookDLL/
+CS2-Internal/
+CS2-SilentAim/
+DeltaForce-External/
+Enlisted-External/
+FreeFire-Emulator/
+Roblox-BedWars/
+Titled-Gui-CS2/
+minhook/
+.freebuff/
+*.log
+*.txt
+*.zip
+*.exe
+*.dll
+*.pdb
+*.cache
+*.csproj.user
+obj/
+bin/
+*.o
