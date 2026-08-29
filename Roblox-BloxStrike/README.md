@@ -1,372 +1,283 @@
-# BloxStrike 終極版 v1.0
+# ⚡ BloxStrike v3.0
 
-**150+ 功能 | CS2 風格 FPS 腳本 | HVH | 隱身 | Discord Webhook | 模組化架構**
+**150+ Features | CS2-Style FPS Script | HVH | Stealth | Discord Webhook | Modular Architecture**
 
-受 Titled GUI CS2 和 CatVape 模組系統啟發，無需金鑰。
-
-## 功能總覽（150+）
-
-### ⚔️ 戰鬥系統（30+ 選項）
-| 功能 | 說明 |
-|------|------|
-| **自瞄 v2.0** | 30+ 選項：FOV、平滑、骨頭、排序、預測、人性化、鎖定 |
-| **觸發器 v2.0** | 15+ 選項：延遲、連射、仿人類隨機、FOV、頭部/身體 |
-| **靜默瞄準** | 伺服器端角度修改 |
-| **後座力控制** | 武器專用後座力補償模式 |
-| **自動射擊** | 按住自動開槍 |
-| **快速切換** | Q 鍵切換刀和主武器 |
-| **無散佈** | 移除彈道散佈 |
-| **無後座** | 移除武器後座力 |
-| **命中音效** | 命中時播放音效 |
-| **爆頭文字** | 顯示爆頭通知 |
-| **擊殺文字** | 顯示擊殺通知 |
-| **隊友檢查** | 不瞄準隊友 |
-| **好友檢查** | 不瞄準好友 |
-| **輔助瞄準** | 滑鼠移動輔助 |
-| **自動刀** | 近距離自動切刀攻擊 |
-| **擴展 hitbox** | 擴大敵人 hitbox |
-| **自動斷線** | 低血量自動離開 |
-| **防閃光** | 免疫閃光彈 |
-| **自動購買** | 回合開始自動購買武器 |
-| **自動衝刺** | 自動奔跑 |
-
-### 🎯 自瞄詳細功能
-| 類別 | 功能 |
-|------|------|
-| **基本** | FOV (10-360°)、平滑度 (1-50)、6 種骨頭、5 種排序 |
-| **平滑模式** | 線性、漸入、漸出、貝塞爾曲線、自適應 |
-| **檢查** | 隊友、好友、牆壁、視線 |
-| **預測** | 速度預測、延遲補償 |
-| **綁定** | Left Alt/Ctrl/Mouse4/5/Shift |
-| **鎖定** | 鎖定目標（可調持續時間）|
-| **人性化** | 隨機延遲 + 隨機偏差（看起來像人類）|
-| **自動** | 停止移動、開鏡、蹲下 |
-| **視覺** | FOV 圓圈、目標線、目標資訊 |
-| **專家** | 甩槍、抖動、目標切換、距離縮放、血量優先、後座力 |
-
-### 🎯 觸發器詳細功能
-| 類別 | 功能 |
-|------|------|
-| **基本** | 開關、延遲範圍 (0-400ms)、按鍵綁定 |
-| **目標** | 只打頭、只打身體、隊友檢查、牆壁檢查 |
-| **連射** | 連射模式（可調次數和間隔）|
-| **仿人類** | 隨機觸發機率 (10-100%) |
-| **FOV** | 視野範圍檢查 |
-
-### 👁️ ESP（60+ 選項，零延遲）
-| 類別 | 選項 |
-|------|------|
-| **框線** | 2D / 角落 / 3D / 填充 / 完整框 |
-| **名稱** | 名稱 ESP + 背景 + 字體大小 + 對齊 |
-| **血量** | 血條（左/右/上）+ 文字 + 顏色模式 |
-| **護甲** | 護甲條 |
-| **距離** | 距離顯示 + 單位切換 |
-| **武器** | 武器名稱 + 彈藥數量 |
-| **骷髏** | 骨骼線條 ESP |
-| **頭部** | 頭部圓圈 + hitbox |
-| **槍管** | 槍管方向 |
-| **追蹤線** | 從螢幕底部/中央/頂部/滑鼠 |
-| **目標** | 當前目標高亮 |
-| **資訊卡** | 詳細資訊面板 |
-| **OOF** | 超出視野指示器 |
-| **方向箭頭** | 螢幕邊緣方向箭頭 |
-| **爆頭圖標** | 💀 爆頭標記 |
-| **速度箭頭** | 敵人移動方向 |
-| **雷射線** | 槍口射線 |
-| **迷彩** | 表面 GUI 遮罩 |
-| **泛光** | 高亮顯示 |
-| **雷達** | 迷你雷達地圖 |
-| **指南針** | 頂部指南針 |
-| **擊殺列表** | CS2 風格擊殺列表 |
-| **傷害數字** | 傷害數字顯示 |
-| **命中指示器** | 擊中 X 記號 |
-| **水印** | 左上角資訊 |
-| **狀態顯示** | 右上角狀態 |
-| **FPS** | 頂部中央 FPS |
-| **十字準心** | 5 種樣式（+、○、△、◇、T） |
-
-### 🌍 世界功能（10 個）
-| 功能 | 說明 |
-|------|------|
-| **視野修改器** | 調整視野角度 |
-| **防閃光** | 完全移除閃光效果 |
-| **全亮** | 移除陰影 |
-| **透視** | 看穿薄牆 |
-| **煙霧揭示** | 移除煙霧不透明度 |
-| **無煙** | 移除煙霧粒子 |
-| **無火** | 移除燃燒彈效果 |
-| **手榴彈軌跡** | 顯示手榴彈落點 |
-| **無掉落傷害** | 免疫掉落傷害 |
-| **速度提升** | 調整移動速度 |
-
-### 🔥 HVH / 暴力機器人（80+ 選項）← CS2 完整版
-| 模組 | 說明 |
-|------|------|
-| **暴力機器人** | 進階自動瞄準、排序、預測、穿透、刀機器人 |
-| **Multipoint** | 多點瞄準（頭+胸+身體同時瞄準）|
-| **Safe Point** | 安全點（敵人角度不好時不射擊）|
-| **Damage Override** | 按鍵暫時覆蓋最低傷害 |
-| **Force Body/Head** | 手動強制瞄準身體/頭部 |
-| **PSilent** | 純靜默瞄準（伺服器端角度修改）|
-| **Rapid Fire** | 連射模式（比 DT 更激進）|
-| **Auto Stop** | 射擊時瞬間停止移動 |
-| **靜默瞄準** | 命中但不移動視角（4 模式、FOV、預測）|
-| **Desync** | CS2 最重要 AA：不同步 hitbox（Static/Jitter/Random/Brute）|
-| **Emotion** | 情緒 AA（45° pitch + static desync）|
-| **Lean** | 身體傾斜讓 hitbox 更難解析 |
-| **LBY Breaker** | 破壞 Lower Body Yaw 角度（118° legit AA）|
-| **Manual AA** | 方向鍵手動控制 AA 方向 |
-| **Auto Freestand** | 自動面向最近牆壁 |
-| **反瞄準** | Pitch/Jitter/Spin/Back/Fake 角度 |
-| **假延遲** | 封包 choked（Constant/Adaptive/Random/Tick）|
-| **Hideshots** | 防止被一槍爆頭（tickbase 操縱）|
-| **Onshot** | 操縱子彈註冊時機 |
-| **Fake Duck** | 偽裝蹲下改變 hitbox |
-| **解析器** | Brute Force/Moving AW/Freestand 解析 |
-| **Moving AA Resolver** | 解析移動中的 AA |
-| **Side Detection** | 偵測敵人傾斜方向 |
-| **Animation Breaker 偵測** | 偵測敵人破壞動畫 |
-| **自動穿牆** | 穿牆射擊 + 穿透力 |
-| **Slide Walk** | 走路時身體滑動 |
-| **Pixel Surf** | 像素級滑動 exploit |
-| **快速停止** | 瞬間減速 |
-| **慢速行走** | 可調行走速度 |
-| **穿牆** | 穿牆移動 |
-| **自動左輪** | 速射 Desert Eagle |
-| **自動手槍** | 速射手槍 |
-| **快速切換** | 擊殺後快速切刀再切回 |
-| **增強電擊** | 自動瞄準+發射電擊槍 |
-| **HVH 預設** | 一鍵 Full Rage / Anti-Oneshot / Smart Resolver 配置 |
-
-### 🎮 第三人稱（ESP 雜項）
-| 功能 | 說明 |
-|------|------|
-| **第三人稱** | 平滑第三人稱視角 |
-| **肩膀視角** | 右/左/中肩膀 |
-| **碰撞檢查** | 避免穿牆 |
-| **平滑轉向** | 平滑鏡頭移動 |
-| **自動放大** | 開鏡時自動放大 |
-| **頭部跟隨** | 跟隨頭部方向 |
-| **視野角度** | 可調 FOV |
-
-### 🎮 武器視角修改器（ESP 雜項）
-| 功能 | 說明 |
-|------|------|
-| **位置** | X/Y/Z 武器位置偏移 |
-| **角度** | Pitch/Yaw/Roll 旋轉 |
-| **大小** | 武器大小 (50-200%) |
-| **視野** | 武器視野角度 |
-| **搖晃** | 走路搖晃動畫 |
-| **滑鼠搖晃** | 滑鼠移動搖晃 |
-| **呼吸** | 靜止呼吸動畫 |
-| **後座力** | 射擊後座力動畫 |
-| **預設** | CS2 / 遠右 / 近距離 / 緊湊 / 寬 / 中央 / 戰鬥風 |
-
-### 💀 擊殺效果（30+ 聲音，15+ 視覺效果）
-| 類別 | 功能 |
-|------|------|
-| **擊殺音效** | 20 種風格（CS2、Quake、金屬管、Minecraft、Vine Boom...）|
-| **命中音效** | 8 種風格 |
-| **螢幕效果** | 閃爍、模糊、色彩校正、泛光、陽光、震動 |
-| **視覺效果** | 色差分離、暗角、血滴、擴散圓環、去飽和、視角衝擊、故障線 |
-| **連殺系統** | 7 級：Double → Triple → Quad → Penta → Unstoppable → Rampage → GODLIKE |
-| **擊殺列表** | CS2 風格右上角擊殺列表 |
-
-### 💾 設定存檔系統
-| 功能 | 說明 |
-|------|------|
-| **儲存設定** | 儲存所有設定到檔案 |
-| **載入設定** | 從檔案載入設定 |
-| **匯出** | 複製設定到剪貼簿 |
-| **重置** | 重置所有設定為預設值 |
-| **自動載入** | 腳本啟動時自動載入 |
-| **預設** | Legit / Rage / HVH / Stealth / Bhop |
-
-### 🔧 全自動錯誤處理
-| 功能 | 說明 |
-|------|------|
-| **自動偵測** | 捕捉所有錯誤（nil index、壞參數、實例已銷毀...）|
-| **自動修復** | 自動修復 15+ 種常見錯誤模式 |
-| **自動恢復** | 從嚴重崩潰中恢復（不需重啟腳本）|
-| **模組重載** | 自動重新載入崩潰的模組 |
-| **任務守護** | 監控並重啟崩潰的 task.spawn 迴圈 |
-| **健康檢查** | 每 30 秒檢查 Camera、Character、FPS |
-| **記憶體清理** | 每 60 秒清理舊錯誤和垃圾回收 |
-| **錯誤報告** | 按 **F12** 查看錯誤報告 |
-
-### 🌐 Discord Webhook
-| 事件 | 說明 |
-|------|------|
-| 🎮 腳本載入 | 腳本啟動時 |
-| 💀 擊殺 | 擊殺敵人時 |
-| 🎯 爆頭 | 爆頭時 |
-| ☠️ 死亡 | 死亡時 |
-| 🔥 連殺 | 多殺時（3/5/7/10+）|
-| 🏆 回合勝利 | 隊伍贏得回合時 |
-| ❌ 回合失敗 | 隊伍輸掉回合時 |
-| 💣 炸彈安裝 | C4 安裝時 |
-
-### 🐰 雜項功能
-| 功能 | 說明 |
-|------|------|
-| **兔子跳** | 8 種跳躍模式 + 空中轉向 |
-| **炸彈計時器** | 視覺炸彈倒數 |
-| **自動拆彈** | 自動拆除已安裝的炸彈 |
-| **自動安裝** | 自動在最近炸彈點安裝 |
-| **緊急按鍵** | 一鍵關閉所有功能（INSERT）|
-| **雷達** | 迷你地圖顯示所有玩家 |
-| **命中指示器** | 視覺命中確認 |
-| **自動重連** | 斷線時自動重連 |
-| **伺服器跳轉** | 切換到另一個伺服器 |
-| **十字準心** | 始終顯示十字準心 |
-| **錄影** | 快速錄影開關 |
-| **玩家數量** | 存活/總玩家顯示 |
-
-## 使用方式
-
-1. 打開執行器：**Fluxus**、**Delta**、**Wave**、**Synapse X**、**Arceus X**、**Potassium**
-2. 加入 **BloxStrike** 遊戲
-3. 貼上 `BloxStrike.lua` 並執行
-4. 按 **INSERT** 開啟選單
-5. 按 **F12** 查看錯誤報告
-
-## 檔案結構
-```
-Roblox-BloxStrike/
-├── BloxStrike.lua      ← 主腳本（貼到執行器）
-├── Loader.lua          ← 快速載入器
-├── README.md           ← 本文件
-└── modules/
-    ├── errorhandler.lua ← 全自動錯誤處理
-    ├── core.lua         ← 核心服務、工具函數
-    ├── api.lua          ← 遊戲 API 和 Remote
-    ├── combat.lua       ← 30+ 個戰鬥功能 v2.0
-    ├── esp.lua          ← 60+ 個 ESP 選項、零延遲
-    ├── world.lua        ← 10 個世界功能
-    ├── utility.lua      ← 兔子跳 + 擊殺效果 + 設定
-    ├── rage.lua         ← 55+ 個 HVH 功能
-    ├── stealth.lua      ← 20+ 個反偵測功能
-    ├── webhook.lua      ← Discord Webhook 整合
-    ├── events.lua       ← 擊殺/死亡/回合金幣追蹤
-    ├── killeffects.lua  ← 擊殺音效+動畫+列表 v2.0
-    ├── settings.lua     ← 設定存檔系統
-    ├── viewmodel.lua    ← 武器視角修改器
-    └── ui.lua           ← GUI 框架（標籤、開關、滑桿）
-```
-
-## 模組架構
-
-所有功能分為 15 個獨立模組，按需載入：
-
-| 模組 | 載入順序 | 依賴 |
-|------|---------|------|
-| errorhandler | 1（最先）| 無 |
-| core | 2 | 無 |
-| ui | 3 | core |
-| api | 4 | core |
-| combat | 5 | core, ui |
-| esp | 6 | core, ui |
-| world | 7 | core, ui |
-| utility | 8 | core, ui |
-| webhook | 9 | core |
-| events | 10 | core, webhook |
-| rage | 11 | core, ui |
-| stealth | 12 | core, ui |
-| killeffects | 13 | core |
-| settings | 14 | core |
-| viewmodel | 15 | core |
-
-## 鍵盤快捷鍵
-
-| 按鍵 | 功能 |
-|------|------|
-| **INSERT** | 開啟/關閉選單 |
-| **F3** | 顯示效能監控 |
-| **F9** | 安全模式（關閉危險功能）|
-| **F10** | 緊急停用（關閉所有 + 隱藏 GUI）|
-| **F12** | 錯誤報告 |
-| **V** | 切換第三人稱肩膀 |
-| **C** | 重置第三人稱相機 |
-| **Q** | 快速切換武器 |
-
-## 支援設備與執行器
-
-### ✅ 支援的執行器
-Fluxus、Delta、Wave、Solara、Hydrogen、Arceus X、Script-Ware、Synapse X、KRNL、Comet、Oxygen U、Evon、JJSploit、Nihon、AWP.GG、Celery、Velocity、Potassium、Real、ByteBreaker、Nexomia、Yub-X、Xeno、Vega X、Ronix
-
-### ✅ 支援的設備
-- **PC**：Windows / macOS / Linux
-- **手機**：Android / iOS（自動偵測並適配觸控操作）
-- **模擬器**：所有 Roblox 模擬器
-
-### ✅ API 相容性
-所有模組都透過 `compat.lua` 相容層運作，自動偵測並適配不同執行器的 API 差異：
-- Drawing API → 安全封裝，支援所有執行器
-- HTTP 請求 → 跨執行器（syn.request / http_request / request / HttpService）
-- 檔案操作 → 安全封裝（writefile / readfile / isfile）
-- 鍵鼠操作 → 安全封裝（mousemoverel / mouse1click）
-- 函數 Hook → 安全封裝（hookfunction / hookmetamethod / newcclosure）
-- **缺少 API 的功能會自動停用或使用替代方案**
-
-### 📱 手機特別功能
-- 浮動按鈕選單（⚡ 圖示）
-- 左側滑動切換選單
-- 較大的觸控目標（滑桿、開關）
-- 自適應螢幕尺寸
-
-## 系統需求
-
-- **執行器**：任意支援 Lua 的 Roblox 執行器（見上方完整列表）
-- **遊戲**：BloxStrike（CS2 風格 Roblox FPS）
-- **API**：Drawing API（ESP，有 Drawing 的執行器）— 缺少時 ESP 自動停用，其他功能正常運作
-
-## 注意事項
-
-- 此腳本僅供教育和測試用途
-- 使用任何第三方腳本都有被封鎖的風險
-- 建議先在小號測試
-- 全自動錯誤處理會自動修復大部分錯誤
-- 按 F12 隨時查看錯誤報告
-
-## 更新日誌
-
-### v1.0（最新）
-- **新增全裝置相容層 v1.0**：支援 25+ 執行器 + PC/手機/模擬器
-- **新增 UI v2.0**：手機觸控支援 + 自適應螢幕 + 浮動按鈕
-- **新增 ESP compat 層**：Drawing API 安全封裝，缺少時自動停用
-- **新增 Settings compat 層**：檔案操作跨執行器
-- **新增 Webhook compat 層**：HTTP 請求跨執行器
-- 新增全自動錯誤處理系統
-- 新增設定存檔系統（5 個預設）
-- 新增武器視角修改器（8 個預設）
-- 新增擊殺音效+動畫（30+ 聲音，15+ 效果）
-- 新增暴力機器人（Ragebot、Anti-Aim、Fake Lag、Resolver）
-- 新增靜默瞄準到 HVH
-- 新增兔子跳（8 種模式）
-- 新增反偵測系統 v2.0
-- 加強繞過系統 v4.0（30 個進階繞過系統）
-- 加強反偵測系統 v4.0（28 個防護區塊）：
-  - getfenv 環境洩漏防禦（DevForum 2025.07 最新偵測）
-  - Raw Metamethod Hook 逃逸
-  - ToString Trap 逃逸
-  - Coroutine.wrap 堆疊溢位逃逸
-  - CoreGui 引用逃逸
-  - getfenv 層級掃描逃逸
-- 加強繞過系統 v4.0（30 個進階繞過系統）：
-  - __namecall Hook 保護：攔截 AC 對我們物件的掃描
-  - Executor 指紋偽裝：隱藏執行器特徵
-  - Signal Hook 保護：包裝我們的連線
-  - Remote 呼叫偽裝：速率限制 + 偽裝流量
-  - Memory Region Cloaking：隱藏記憶體區段
-  - AC 簽名 evasion：掃描並消除危險字串
-  - Heartbeat Spoofing：偽裝心跳模式
-  - Anti-Dump：防止記憶體 dump
-  - 統一啟動引擎：30 個系統按正確順序啟動
-- 新增 Discord Webhook 整合
-- 加強自瞄 v2.0（30+ 選項）
-- 加強觸發器 v2.0（15+ 選項）
-- 加強 ESP v3.0（60+ 選項）
-- 加強第三人稱（移至 ESP 雜項）
+> 受 Titled GUI CS2 和 CatVape 模組系統啟發，無需金鑰。
+> Inspired by Titled GUI CS2 and CatVape module system. No key required.
 
 ---
-*BloxStrike — 終極 CS2 風格 Roblox FPS 腳本*
+
+## ✨ Features (150+)
+
+### ⚔️ Combat (30+ Options)
+| Feature | Description |
+|---------|-------------|
+| **Aimbot v2.0** | 30+ options: FOV, Smooth, Bone, Sort, Prediction, Humanization, Lock |
+| **Triggerbot v2.0** | 15+ options: Delay, Burst, Human-like, FOV, Head/Body |
+| **Silent Aim** | Server-side angle modification |
+| **Recoil Control** | Weapon-specific recoil compensation |
+| **Auto Fire** | Hold to auto-shoot |
+| **Quick Switch** | Q key to switch knife/main weapon |
+| **No Spread** | Remove bullet spread |
+| **No Recoil** | Remove weapon recoil |
+| **Hit Sound** | Play sound on hit |
+| **Headshot Text** | Show headshot notification |
+| **Kill Text** | Show kill notification |
+| **Team Check** | Don't aim at teammates |
+| **Friend Check** | Don't aim at friends |
+| **Auto Knife** | Auto knife at close range |
+| **Extended Hitbox** | Expand enemy hitbox |
+| **Auto Disconnect** | Leave at low health |
+| **Anti Flash** | Immune to flashbangs |
+| **Auto Buy** | Auto-buy weapons at round start |
+| **Auto Sprint** | Auto-run |
+
+### 🎯 Aimbot Details
+| Category | Features |
+|----------|----------|
+| **Basic** | FOV (10-360°), Smooth (1-50), 6 Bones, 5 Sort modes |
+| **Smooth Modes** | Linear, EaseIn, EaseOut, Bezier, Adaptive |
+| **Checks** | Team, Friend, Wall, Visibility |
+| **Prediction** | Velocity prediction, Lag compensation |
+| **Binds** | Left Alt/Ctrl/Mouse4/5/Shift |
+| **Lock** | Target lock (adjustable duration) |
+| **Humanization** | Random delay + Random deviation |
+| **Auto** | Stop moving, Scope, Crouch |
+| **Visual** | FOV circle, Target line, Target info |
+| **Expert** | Flick, Jitter, Target switch, Distance scaling, HP priority |
+
+### 🎯 HVH / Rage (80+ Options)
+| Module | Description |
+|--------|-------------|
+| **Ragebot** | Advanced auto-aim, Sort, Prediction, Wallbang, Knife bot |
+| **Multipoint** | Multi-point aiming (Head + Chest + Body simultaneously) |
+| **Safe Point** | Don't shoot when enemy angle is bad |
+| **Damage Override** | Key to temporarily override min damage |
+| **PSilent** | Pure silent aim (server-side angle modification) |
+| **Rapid Fire** | Burst mode (more aggressive than DT) |
+| **Auto Stop** | Instant stop movement when shooting |
+| **Desync** | CS2's most important AA: desync hitboxes (Static/Jitter/Random/Brute) |
+| **Anti-Aim** | Pitch/Jitter/Spin/Back/Fake angles |
+| **Fake Lag** | Packet choked (Constant/Adaptive/Random/Tick) |
+| **Resolver** | Brute Force/Moving AW/Freestand resolver |
+| **Auto Wallbang** | Wallbang shooting + Penetration |
+| **Slide Walk** | Body sliding while walking |
+
+### 👁️ ESP (60+ Options, Zero Delay)
+| Category | Options |
+|----------|---------|
+| **Box** | 2D / Corners / 3D / Filled / Full Box |
+| **Name** | Name ESP + Background + Font Size + Alignment |
+| **Health** | Health Bar (Left/Right/Top) + Text + Color Mode |
+| **Armor** | Armor Bar |
+| **Distance** | Distance Display + Unit Toggle |
+| **Weapon** | Weapon Name + Ammo Count |
+| **Skeleton** | Skeleton ESP |
+| **Head** | Head Circle + Hitbox |
+| **Barrel** | Barrel Direction |
+| **Tracers** | Bottom/Center/Top/Mouse |
+| **Target** | Current target highlight |
+| **Info Card** | Detailed info panel |
+| **OOF** | Out of view indicator |
+| **Arrow** | Screen edge direction arrow |
+| **Radar** | Mini radar map |
+| **Compass** | Top compass |
+| **Kill Feed** | CS2-style kill feed |
+| **Damage Numbers** | Damage number display |
+| **Watermark** | Top-left info display |
+| **Crosshair** | 5 styles (+, ○, △, ◇, T) |
+
+### 🌍 World (10 Features)
+| Feature | Description |
+|---------|-------------|
+| **FOV Changer** | Adjust field of view |
+| **Anti Flash** | Remove flash effect completely |
+| **Full Bright** | Remove shadows |
+| **Wallhack** | See through thin walls |
+| **Smoke Reveal** | Remove smoke opacity |
+| **No Smoke** | Remove smoke particles |
+| **No Fire** | Remove molotov effect |
+| **Grenade Trajectory** | Show grenade landing point |
+| **No Fall Damage** | Immune to fall damage |
+| **Speed Boost** | Adjust movement speed |
+
+### 💀 Kill Effects (30+ Sounds, 15+ Visual Effects)
+| Category | Features |
+|----------|----------|
+| **Kill Sounds** | 20 styles (CS2, Quake, Metal Pipe, Minecraft, Vine Boom...) |
+| **Hit Sounds** | 8 styles |
+| **Screen Effects** | Flash, Blur, Color Correction, Bloom, Sun Rays, Shake |
+| **Visual Effects** | Chromatic Aberration, Vignette, Blood, Kill Ring, FOV Punch |
+| **Kill Streak** | 7 levels: Double → Triple → Quad → Penta → Unstoppable → Rampage → GODLIKE |
+| **Kill Feed** | CS2-style top-right kill feed |
+
+### 💾 Settings System
+| Feature | Description |
+|---------|-------------|
+| **Save** | Save all settings to file |
+| **Load** | Load settings from file |
+| **Export** | Copy settings to clipboard |
+| **Reset** | Reset all settings to defaults |
+| **Presets** | Legit / Rage / HVH / Stealth / Bhop |
+
+### 🔧 Auto Error Handling
+| Feature | Description |
+|---------|-------------|
+| **Auto Detect** | Catch all errors (nil index, bad arg, destroyed instance...) |
+| **Auto Fix** | Auto-repair 15+ common error patterns |
+| **Auto Recover** | Recover from severe crashes |
+| **Module Reload** | Auto-reload crashed modules |
+| **Health Check** | Camera, Character, FPS check every 30 seconds |
+| **Error Report** | Press **F12** to view error report |
+
+### 🌐 Discord Webhook
+| Event | Description |
+|-------|-------------|
+| 🎮 Script Load | When script starts |
+| 💀 Kill | When killing enemy |
+| 🎯 Headshot | When headshot |
+| ☠️ Death | When dying |
+| 🔥 Kill Streak | Multi-kill (3/5/7/10+) |
+| 🏆 Round Win | Team wins round |
+| ❌ Round Lose | Team loses round |
+| 💣 Bomb Plant | C4 planted |
+
+### 🐰 Misc
+| Feature | Description |
+|---------|-------------|
+| **Bunny Hop** | 8 jump modes + Air strafe |
+| **Bomb Timer** | Visual bomb countdown |
+| **Auto Defuse** | Auto-defuse planted bomb |
+| **Auto Plant** | Auto-plant at nearest bomb site |
+| **Emergency Key** | One key to disable all (INSERT) |
+| **Radar** | Mini-map showing all players |
+| **Hit Indicator** | Visual hit confirmation |
+| **Server Hop** | Switch to another server |
+| **Crosshair** | Always-on crosshair |
+
+---
+
+## 📦 Installation
+
+### Method 1: Manual (Recommended)
+1. Download or clone this repository
+2. Copy the `BloxStrike/` folder to your executor's scripts directory
+3. Open your executor and paste `BloxStrike.lua`
+4. Press **INSERT** to open menu
+
+### Method 2: One-Click Fixer
+1. Paste `BloxStrike.lua` into your executor (don't run yet)
+2. Paste `BloxStrike_Fixer.lua` and run it
+3. All modules will be auto-fixed and loaded
+
+### Method 3: Standalone
+1. Paste `BloxStrike_Standalone.lua` and run it
+2. Everything is embedded - no external files needed
+
+---
+
+## 🎮 Controls
+
+| Key | Function |
+|-----|----------|
+| **INSERT** | Open/Close menu |
+| **F3** | Performance monitor |
+| **F9** | Safe mode (disable dangerous features) |
+| **F10** | Emergency disable (all off + hide GUI) |
+| **F12** | Error report |
+| **V** | Toggle third person shoulder |
+| **C** | Reset third person camera |
+| **Q** | Quick weapon switch |
+| **X** | Toggle ESP |
+| **Z** | Toggle Bhop |
+| **C** | Toggle Anti-Aim |
+| **V** | Toggle Silent Aim |
+| **N** | Toggle Night Mode |
+| **M** | Toggle Remove Scope |
+
+---
+
+## 📁 File Structure
+
+```
+BloxStrike/
+├── BloxStrike.lua          ← Main script (paste into executor)
+├── BloxStrike_Fixer.lua    ← One-click fixer
+├── BloxStrike_Standalone.lua ← Standalone version (all modules embedded)
+├── README.md               ← This file
+└── modules/
+    ├── core.lua            ← Core services and utilities
+    ├── ui.lua              ← GUI framework (tabs, toggles, sliders)
+    ├── compat.lua          ← Executor compatibility layer
+    ├── api.lua             ← Game API and remotes
+    ├── combat.lua          ← 30+ combat features v2.0
+    ├── esp.lua             ← 60+ ESP options, zero delay
+    ├── world.lua           ← 10 world features
+    ├── rage.lua            ← 55+ HVH features
+    ├── stealth.lua         ← 20+ anti-detection features
+    ├── utility.lua         ← Bhop + Kill effects + Settings
+    ├── webhook.lua         ← Discord webhook integration
+    ├── events.lua          ← Kill/death/round tracking
+    ├── killeffects.lua     ← Kill sounds+animations+feed v2.0
+    ├── settings.lua        ← Settings save system
+    ├── viewmodel.lua       ← Weapon viewmodel changer
+    ├── combatassist.lua    ← Chat assistant
+    ├── smartai.lua         ← AI learning system
+    ├── pingadapt.lua       ← Ping adaptation
+    ├── cheatdetect.lua     ← Anti-cheat scanner
+    ├── bypass.lua          ← Anti-cheat bypass
+    ├── errorhandler.lua    ← Auto error handling
+    ├── hud.lua             ← HUD overlay
+    ├── luau_compat.lua     ← Luau compatibility
+    └── luau_detect.lua     ← Luau engine detection
+```
+
+---
+
+## 🖥️ Supported Executors
+
+Fluxus, Delta, Wave, Solara, Hydrogen, Arceus X, Script-Ware, Synapse X, KRNL, Comet, Oxygen U, Evon, JJSploit, Nihon, AWP.GG, Celery, Velocity, **Potassium**, Real, ByteBreaker, Nexomia, Yub-X, Xeno, Vega X, Ronix
+
+## 📱 Supported Devices
+
+- **PC**: Windows / macOS / Linux
+- **Mobile**: Android / iOS (auto-detect & adapt touch controls)
+- **Emulators**: All Roblox emulators
+
+---
+
+## ⚠️ Disclaimer
+
+This script is for educational and testing purposes only. Using any third-party script carries a risk of being banned. Use at your own risk.
+
+---
+
+## 📋 Changelog
+
+### v3.0.0 (Latest)
+- **Fixed all 16 failing modules** (syntax errors resolved)
+- **GUI tab reorganization** (13 logical tabs)
+- Added one-click fixer script
+- Added standalone version
+- Fixed empty tab name issue
+- Renamed "Combat Assist" to "Comms"
+- Removed duplicate settings buttons
+
+### v2.0
+- Added full device compatibility layer (25+ executors)
+- Added UI v2.0 (mobile touch + adaptive screen)
+- Added ESP compat layer (Drawing API safe wrapper)
+- Added Settings compat layer (cross-executor file ops)
+- Added Webhook compat layer (cross-executor HTTP)
+- Added auto error handling system
+- Added settings save system (5 presets)
+- Added weapon viewmodel changer (8 presets)
+- Added kill sounds+animations (30+ sounds, 15+ effects)
+- Added ragebot (Ragebot, Anti-Aim, Fake Lag, Resolver)
+- Added silent aim to HVH
+- Added bunny hop (8 modes)
+- Added anti-detection system v2.0
+
+---
+
+*BloxStrike — Ultimate CS2-Style Roblox FPS Script*
