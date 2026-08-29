@@ -3003,10 +3003,10 @@ task.spawn(function()
                 if sv then
                     if not vizTgtLine then vizTgtLine=safeDrawingNew("Line"); if vizTgtLine then vizTgtLine.Thickness=2 end end
                     vizTgtLine.From=mouse; vizTgtLine.To=Vector2.new(sp.X,sp.Y); vizTgtLine.Color=Color3.fromRGB(255,0,0); vizTgtLine.Visible=true
-                end
+
             else if vizTgtLine then vizTgtLine.Visible=false end end
         end)
-    end
+
 end)
 
  -- Cleanup

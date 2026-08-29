@@ -326,9 +326,9 @@ Luau.safeGet = function(obj, ...)
     for _, key in ipairs({...}) do
         if current == nil then return nil end
         current = current[key]
-    end
+
     return current
-end
+
 
 -- Safe method call: prevents nil index on method calls
 Luau.safeCall = function(obj, methodName, ...)
@@ -336,7 +336,7 @@ Luau.safeCall = function(obj, methodName, ...)
     local method = obj[methodName]
     if type(method) ~= "function" then return nil end
     return method(obj, ...)
-end
+
 
 -- Feature gate: only run code if feature is available
 Luau.ifFeature = function(featureName, fn, fallback)
@@ -344,9 +344,9 @@ Luau.ifFeature = function(featureName, fn, fallback)
         return fn()
     elseif fallback then
         return fallback()
-    end
+
     return nil
-end
+
 
 -- ═══ PHASE 6: Print Diagnostics ═══
 
@@ -364,7 +364,7 @@ local function printDiagnostics()
         .. " drawing=" .. tostring(Luau.canDrawing))
     print("  http=" .. tostring(Luau.canHttp)
         .. " bit=" .. tostring(Luau.canBit))
-end
+
 
 -- Run diagnostics
 pcall(printDiagnostics)

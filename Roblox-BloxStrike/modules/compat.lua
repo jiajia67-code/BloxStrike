@@ -592,3 +592,5 @@ print("[Compat] BloxStrike Compatibility Module loaded")
 print("[Compat] Supports: All executors + PC + Mobile + Emulators")
 
 return Compat
+
+end

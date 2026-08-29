@@ -1972,8 +1972,8 @@ task.spawn(function()
                 recordPerformance()
                 learnFromHistory()
             end)
-        end
-    end
+
+
 end)
 
 -- -- AI HUD DISPLAY  AI --
@@ -1990,7 +1990,7 @@ task.spawn(function()
                     aiHUD.Font = Drawing.Fonts.UI
                     aiHUD.Size = 12
                 end)
-            end
+
             local perf = calcPerformanceScore()
             local style = AIState.Playstyle
             local threat = AIState.LobbySkill
@@ -2007,8 +2007,8 @@ task.spawn(function()
             aiHUD.Visible = true
         else
             if aiHUD then aiHUD.Visible = false end
-        end
-    end
+
+
 end)
 
 -- Expose BS.SmartAI = AI

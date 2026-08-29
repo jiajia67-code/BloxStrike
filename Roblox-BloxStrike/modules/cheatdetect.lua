@@ -1659,8 +1659,8 @@ task.spawn(function()
     while true do task.wait(Flags.CD_ScanInterval or 3)
         if Flags.CheatDetect and Flags.CD_AutoScan then
             pcall(function() CD.fullScan() end)
-        end
-    end
+
+
 end)
 
 -- Cleanup on player leaving
