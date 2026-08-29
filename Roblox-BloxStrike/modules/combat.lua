@@ -13,7 +13,7 @@ pcall(function() UIS = game:GetService("UserInputService") end)
 local lplr = Players.LocalPlayer
 
 if not BS.Win then warn("[Combat] BS.Win not available - ui.lua may have failed") return end
-local page = BS.Win:Tab("Combat")
+local page = BS.Win:Tab("AIM")
 if not page or not page.Toggle then
     warn("[Combat] Failed to create tab!")
     -- return

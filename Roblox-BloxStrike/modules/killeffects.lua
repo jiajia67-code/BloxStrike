@@ -16,7 +16,7 @@ local lplr = Players.LocalPlayer
 
 -- HITMARKER GUI
 if not BS.Win then warn("[Hit Effects] BS.Win not available - ui.lua may have failed") return end
-local KE = BS.Win:Tab("Hit Effects")
+local KE = BS.Win:Tab("MISC")
 if KE and KE.Toggle then
     KE:Label(" Hitmarker ")
     KE:Toggle("Hitmarker", false, function(v) Flags.Hitmarker = v end)
