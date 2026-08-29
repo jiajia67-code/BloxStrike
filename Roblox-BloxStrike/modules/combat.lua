@@ -499,7 +499,7 @@ task.spawn(function()
                 rayParams.FilterDescendantsInstances = {lplr.Character}
                 local rayResult = workspace:Raycast(ray.Origin, ray.Direction * 500, rayParams)
                 local mouseTarget = rayResult and rayResult.Instance
-                if not cam or not mouseTarget or not myHrp then continue end
+                if not cam or not mouseTarget or not myHrp then return end
 
                 for _, e in pairs(BS.enemies()) do
                     if e.Char and mouseTarget:IsDescendantOf(e.Char) then

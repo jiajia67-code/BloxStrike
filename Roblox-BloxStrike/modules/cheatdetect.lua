@@ -126,6 +126,7 @@ local function getPlayerData(uid)
             ScanCount = 0,
             -- FirstSeen = tick(),
         }
+    end
     return PlayerData[uid]
 
 -- STATISTICAL UTILITIES  

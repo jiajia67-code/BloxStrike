@@ -359,9 +359,5 @@ function api.sendMessage(msg)
     api.fireNetManaged("SendMessage", {message = msg})
 end
 
-print("[API] BloxStrike API loaded (Controllers=" .. tostring(Knit ~= nil)
-    -- .. ", Net=" .. tostring(api.NetManaged ~= nil)
-    -- .. ", Store=" .. tostring(api.Store ~= nil) .. ")")
+print("[API] BloxStrike API loaded (Controllers=" .. tostring(Knit ~= nil) .. ")")
 return api
-
-)

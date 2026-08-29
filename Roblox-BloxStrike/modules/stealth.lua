@@ -7131,5 +7131,3 @@ print("[Stealth] Anti-detection v5.0 activated (8 new systems)")
 end
 
 Stealth.ActivateAllAntiDetection()
-
-end

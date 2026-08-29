@@ -194,27 +194,31 @@ local function calcPerformanceScore()
         elseif s.AvgEngagementDist > 60 then
             score = score + 2
 
-    -- 9.      if s.AvgReactionTime and s.AvgReactionTime > 0 then
+    if s.AvgReactionTime and s.AvgReactionTime > 0 then
         if s.AvgReactionTime < 200 then
             score = score + 5
         elseif s.AvgReactionTime > 500 then
             score = score - 5
+        end
+    end
 
     return math.clamp(math.floor(score), 0, 100)
+end
 
 function AI.trackKill(victim, headshot, dist, weapon)
-    table.insert(AIState.SessionKills + 0 > 0 and deathAnalysis.RecentKills or deathAnalysis.RecentKills, tick())
-    -- 
+    table.insert(deathAnalysis.RecentKills, tick())
     local now = tick()
     for i = #deathAnalysis.RecentKills, 1, -1 do
         if now - deathAnalysis.RecentKills[i] > 60 then
             table.remove(deathAnalysis.RecentKills, i)
-    -- TODO
+        end
+    end
     if dist then
         AIState.AvgEngagementDist = ((AIState.AvgEngagementDist or 0) + dist) / 2
-    -- TODO
+    end
     table.insert(AIState.PerformanceTrend, { Time = tick(), Score = calcPerformanceScore(), Type = "Kill" })
     if #AIState.PerformanceTrend > 100 then table.remove(AIState.PerformanceTrend, 1) end
+end
 
 function AI.trackDeath(killer, dist)
     table.insert(deathAnalysis.RecentDeaths, tick())

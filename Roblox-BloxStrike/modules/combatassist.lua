@@ -696,11 +696,8 @@ function CA.showSessionStats()
 
     pcall(function()
          StarterGui:SetCore("SendNotification", {
-            Title = " ",
-            -- Text = string.format(
-                -- ": %d | : %d | : %d\nKD: %s | : %s | : %s\n: %d | : %d\n: %.0f",
-                elapsed, s.Kills, s.Deaths, kd, hsRate, acc,
-                s.KillStreak, s.MaxKillStreak, s.DamageDealt),
+            Title = "BloxStrike",
+            Text = "Kills: " .. tostring(s.Kills) .. " Deaths: " .. tostring(s.Deaths) .. " KD: " .. tostring(kd),
             Duration = 8,
         })
     end)

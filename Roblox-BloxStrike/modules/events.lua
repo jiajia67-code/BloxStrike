@@ -316,8 +316,7 @@ task.spawn(function()
                     end
                     local stats = frame:FindFirstChild("Stats")
                     if stats then
-                        stats.Text = string.format("K/D: %d/%d | Streak: %d",
-                            -- Stats.Kills, Stats.Deaths, Stats.KillStreak)
+                        stats.Text = "K/D: 0/0 | Streak: 0"
                     end
                     local mods = frame:FindFirstChild("Mods")
                     if mods then

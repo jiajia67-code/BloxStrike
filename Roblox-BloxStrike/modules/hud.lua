@@ -41,7 +41,7 @@ local function updateWatermark()
         WatermarkObj.Size = 14
     end
     local parts = {"BloxStrike v3.0"}
-    if Flags.WMFPS then table.insert(parts, math.floor(1/(workspace and workspace.CurrentCamera and workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait() and 60 or 60) .. " FPS") end
+    if Flags.WMFPS then pcall(function() table.insert(parts, "60 FPS") end) end
     if Flags.WMPing then
         pcall(function()
             local ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"].Value)
@@ -675,7 +675,7 @@ local function updateWatermark()
         WatermarkObj.Size = 14
     end
     local parts = {"BloxStrike v3.0"}
-    if Flags.WMFPS then table.insert(parts, math.floor(1/(workspace and workspace.CurrentCamera and workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait() and 60 or 60) .. " FPS") end
+    if Flags.WMFPS then pcall(function() table.insert(parts, "60 FPS") end) end
     if Flags.WMPing then
         pcall(function()
             local ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"].Value)

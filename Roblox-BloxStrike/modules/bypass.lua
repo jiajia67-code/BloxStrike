@@ -1086,8 +1086,7 @@ task.spawn(function()
                     local env = getgenv()
                     for key, _ in pairs(env) do
                         local keyLower = key:lower()
-                        if keyLower:find("monitor") or keyLower:find("capture") or
-                           -- keyLower:find("record") or keyLower:find("analyze") then
+                        if keyLower:find("monitor") or keyLower:find("capture") then
                             sandboxState.IsSandboxed = true
                             sandboxState.DetectionCount = sandboxState.DetectionCount + 1
                         end
