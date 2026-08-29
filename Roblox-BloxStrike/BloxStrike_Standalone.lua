@@ -90,11 +90,13 @@ local MOD_CN = {
 
 local MODULE_ORDER = {
     'compat', 'core', 'ui', 'api',
-    'combat', 'esp', 'rage', 'stealth',
-    'utility', 'world', 'pingadapt', 'hud',
-    'killeffects', 'cheatdetect', 'settings',
-    'combatassist', 'smartai', 'bypass',
-    'errorhandler', 'events', 'luau_detect'
+    'combat', 'combatassist',
+    'esp',
+    'hud', 'killeffects', 'utility',
+    'world',
+    'rage', 'pingadapt', 'smartai',
+    'settings', 'stealth', 'cheatdetect',
+    'bypass', 'errorhandler', 'events', 'luau_detect'
 }
 
 -- HSL
