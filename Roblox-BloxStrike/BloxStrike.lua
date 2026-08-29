@@ -84,78 +84,22 @@ end
 local MODULES = nil
 local MODULE_PATH = nil
 
--- Try multiple possible locations
+-- Optimized: 只搜尋最常見路徑（從12個減到5個）
 local candidates = {
-    -- Direct paths (most common)
     "modules/core.lua",
-    "./modules/core.lua",
-    
-    -- BloxStrike folder paths
     "BloxStrike/modules/core.lua",
     "./BloxStrike/modules/core.lua",
-    "../BloxStrike/modules/core.lua",
-    "../../BloxStrike/modules/core.lua",
-    
-    -- Potassium workspace
-    "workspace/BloxStrike/modules/core.lua",
-    "./workspace/BloxStrike/modules/core.lua",
-    
-    -- Potassium scripts
     "scripts/BloxStrike/modules/core.lua",
-    "./scripts/BloxStrike/modules/core.lua",
-    
-    -- Parent directories
-    "../modules/core.lua",
-    "../../modules/core.lua",
-    "../../../modules/core.lua",
+    "../BloxStrike/modules/core.lua",
 }
 
 print("[BloxStrike] Searching for modules...")
 
 -- Debug: Show available APIs
-print("[BloxStrike] APIs: readfile=" .. tostring(readfile ~= nil) 
-    .. " isfile=" .. tostring(isfile ~= nil) 
-    .. " listfiles=" .. tostring(listfiles ~= nil)
-    .. " makefolder=" .. tostring(makefolder ~= nil)
-    .. " writefile=" .. tostring(writefile ~= nil)
-    .. " loadfile=" .. tostring(loadfile ~= nil))
-
--- Debug: Try to list what's accessible
-if listfiles then
-    pcall(function()
-        local files = listfiles("")
-        print("[BloxStrike] Root files: " .. #files)
-        for i = 1, math.min(10, #files) do print("  " .. files[i]) end
-    end)
-    pcall(function()
-        local files = listfiles("modules")
-        if files and #files > 0 then
-            print("[BloxStrike] Found modules/ with " .. #files .. " files!")
-            MODULES = "modules"
-        end
-    end)
-    pcall(function()
-        local files = listfiles("BloxStrike/modules")
-        if files and #files > 0 then
-            print("[BloxStrike] Found BloxStrike/modules/ with " .. #files .. " files!")
-            MODULES = "BloxStrike/modules"
-        end
-    end)
-    pcall(function()
-        local files = listfiles("scripts/BloxStrike/modules")
-        if files and #files > 0 then
-            print("[BloxStrike] Found scripts/BloxStrike/modules/ with " .. #files .. " files!")
-            MODULES = "scripts/BloxStrike/modules"
-        end
-    end)
-end
+print("[BloxStrike] Searching...")
 
 for _, path in ipairs(candidates) do
-    local found = safeIsFile(path)
-    local status = found and "YES" or "no"
-    print("[BloxStrike]   " .. status .. " " .. path)
-    
-    if found then
+    if safeIsFile(path) then
         MODULE_PATH = path:gsub("/core%.lua$", "")
         MODULES = path:gsub("/core%.lua$", "")
         break
@@ -197,25 +141,14 @@ print("[BloxStrike] Found: " .. MODULES)
 ]]
 
 local ENV_PREAMBLE = [[
--- Environment injection for Luau compatibility
-local _G = rawget(_G, "table") and _G or _G or {};
-local BS = rawget(_G, "BS") or {};
-local Flags = rawget(_G, "Flags") or {};
-
--- Service imports (safe to call multiple times)
-local Players, RunService, UserInputService, TweenService, Lighting, Workspace, StarterGui, ReplicatedStorage
-pcall(function() Players = game:GetService("Players") end)
-pcall(function() RunService = game:GetService("RunService") end)
-pcall(function() UserInputService = game:GetService("UserInputService") end)
-pcall(function() TweenService = game:GetService("TweenService") end)
-pcall(function() Lighting = game:GetService("Lighting") end)
-pcall(function() Workspace = game:GetService("Workspace") end)
-pcall(function() StarterGui = game:GetService("StarterGui") end)
-pcall(function() ReplicatedStorage = game:GetService("ReplicatedStorage") end)
-
--- Local player (safe)
-local lplr = Players and Players.LocalPlayer or nil
-
+-- Optimized environment injection
+local _G=rawget(_G,"table")and _G or _G or{};local BS=rawget(_G,"BS")or{};local Flags=rawget(_G,"Flags")or{};
+local Players,RunService,UserInputService,TweenService,Lighting,Workspace,StarterGui,ReplicatedStorage
+pcall(function()Players=game:GetService("Players")end)pcall(function()RunService=game:GetService("RunService")end)
+pcall(function()UserInputService=game:GetService("UserInputService")end)pcall(function()TweenService=game:GetService("TweenService")end)
+pcall(function()Lighting=game:GetService("Lighting")end)pcall(function()Workspace=game:GetService("Workspace")end)
+pcall(function()StarterGui=game:GetService("StarterGui")end)pcall(function()ReplicatedStorage=game:GetService("ReplicatedStorage")end)
+local lplr=Players and Players.LocalPlayer or nil
 -- Compatibility functions
 local function alive()
     if not lplr then return false end
@@ -262,70 +195,19 @@ local failed = {}
 local loadOrder = {}
 
 local function loadModule(name)
-    -- Skip if already loaded
-    if loaded[name] then
-        return true
-    end
-    
-    -- Build path
+    if loaded[name] then return true end
     local path = MODULES .. "/" .. name .. ".lua"
-    
-    -- Read file
-    local code, readErr = safeRead(path)
-    if not code then
-        table.insert(failed, { name = name, err = "file not found: " .. tostring(readErr) })
-        return false
-    end
-    
-    -- Strip --!nocheck (executor-specific directive)
+    local ok, code = pcall(readfile, path)
+    if not ok or not code then return false end
     code = code:gsub("%-%-!nocheck[%s]*", "")
-    
-    -- Prepend environment preamble
     code = ENV_PREAMBLE .. code
-    
-    -- Compile
-    local fn, compileErr = loadstring(code, name)
-    if not fn then
-        -- Try to extract useful error info
-        local lineNum = compileErr and compileErr:match(":(%d+):") or "?"
-        local errMsg = compileErr and compileErr:match(":%d+: (.+)") or compileErr or "unknown"
-        table.insert(failed, { name = name, err = "syntax error at line " .. lineNum .. ": " .. errMsg })
-        return false
-    end
-    
-    -- Execute with error isolation
-    local success, result = pcall(fn)
-    
-    if not success then
-        -- Extract error info
-        local errMsg = tostring(result or "unknown error")
-        local lineNum = errMsg:match(":(%d+):") or "?"
-        
-        -- Common error patterns and solutions
-        local solution = ""
-        if errMsg:find("attempt to index nil") then
-            solution = " (nil variable - check if required module loaded)"
-        elseif errMsg:find("attempt to call nil") then
-            solution = " (nil function - check API availability)"
-        elseif errMsg:find("bad argument") then
-            solution = " (wrong argument type)"
-        end
-        
-        table.insert(failed, { name = name, err = "runtime error at line " .. lineNum .. ": " .. errMsg .. solution })
-        return false
-    end
-    
-    -- Check if module returned something
-    if result then
-        loaded[name] = result
-        table.insert(loadOrder, name)
-        return true
-    else
-        -- Module ran but didn't return - still count as success
-        loaded[name] = {}
-        table.insert(loadOrder, name)
-        return true
-    end
+    local fn, err = loadstring(code, name)
+    if not fn then return false end
+    local ok2, result = pcall(fn)
+    if not ok2 then return false end
+    loaded[name] = result or {}
+    table.insert(loadOrder, name)
+    return true
 end
 
 -- ═══════════════════════════════════════════════════════════════
