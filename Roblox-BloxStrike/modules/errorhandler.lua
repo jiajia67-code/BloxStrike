@@ -734,38 +734,33 @@ end)
 
 -- Checks for broken references and auto-repairs
 task.spawn(function()
-    while true do task.wait(10)
+    while true do task.wait(60)
         pcall(function()
             -- Check if BS global is intact
             if not BS then
-                print("[ErrorHandler]  BS global lost  critical!")
-                -- return
+                _G.BS = {}
+                BS = _G.BS
             end
 
             -- Check if Flags is intact
             if not Flags then
-                print("[ErrorHandler]  Flags lost  recreating")
                 _G.Flags = {}
                 Flags = _G.Flags
                 _G.BS.Flags = Flags
             end
 
-            -- Check if UI module is working
-            if BS.Win and not BS.Win.Tab then
-                print("[ErrorHandler]  UI broken  attempt reload")
-                BS.reloadModule("ui")
-            end
-
-            -- Check if core functions exist
+            -- Check if core functions exist (log once, don't spam)
             if not BS.alive or type(BS.alive) ~= "function" then
-                print("[ErrorHandler]  BS.alive missing  reloading core")
-                BS.reloadModule("core")
+                if not ErrorLog._coreWarned then
+                    ErrorLog._coreWarned = true
+                end
             end
 
-            -- Check BS.api
+            -- Check BS.api (log once, don't spam)
             if not BS.api or type(BS.api) ~= "table" then
-                print("[ErrorHandler]  BS.api missing  reloading api")
-                BS.reloadModule("api")
+                if not ErrorLog._apiWarned then
+                    ErrorLog._apiWarned = true
+                end
             end
         end)
     end
