@@ -473,7 +473,7 @@ task.wait(0.1)
 
 for _, name in ipairs(MODULE_ORDER) do
     task.spawn(function()
-        local result = httpGet(BASE_URL .. name .. '.lua')
+        local result = httpGet(BASE_URL .. name .. '.lua?v=' .. CURRENT_VERSION)
         downloaded[name] = result  -- nil if failed
         dlDone = dlDone + 1
         local pct = math.floor(dlDone / total * 50)
