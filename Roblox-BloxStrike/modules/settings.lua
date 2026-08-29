@@ -41,16 +41,16 @@ if not BS.Win then warn("[Settings] BS.Win not available - ui.lua may have faile
 local page = BS.Win:Tab("關於")
 if page and page.Toggle then
     page:Label(" Config Presets ")
-    page:Button({Name="Load Legit", Color=Color3.fromRGB(100,200,100)}, function() BS.Settings.LoadPreset("Legit") end)
-    page:Button({Name="Load Rage", Color=Color3.fromRGB(200,50,50)}, function() BS.Settings.LoadPreset("Rage") end)
-    page:Button({Name="Load HvH", Color=Color3.fromRGB(200,100,50)}, function() BS.Settings.LoadPreset("HvH") end)
-    page:Button({Name="Load Semi-Rage", Color=Color3.fromRGB(200,150,0)}, function() BS.Settings.LoadPreset("SemiRage") end)
-    page:Button({Name="Reset All", Color=Color3.fromRGB(150,150,150)}, function() BS.Settings.Reset() end)
+    page:Button({Name="載入正常模式", Color=Color3.fromRGB(100,200,100)}, function() BS.Settings.LoadPreset("Legit") end)
+    page:Button({Name="載入暴力模式", Color=Color3.fromRGB(200,50,50)}, function() BS.Settings.LoadPreset("Rage") end)
+    page:Button({Name="載入 HvH 模式", Color=Color3.fromRGB(200,100,50)}, function() BS.Settings.LoadPreset("HvH") end)
+    page:Button({Name="載入半暴力模式", Color=Color3.fromRGB(200,150,0)}, function() BS.Settings.LoadPreset("SemiRage") end)
+    page:Button({Name="全部重置", Color=Color3.fromRGB(150,150,150)}, function() BS.Settings.Reset() end)
     page:Separator()
     page:Label(" Save / Load ")
-    page:Button({Name="Save Config", Color=Color3.fromRGB(100,150,255)}, function() BS.Settings.Save() end)
-    page:Button({Name="Load Config", Color=Color3.fromRGB(100,200,150)}, function() BS.Settings.Load() end)
-    page:Button({Name="Export (Clipboard)", Color=Color3.fromRGB(200,200,100)}, function() BS.Settings.Export() end)
+    page:Button({Name="儲存設定", Color=Color3.fromRGB(100,150,255)}, function() BS.Settings.Save() end)
+    page:Button({Name="載入設定", Color=Color3.fromRGB(100,200,150)}, function() BS.Settings.Load() end)
+    page:Button({Name="匯出 (剪貼簿)", Color=Color3.fromRGB(200,200,100)}, function() BS.Settings.Export() end)
 end
 
  -- Preset Configs
@@ -65,7 +65,7 @@ local Presets = {
         Ragebot = true, RageFOV = 360, RageHC = 100, RageAF = true,
         RageDT = true, RageWall = true, RagePred = true, RageRes = true,
         AA = true, AAPitch = "Jitter", AAYaw = "Spin", AASpd = 18,
-        FL = true, FLChoke = 10, FLStyle = "Adaptive",
+        FL = true, FLChoke = 10, FLStyle = "自適應",
         Resolver = true, ResMode = "Smart",
         FxKillSound = true, FXFlash = true, FXShake = true, FxBlood = true,
     },
@@ -91,12 +91,12 @@ local Presets = {
         RageDT = false, RageWall = true, RagePred = true, RageRes = true,
         SilentAim = true, SAFov = 180, SAHC = 85,
         AA = true, AAPitch = "Emotion", AAYaw = "LBY Break", AASpd = 12,
-        FL = true, FLChoke = 8, FLStyle = "Adaptive",
+        FL = true, FLChoke = 8, FLStyle = "自適應",
         ESP_Box = true, ESP_Name = true, ESP_Health = true, ESP_Dist = true,
         FxKillSound = true, FXFlash = true, FXShake = true,
     },
     ["Bhop"] = {
-        Bhop = true, BhopMode = "Auto", BhopStrafe = true,
+        Bhop = true, BhopMode = "自動", BhopStrafe = true,
         ESP_Box = true, ESP_Health = true, ESP_Dist = true,
         FxKillSound = true, FXFlash = true,
     },

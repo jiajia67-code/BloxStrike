@@ -20,9 +20,9 @@ if not page or not page.Toggle then warn("[World] Failed to create tab!") return
 
 -- 1. FOV CHANGER
 
-page:Toggle("FOV Changer", false, function(v) Flags.FOVChanger = v end)
-page:Slider("FOV Value", 60, 120, 90, function(v) Flags.FOVValue = v end)
-page:Slider("ADS FOV", 20, 90, 40, function(v) Flags.ADSFOV = v end)
+page:Toggle("視野修改器", false, function(v) Flags.FOVChanger = v end)
+page:Slider("視野值", 60, 120, 90, function(v) Flags.FOVValue = v end)
+page:Slider("開鏡視野", 20, 90, 40, function(v) Flags.ADSFOV = v end)
 
 local defaultFOV = 70
 task.spawn(function()
@@ -51,8 +51,8 @@ end)
 
 -- 2. NO FLASH (Anti-Flashbang)
 
-page:Toggle("Anti Flash", false, function(v) Flags.AntiFlash = v end)
-page:Toggle("Full Bright", false, function(v) Flags.FullBright = v end)
+page:Toggle("反閃光", false, function(v) Flags.AntiFlash = v end)
+page:Toggle("全亮", false, function(v) Flags.FullBright = v end)
 
 local savedLighting = {}
 
@@ -100,8 +100,8 @@ end)
 
 -- 3. WALLBANG (See through thin walls - client side)
 
-page:Toggle("Wallhack", false, function(v) Flags.Wallhack = v end)
-page:Slider("Wallhack Transparency", 50, 100, 70, function(v) Flags.WHTransparency = v end)
+page:Toggle("透視穿牆", false, function(v) Flags.Wallhack = v end)
+page:Slider("穿牆透明度", 50, 100, 70, function(v) Flags.WHTransparency = v end)
 
 task.spawn(function()
     -- Cache wall parts to avoid scanning all descendants every frame
@@ -149,7 +149,7 @@ end)
 
 -- 4. SMOKE REVEAL (Remove smoke opacity)
 
-page:Toggle("Smoke Reveal", false, function(v) Flags.SmokeReveal = v end)
+page:Toggle("煙霧透視", false, function(v) Flags.SmokeReveal = v end)
 
 task.spawn(function()
     while task.wait(0.2) do
@@ -175,7 +175,7 @@ end)
 
 -- 5. NO SMOKE (Remove smoke particles)
 
-page:Toggle("No Smoke", false, function(v) Flags.NoSmoke = v end)
+page:Toggle("去除煙霧", false, function(v) Flags.NoSmoke = v end)
 
 task.spawn(function()
     while task.wait(0.5) do
@@ -199,7 +199,7 @@ end)
 
 -- 6. NO FIRE (Remove molotov/incendiary)
 
-page:Toggle("No Fire", false, function(v) Flags.NoFire = v end)
+page:Toggle("去除火焰", false, function(v) Flags.NoFire = v end)
 
 task.spawn(function()
     while task.wait(0.3) do
@@ -221,8 +221,8 @@ end)
 
 -- 7. GRENADE TRAJECTORY (Show where grenade will land)
 
-page:Toggle("Grenade Trajectory", false, function(v) Flags.GrenadeTrajectory = v end)
-page:Slider("Trajectory Points", 10, 50, 30, function(v) Flags.TrajPoints = v end)
+page:Toggle("手榴彈軌跡", false, function(v) Flags.GrenadeTrajectory = v end)
+page:Slider("軌跡點數", 10, 50, 30, function(v) Flags.TrajPoints = v end)
 
 local trajectoryParts = {}
 local MAX_TRAJ_PARTS = 20 -- limit to prevent memory leak
@@ -301,7 +301,7 @@ end)
 
 -- 8. SPECTATOR LIST
 
-page:Toggle("Spectator List", false, function(v) Flags.SpectatorList = v end)
+page:Toggle("觀戰列表", false, function(v) Flags.SpectatorList = v end)
 
 local spectatorGui
 local knownSpectators = {}
@@ -404,7 +404,7 @@ end)
 
 -- 9. NO FALL
 
-page:Toggle("No Fall Damage", false, function(v) Flags.NoFallDamage = v end)
+page:Toggle("無摔落傷害", false, function(v) Flags.NoFallDamage = v end)
 
 task.spawn(function()
     while task.wait(0.1) do
@@ -423,7 +423,7 @@ end)
 
 -- 10. SPEED HACK (Movement speed)
 
-page:Toggle("Speed Boost", false, function(v) Flags.SpeedBoost = v end)
+page:Toggle("速度加成", false, function(v) Flags.SpeedBoost = v end)
 page:Slider("Speed Value", 16, 50, 20, function(v) Flags.SpeedValue = v end)
 
 task.spawn(function()
@@ -459,27 +459,27 @@ end)
 -- 11. NIGHT MODE
 
 page:Label(" Night Mode ")
-page:Toggle("Night Mode", false, function(v) Flags.NightMode = v end)
-page:Slider("Brightness", 0, 5, 0, function(v) Flags.NightBrightness = v end)
+page:Toggle("夜視模式", false, function(v) Flags.NightMode = v end)
+page:Slider("亮度", 0, 5, 0, function(v) Flags.NightBrightness = v end)
 page:Slider("Ambient R", 0, 80, 20, function(v) Flags.NightAmbientR = v end)
 page:Slider("Ambient G", 0, 80, 20, function(v) Flags.NightAmbientG = v end)
 page:Slider("Ambient B", 0, 80, 40, function(v) Flags.NightAmbientB = v end)
-page:Toggle("Color Correction", false, function(v) Flags.NightCC = v end)
+page:Toggle("色彩校正", false, function(v) Flags.NightCC = v end)
 page:Slider("CC Brightness", -1, 1, 0, function(v) Flags.CCBrightness = v end)
 page:Slider("CC Contrast", 0, 2, 1, function(v) Flags.CCContrast = v end)
 
 -- 12. REMOVE SCOPE
 
 page:Label(" Remove Scope ")
-page:Toggle("Remove Scope Overlay", false, function(v) Flags.RemoveScope = v end)
-page:Toggle("Remove Scope Blur", false, function(v) Flags.RemoveScopeBlur = v end)
-page:Toggle("Remove Scope Sway", false, function(v) Flags.RemoveScopeSway = v end)
-page:Toggle("Remove Scope Sway 2", false, function(v) Flags.RemoveScopeSway2 = v end)
+page:Toggle("去除瞄準鏡覆蓋", false, function(v) Flags.RemoveScope = v end)
+page:Toggle("去除瞄準鏡模糊", false, function(v) Flags.RemoveScopeBlur = v end)
+page:Toggle("去除瞄準鏡晃動", false, function(v) Flags.RemoveScopeSway = v end)
+page:Toggle("去除瞄準鏡晃動2", false, function(v) Flags.RemoveScopeSway2 = v end)
 
 -- 13. CUSTOM CROSSHAIR COLOR
 
 page:Label(" Crosshair Color ")
-page:Toggle("Custom Crosshair Color", false, function(v) Flags.CrosshairColor = v end)
+page:Toggle("自定義十字準星顏色", false, function(v) Flags.CrosshairColor = v end)
 page:Slider("Crosshair R", 0, 255, 255, function(v) Flags.CH_R = v end)
 page:Slider("Crosshair G", 0, 255, 255, function(v) Flags.CH_G = v end)
 page:Slider("Crosshair B", 0, 255, 255, function(v) Flags.CH_B = v end)
@@ -487,10 +487,10 @@ page:Slider("Crosshair B", 0, 255, 255, function(v) Flags.CH_B = v end)
 -- 14. REMOVE DECALS
 
 page:Label(" Remove Decals ")
-page:Toggle("Remove Blood", false, function(v) Flags.RemoveBlood = v end)
-page:Toggle("Remove Smoke", false, function(v) Flags.RemoveSmoke = v end)
-page:Toggle("Remove Fog", false, function(v) Flags.NoFog = v end)
-page:Toggle("Fullbright", false, function(v) Flags.Fullbright = v end)
+page:Toggle("移除血液", false, function(v) Flags.RemoveBlood = v end)
+page:Toggle("移除煙霧", false, function(v) Flags.RemoveSmoke = v end)
+page:Toggle("移除霧氣", false, function(v) Flags.NoFog = v end)
+page:Toggle("全亮", false, function(v) Flags.Fullbright = v end)
 page:Slider("Fullbright Value", 1, 10, 3, function(v) Flags.FullbrightVal = v end)
 
 
@@ -836,18 +836,18 @@ end
 
 -- GUI
 page:Label(" Chams ")
-page:Toggle("Chams", false, function(v) Flags.Chams = v BS.Chams:Apply() end)
-page:Button({Name="Refresh Chams"}, function() BS.Chams:Apply() end)
+page:Toggle("材質透視", false, function(v) Flags.Chams = v BS.Chams:Apply() end)
+page:Button({Name="刷新材質透視"}, function() BS.Chams:Apply() end)
 page:Separator()
 page:Label(" Camera ")
-page:Toggle("Anti-Shake", false, function(v) Flags.AntiShake = v end)
-page:Toggle("Scroll Zoom", false, function(v) Flags.ScrollZoom = v end)
-page:Slider("Zoom FOV", 10, 60, 30, function(v) Flags.ZoomFOV = v end)
+page:Toggle("反震動", false, function(v) Flags.AntiShake = v end)
+page:Toggle("滾輪縮放", false, function(v) Flags.ScrollZoom = v end)
+page:Slider("開鏡視野", 10, 60, 30, function(v) Flags.ZoomFOV = v end)
 page:Separator()
 page:Label(" Color Correction ")
-page:Toggle("Color Correction", false, function(v) Flags.ColorCorrection = v BS.ColorCorrection:Apply() end)
-page:Slider("Brightness", -100, 100, 0, function(v) Flags.CCBrightness = v / 100 BS.ColorCorrection:Apply() end)
-page:Slider("Contrast", -100, 100, 20, function(v) Flags.CCContrast = v / 100 BS.ColorCorrection:Apply() end)
-page:Slider("Saturation", -100, 100, 50, function(v) Flags.CCSaturation = v / 100 BS.ColorCorrection:Apply() end)
+page:Toggle("色彩校正", false, function(v) Flags.ColorCorrection = v BS.ColorCorrection:Apply() end)
+page:Slider("亮度", -100, 100, 0, function(v) Flags.CCBrightness = v / 100 BS.ColorCorrection:Apply() end)
+page:Slider("對比度", -100, 100, 20, function(v) Flags.CCContrast = v / 100 BS.ColorCorrection:Apply() end)
+page:Slider("飽和度", -100, 100, 50, function(v) Flags.CCSaturation = v / 100 BS.ColorCorrection:Apply() end)
 
 print("[World] BloxStrike World module loaded (14 features)")

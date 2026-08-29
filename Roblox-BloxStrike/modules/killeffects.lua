@@ -19,26 +19,26 @@ if not BS.Win then warn("[Hit Effects] BS.Win not available - ui.lua may have fa
 local KE = BS.Win:Tab("雜項")
 if KE and KE.Toggle then
     KE:Label(" Hitmarker ")
-    KE:Toggle("Hitmarker", false, function(v) Flags.Hitmarker = v end)
-    KE:Dropdown({Name="Hitmarker Style", Flag="HMStyle", Options={"CS2","MW2","Fortnite","Custom"}, Default="CS2"})
-    KE:Slider("Hitmarker Size", 5, 30, 12, function(v) Flags.HMSize = v end)
-    KE:Slider("Hitmarker Duration", 1, 10, 3, function(v) Flags.HMDuration = v end)
-    KE:Toggle("Headshot Marker", true, function(v) Flags.HMHeadshot = v end)
-    KE:Toggle("Hit Sound", false, function(v) Flags.HitSound = v end)
-    KE:Dropdown({Name="Hit Sound", Flag="HMSound", Options={"CS2 Dink","Quake Hit","Metal Pipe","Minecraft XP","Vine Boom"}, Default="CS2 Dink"})
-    KE:Slider("Hit Sound Volume", 1, 10, 5, function(v) Flags.HMSoundVol = v end)
+    KE:Toggle("命中標記", false, function(v) Flags.Hitmarker = v end)
+    KE:Dropdown({Name="命中標記風格", Flag="HMStyle", Options={"CS2 風格","MW2 風格","Fortnite 風格","自定義"}, Default="CS2"})
+    KE:Slider("命中標記大小", 5, 30, 12, function(v) Flags.HMSize = v end)
+    KE:Slider("命中標記持續時間", 1, 10, 3, function(v) Flags.HMDuration = v end)
+    KE:Toggle("爆頭標記", true, function(v) Flags.HMHeadshot = v end)
+    KE:Toggle("命中音效", false, function(v) Flags.HitSound = v end)
+    KE:Dropdown({Name="命中音效", Flag="HMSound", Options={"CS2 命中","Quake 命中","金屬管","Minecraft 經驗","震撼音效"}, Default="CS2 Dink"})
+    KE:Slider("命中音效音量", 1, 10, 5, function(v) Flags.HMSoundVol = v end)
     KE:Separator()
     KE:Label(" Kill Effect ")
-    KE:Toggle("Kill Effect", false, function(v) Flags.KillEffect = v end)
-    KE:Dropdown({Name="Kill Style", Flag="KEStyle", Options={"Flash","Shake","Zoom","SlowMo"}, Default="Flash"})
-    KE:Toggle("Kill Sound", false, function(v) Flags.KillSound = v end)
-    KE:Dropdown({Name="Kill Sound", Flag="KESound", Options={"Frag","Explosion","Metal Pipe","Mario Coin"}, Default="Frag"})
-    KE:Slider("Kill Sound Volume", 1, 10, 7, function(v) Flags.KESoundVol = v end)
-    KE:Toggle("Kill Streak Sound", false, function(v) Flags.KillStreakSound = v end)
+    KE:Toggle("擊殺特效", false, function(v) Flags.KillEffect = v end)
+    KE:Dropdown({Name="擊殺風格", Flag="KEStyle", Options={"閃光","震動","放大","慢動作"}, Default="Flash"})
+    KE:Toggle("擊殺音效", false, function(v) Flags.KillSound = v end)
+    KE:Dropdown({Name="擊殺音效", Flag="KESound", Options={"破片","爆炸","金屬管","瑪利歐金幣"}, Default="Frag"})
+    KE:Slider("擊殺音效音量", 1, 10, 7, function(v) Flags.KESoundVol = v end)
+    KE:Toggle("連殺音效", false, function(v) Flags.KillStreakSound = v end)
     KE:Separator()
     KE:Label(" Damage Indicator ")
-    KE:Toggle("Damage Numbers", false, function(v) Flags.DmgNumbers = v end)
-    KE:Toggle("Damage Direction", false, function(v) Flags.DmgDirection = v end)
+    KE:Toggle("傷害數字", false, function(v) Flags.DmgNumbers = v end)
+    KE:Toggle("傷害方向", false, function(v) Flags.DmgDirection = v end)
     KE:Slider("Damage Duration", 1, 10, 3, function(v) Flags.DmgDuration = v end)
 end
 
@@ -47,17 +47,17 @@ end
 local Sounds = {
      -- Kill Sounds (20+ styles)
     Kill = {
-        {Name = "CS2 Dink",          ID = "rbxassetid://9125402735",  Vol = 0.8},
-        {Name = "Quake Hit",         ID = "rbxassetid://138087576",   Vol = 0.7},
-        {Name = "Metal Pipe",        ID = "rbxassetid://9125999404",  Vol = 0.6},
-        {Name = "Minecraft XP",      ID = "rbxassetid://142376098",   Vol = 0.5},
-        {Name = "Vine Boom",         ID = "rbxassetid://9126214519",  Vol = 0.5},
-        {Name = "Mario Coin",        ID = "rbxassetid://138087606",   Vol = 0.6},
-        {Name = "Frag",              ID = "rbxassetid://3124961779",  Vol = 0.7},
+        {Name = "CS2 命中",          ID = "rbxassetid://9125402735",  Vol = 0.8},
+        {Name = "Quake 命中",         ID = "rbxassetid://138087576",   Vol = 0.7},
+        {Name = "金屬管",        ID = "rbxassetid://9125999404",  Vol = 0.6},
+        {Name = "Minecraft 經驗",      ID = "rbxassetid://142376098",   Vol = 0.5},
+        {Name = "震撼音效",         ID = "rbxassetid://9126214519",  Vol = 0.5},
+        {Name = "瑪利歐金幣",        ID = "rbxassetid://138087606",   Vol = 0.6},
+        {Name = "破片",              ID = "rbxassetid://3124961779",  Vol = 0.7},
         {Name = "Heavy Impact",      ID = "rbxassetid://18900180842", Vol = 0.8},
         {Name = "Sharp Slash",       ID = "rbxassetid://18834235361", Vol = 0.7},
         {Name = "Punch Hit",         ID = "rbxassetid://18834234238", Vol = 0.6},
-        {Name = "Explosion",         ID = "rbxassetid://13134985300", Vol = 0.9},
+        {Name = "爆炸",         ID = "rbxassetid://13134985300", Vol = 0.9},
         {Name = "Blade Hit",         ID = "rbxassetid://3932145654",  Vol = 0.7},
         {Name = "Electric Zap",      ID = "rbxassetid://4086012327",  Vol = 0.6},
         {Name = "Heavy Smash",       ID = "rbxassetid://15294800508", Vol = 0.9},

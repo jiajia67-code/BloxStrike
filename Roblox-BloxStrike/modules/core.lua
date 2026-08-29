@@ -284,13 +284,13 @@ end
 function BS.getAimPosition(target, bone)
     bone = bone or "Head"
     if bone == "Head" then
-        return BS.getBonePosition(target.Char, "Head") or target.HRP.Position + Vector3.new(0, 1.5, 0)
+        return BS.getBonePosition(target.Char, "頭部") or target.HRP.Position + Vector3.new(0, 1.5, 0)
     elseif bone == "Chest" then
         return target.HRP.Position + Vector3.new(0, 0.5, 0)
     elseif bone == "Pelvis" then
         return target.HRP.Position
     elseif bone == "Nearest" then
-        local headPos = BS.getBonePosition(target.Char, "Head") or target.HRP.Position + Vector3.new(0, 1.5, 0)
+        local headPos = BS.getBonePosition(target.Char, "頭部") or target.HRP.Position + Vector3.new(0, 1.5, 0)
         return headPos
     end
     return target.HRP.Position

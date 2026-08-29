@@ -1544,10 +1544,10 @@ local signatureEvasion = {
 local AC_PATTERNS = {
     -- String patterns that AC scans for
     Strings = {
-        -- "Aimbot", "aimbot", "ESP", "esp",
-        -- "Wallhack", "wallhack", "NoClip", "noclip",
+        -- "自瞄", "aimbot", "透視", "esp",
+        -- "穿牆", "wallhack", "NoClip", "noclip",
         -- "SpeedHack", "speedhack", "TriggerBot",
-        -- "SilentAim", "silentaim", "Bhop", "bhop",
+        -- "SilentAim", "silentaim", "連跳", "bhop",
         -- "BloxStrike", "FreeBuff",
         -- Exploit API names
         -- "getrawmetatable", "hookmetamethod", "hookfunction",

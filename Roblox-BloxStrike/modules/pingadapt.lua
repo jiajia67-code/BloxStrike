@@ -22,11 +22,11 @@ BS.PingAdapt = PA
 
 -- -- SECTION 1: PING MONITOR 
 -- page:Label(" Ping  ")
-page:Toggle("Ping Adapt", true, function(v) Flags.PingAdapt = v end)
-page:Dropdown({Name="Adapt Mode", Flag="PingAdaptMode", Options={"Conservative","Balanced","Aggressive","Ultra"}, Default="Balanced"})
-page:Toggle("Show Ping Stats", false, function(v) Flags.PingShowStats = v end)
-page:Toggle("Auto Panic on Lag", true, function(v) Flags.PingPanic = v end)
-page:Slider("Panic Ping", 200, 500, 350, function(v) Flags.PingPanicThreshold = v end)
+page:Toggle("延遲適應", true, function(v) Flags.PingAdapt = v end)
+page:Dropdown({Name="適應模式", Flag="PingAdaptMode", Options={"保守","平衡","進攻","極致"}, Default="Balanced"})
+page:Toggle("顯示延遲統計", false, function(v) Flags.PingShowStats = v end)
+page:Toggle("延遲自動恐慌", true, function(v) Flags.PingPanic = v end)
+page:Slider("恐慌延遲值", 200, 500, 350, function(v) Flags.PingPanicThreshold = v end)
 
 -- Ping State
 local PingState = {
@@ -342,31 +342,31 @@ end
 
 -- -- SECTION 3: PING-ADAPTED AIMBOT  ping 
 -- page:Label("  Ping  ")
-page:Toggle("Aim Ping Adapt", true, function(v) Flags.AimPingAdapt = v end)
-page:Toggle("Lag Compensation Auto", true, function(v) Flags.LagCompAuto = v end)
-page:Toggle("Prediction Auto", true, function(v) Flags.PredAuto = v end)
-page:Toggle("Smooth Auto", true, function(v) Flags.SmoothAuto = v end)
-page:Toggle("FOV Auto", true, function(v) Flags.FOVAuto = v end)
+page:Toggle("自瞄延遲適應", true, function(v) Flags.AimPingAdapt = v end)
+page:Toggle("自動延遲補償", true, function(v) Flags.LagCompAuto = v end)
+page:Toggle("自動預測", true, function(v) Flags.PredAuto = v end)
+page:Toggle("自動平滑", true, function(v) Flags.SmoothAuto = v end)
+page:Toggle("自動視野", true, function(v) Flags.FOVAuto = v end)
 
 -- -- SECTION 4: PING-ADAPTED TRIGGERBOT  ping 
 -- page:Label("  Ping  ")
-page:Toggle("TB Ping Adapt", true, function(v) Flags.TBPingAdapt = v end)
+page:Toggle("觸發器延遲適應", true, function(v) Flags.TBPingAdapt = v end)
 
 -- -- SECTION 5: PING-ADAPTED ESP ESP ping 
 -- page:Label(" ESP Ping  ")
-page:Toggle("ESP Ping Adapt", true, function(v) Flags.ESPPingAdapt = v end)
-page:Toggle("ESP Quality Scale", true, function(v) Flags.ESPQualityScale = v end)
+page:Toggle("透視延遲適應", true, function(v) Flags.ESPPingAdapt = v end)
+page:Toggle("透視品質縮放", true, function(v) Flags.ESPQualityScale = v end)
 
 -- -- SECTION 6: PING-ADAPTED MOVEMENT  ping 
 -- page:Label(" ? Ping  ")
-page:Toggle("Movement Ping Adapt", true, function(v) Flags.MovePingAdapt = v end)
-page:Toggle("Bhop Ping Adapt", true, function(v) Flags.BhopPingAdapt = v end)
+page:Toggle("移動延遲適應", true, function(v) Flags.MovePingAdapt = v end)
+page:Toggle("連跳延遲適應", true, function(v) Flags.BhopPingAdapt = v end)
 
 -- -- SECTION 7: PING-ADAPTED HVH HVH ping 
 -- page:Label(" HVH Ping  ")
-page:Toggle("AA Ping Adapt", true, function(v) Flags.AAPingAdapt = v end)
-page:Toggle("Fake Lag Auto", true, function(v) Flags.FLPingAdapt = v end)
-page:Toggle("Resolver Auto", true, function(v) Flags.ResolverPingAdapt = v end)
+page:Toggle("反瞄延遲適應", true, function(v) Flags.AAPingAdapt = v end)
+page:Toggle("自動假延遲", true, function(v) Flags.FLPingAdapt = v end)
+page:Toggle("解析自動", true, function(v) Flags.ResolverPingAdapt = v end)
 
 -- -- SECTION 8: PING STATISTICS DISPLAY
 -- page:Label(" Ping ? ")

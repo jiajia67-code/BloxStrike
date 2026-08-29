@@ -49,53 +49,53 @@ end
 -- 1. AIMBOT (Enhanced v2.0  30+ options)
 
 page:Label(" Aimbot ")
-page:Toggle("Aimbot", false, function(v) Flags.Aimbot = v end)
-page:Slider("Aimbot FOV", 10, 360, 60, function(v) Flags.AimbotFOV = v end)
-page:Slider("Aimbot Smooth", 1, 50, 5, function(v) Flags.AimbotSmooth = v end)
-page:Dropdown({Name="Aimbot Bone", Flag="AimbotBone", Options={"Head","Chest","Nearest","Pelvis","Stomach","Auto"}, Default="Head"})
-page:Dropdown({Name="Aimbot Sort", Flag="AimSort", Options={"Crosshair","Distance","Health","Threat","Random"}, Default="Crosshair"})
-page:Dropdown({Name="Aimbot Smooth Style", Flag="AimSmoothStyle", Options={"Linear","Ease In","Ease Out","Bezier","Adaptive"}, Default="Linear"})
-page:Slider("Aimbot Min Smooth", 1, 30, 3, function(v) Flags.AimMinSmooth = v end)
-page:Toggle("Aimbot Team Check", true, function(v) Flags.AimbotTeamCheck = v end)
-page:Toggle("Aimbot Friend Check", true, function(v) Flags.AimbotFriend = v end)
-page:Toggle("Aimbot Wall Check", true, function(v) Flags.AimbotWall = v end)
-page:Toggle("Aimbot Visibility Check", true, function(v) Flags.AimbotVis = v end)
-page:Toggle("Aimbot Predict", true, function(v) Flags.AimbotPredict = v end)
-page:Slider("Aimbot Pred Factor", 5, 100, 40, function(v) Flags.AimPredF = v end)
-page:Toggle("Aimbot Lag Comp", false, function(v) Flags.AimLagComp = v end)
-page:Slider("Aim Lag Ticks", 1, 16, 8, function(v) Flags.AimLagTicks = v end)
+page:Toggle("自瞄", false, function(v) Flags.Aimbot = v end)
+page:Slider("自瞄視野", 10, 360, 60, function(v) Flags.AimbotFOV = v end)
+page:Slider("自瞄平滑", 1, 50, 5, function(v) Flags.AimbotSmooth = v end)
+page:Dropdown({Name="自瞄骨骼", Flag="AimbotBone", Options={"頭部","胸部","最近","骨盆","腹部","自動"}, Default="Head"})
+page:Dropdown({Name="自瞄排序", Flag="AimSort", Options={"十字準星","距離","血量","威脅","隨機"}, Default="Crosshair"})
+page:Dropdown({Name="自瞄平滑風格", Flag="AimSmoothStyle", Options={"線性","淡入","淡出","貝塞爾","自適應"}, Default="Linear"})
+page:Slider("自瞄最小平滑", 1, 30, 3, function(v) Flags.AimMinSmooth = v end)
+page:Toggle("自瞄隊友檢查", true, function(v) Flags.AimbotTeamCheck = v end)
+page:Toggle("自瞄好友檢查", true, function(v) Flags.AimbotFriend = v end)
+page:Toggle("自瞄穿牆檢查", true, function(v) Flags.AimbotWall = v end)
+page:Toggle("自瞄可視檢查", true, function(v) Flags.AimbotVis = v end)
+page:Toggle("自瞄預測", true, function(v) Flags.AimbotPredict = v end)
+page:Slider("自瞄預測因子", 5, 100, 40, function(v) Flags.AimPredF = v end)
+page:Toggle("自瞄延遲補償", false, function(v) Flags.AimLagComp = v end)
+page:Slider("自瞄延遲刻度", 1, 16, 8, function(v) Flags.AimLagTicks = v end)
 page:Label(" Aimbot Advanced ")
-page:Toggle("Aimbot Keybind", false, function(v) Flags.AimKeybind = v end)
-page:Dropdown({Name="Aim Key", Flag="AimKey", Options={"Left Alt","Left Ctrl","Mouse4","Mouse5","Shift"}, Default="Left Alt"})
-page:Toggle("Aimbot Aim Lock", false, function(v) Flags.AimLock = v end)
+page:Toggle("自瞄按鍵綁定", false, function(v) Flags.AimKeybind = v end)
+page:Dropdown({Name="自瞄按鍵", Flag="AimKey", Options={"左Alt","左Ctrl","滑鼠4","滑鼠5","Shift"}, Default="Left Alt"})
+page:Toggle("自瞄鎖定", false, function(v) Flags.AimLock = v end)
 page:Slider("Aim Lock Duration", 100, 3000, 500, function(v) Flags.AimLockDur = v end)
-page:Toggle("Aimbot Humanize", false, function(v) Flags.AimHumanize = v end)
+page:Toggle("自瞄人性化", false, function(v) Flags.AimHumanize = v end)
 page:Slider("Humanize Delay", 0, 100, 20, function(v) Flags.AimHDelay = v end)
 page:Slider("Humanize Deviation", 0, 50, 10, function(v) Flags.AimHDev = v end)
-page:Toggle("Aimbot Auto Stop", false, function(v) Flags.AimAutoStop = v end)
-page:Toggle("Aimbot Auto Scope", false, function(v) Flags.AimAutoScope = v end)
-page:Toggle("Aimbot Auto Crouch", false, function(v) Flags.AimAutoCrouch = v end)
-page:Toggle("Aimbot FOV Circle", false, function(v) Flags.AimFovCircle = v end)
-page:Toggle("Aimbot Target Line", false, function(v) Flags.AimTargetLine = v end)
-page:Toggle("Aimbot Target Info", false, function(v) Flags.AimTargetInfo = v end)
-page:Toggle("Aimbot Silent", false, function(v) Flags.AimSilent = v end)
+page:Toggle("自瞄自動急停", false, function(v) Flags.AimAutoStop = v end)
+page:Toggle("自瞄自動開鏡", false, function(v) Flags.AimAutoScope = v end)
+page:Toggle("自瞄自動蹲", false, function(v) Flags.AimAutoCrouch = v end)
+page:Toggle("自瞄視野圈", false, function(v) Flags.AimFovCircle = v end)
+page:Toggle("自瞄目標線", false, function(v) Flags.AimTargetLine = v end)
+page:Toggle("自瞄目標資訊", false, function(v) Flags.AimTargetInfo = v end)
+page:Toggle("靜默自瞄", false, function(v) Flags.AimSilent = v end)
 page:Label(" Aimbot Expert ")
-page:Toggle("Aimbot Flick", false, function(v) Flags.AimFlick = v end)
+page:Toggle("自瞄甩槍", false, function(v) Flags.AimFlick = v end)
 page:Slider("Flick Speed", 1, 30, 15, function(v) Flags.AimFlickSpd = v end)
-page:Toggle("Aimbot Jitter", false, function(v) Flags.AimJitter = v end)
+page:Toggle("自瞄抖動", false, function(v) Flags.AimJitter = v end)
 page:Slider("Jitter Amount", 1, 30, 5, function(v) Flags.AimJitterAmt = v end)
 page:Slider("Jitter Speed", 1, 20, 10, function(v) Flags.AimJitterSpd = v end)
-page:Toggle("Aimbot Target Switch", false, function(v) Flags.AimTargetSwitch = v end)
+page:Toggle("自瞄目標切換", false, function(v) Flags.AimTargetSwitch = v end)
 page:Slider("Switch Delay", 50, 1000, 200, function(v) Flags.AimSwitchDelay = v end)
-page:Toggle("Aimbot Distance Scale", false, function(v) Flags.AimDistScale = v end)
+page:Toggle("自瞄距離縮放", false, function(v) Flags.AimDistScale = v end)
 page:Slider("Dist Scale Min", 1, 20, 3, function(v) Flags.AimDistMin = v end)
 page:Slider("Dist Scale Max", 5, 50, 10, function(v) Flags.AimDistMax = v end)
-page:Toggle("Aimbot Health Priority", false, function(v) Flags.AimHealthPri = v end)
+page:Toggle("自瞄血量優先", false, function(v) Flags.AimHealthPri = v end)
 page:Slider("Health Weight", 1, 10, 5, function(v) Flags.AimHealthW = v end)
-page:Toggle("Aimbot Knockback", false, function(v) Flags.AimKnockback = v end)
+page:Toggle("自瞄擊退", false, function(v) Flags.AimKnockback = v end)
 page:Slider("Knockback Strength", 1, 20, 8, function(v) Flags.AimKnockStr = v end)
-page:Toggle("Aimbot Trigger on Key", false, function(v) Flags.AimTriggerKey = v end)
-page:Dropdown({Name="Trigger Key", Flag="AimTriggerKeyBind", Options={"Mouse1","Mouse2","Mouse4","Mouse5"}, Default="Mouse1"})
+page:Toggle("自瞄按鍵觸發", false, function(v) Flags.AimTriggerKey = v end)
+page:Dropdown({Name="Trigger Key", Flag="AimTriggerKeyBind", Options={"Mouse1","Mouse2","滑鼠4","滑鼠5"}, Default="Mouse1"})
 page:Label("Flick:  | Jitter: ")
 page:Label("Dist Scale: ")
 page:Label("Health Pri: ")
@@ -284,7 +284,7 @@ task.spawn(function()
                     -- Apply aim
                     local camPos = cam.CFrame.Position
                     local targetDir = (targetPos - camPos).Unit
-                    local smooth = calcSmooth(Flags.AimbotSmooth or 5, Flags.AimSmoothStyle or "Linear", best.ScreenDist)
+                    local smooth = calcSmooth(Flags.AimbotSmooth or 5, Flags.AimSmoothStyle or "線性", best.ScreenDist)
                     local targetCF = CFrame.new(camPos, camPos + targetDir)
                     cam.CFrame = cam.CFrame:Lerp(targetCF, 1 / smooth)
                     -- Auto Stop
@@ -432,21 +432,21 @@ end)
 -- 2. TRIGGER BOT (Enhanced v2.0)
 
 page:Label(" Trigger Bot ")
-page:Toggle("Trigger Bot", false, function(v) Flags.TriggerBot = v end)
+page:Toggle("觸發器", false, function(v) Flags.TriggerBot = v end)
 page:Slider("TB Min Delay", 0, 200, 30, function(v) Flags.TBMinDelay = v end)
 page:Slider("TB Max Delay", 50, 400, 120, function(v) Flags.TBMaxDelay = v end)
-page:Toggle("TB Keybind Only", false, function(v) Flags.TBKeybind = v end)
-page:Dropdown({Name="TB Key", Flag="TBKey", Options={"Left Ctrl","Mouse4","Mouse5","V"}, Default="Left Ctrl"})
-page:Toggle("TB Headshot Only", false, function(v) Flags.TBHeadOnly = v end)
-page:Toggle("TB Body Only", false, function(v) Flags.TBBodyOnly = v end)
-page:Toggle("TB Team Check", true, function(v) Flags.TBTeamCheck = v end)
-page:Toggle("TB Wall Check", true, function(v) Flags.TBWallCheck = v end)
-page:Toggle("TB Burst Mode", false, function(v) Flags.TBBurst = v end)
+page:Toggle("觸發器僅按鍵", false, function(v) Flags.TBKeybind = v end)
+page:Dropdown({Name="TB Key", Flag="TBKey", Options={"左Ctrl","滑鼠4","滑鼠5","V"}, Default="Left Ctrl"})
+page:Toggle("觸發器僅爆頭", false, function(v) Flags.TBHeadOnly = v end)
+page:Toggle("觸發器僅身體", false, function(v) Flags.TBBodyOnly = v end)
+page:Toggle("觸發器隊友檢查", true, function(v) Flags.TBTeamCheck = v end)
+page:Toggle("觸發器穿牆檢查", true, function(v) Flags.TBWallCheck = v end)
+page:Toggle("觸發器連射模式", false, function(v) Flags.TBBurst = v end)
 page:Slider("TB Burst Count", 2, 10, 3, function(v) Flags.TBBurstCount = v end)
 page:Slider("TB Burst Delay", 10, 100, 30, function(v) Flags.TBBurstDelay = v end)
-page:Toggle("TB Legit Random", false, function(v) Flags.TBLegitRand = v end)
+page:Toggle("觸發器正常隨機", false, function(v) Flags.TBLegitRand = v end)
 page:Slider("TB Legit Chance", 10, 100, 70, function(v) Flags.TBLegitChance = v end)
-page:Toggle("TB FOV Check", false, function(v) Flags.TBFovCheck = v end)
+page:Toggle("觸發器視野檢查", false, function(v) Flags.TBFovCheck = v end)
 page:Slider("TB FOV", 10, 180, 30, function(v) Flags.TBFov = v end)
 
  -- Triggerbot State
@@ -550,10 +550,10 @@ end)
 
 -- 3. SILENT AIM (Server-Side Angle Manipulation)
 
-page:Toggle("Silent Aim", false, function(v) Flags.SilentAim = v end)
+page:Toggle("靜默瞄準", false, function(v) Flags.SilentAim = v end)
 page:Slider("SA FOV", 10, 180, 90, function(v) Flags.SAFOV = v end)
-page:Toggle("SA Headshot", false, function(v) Flags.SAHeadshot = v end)
-page:Toggle("SA Wall Check", true, function(v) Flags.SAWall = v end)
+page:Toggle("靜瞄爆頭", false, function(v) Flags.SAHeadshot = v end)
+page:Toggle("靜瞄穿牆檢查", true, function(v) Flags.SAWall = v end)
 
 -- Silent Aim Engine (server-side angle manipulation via metatable hook)
 local silentTarget = nil
@@ -629,10 +629,10 @@ end)
 
 -- 4. RECOIL CONTROL SYSTEM (RCS)
 
-page:Toggle("RCS", false, function(v) Flags.RCS = v end)
+page:Toggle("後座控制", false, function(v) Flags.RCS = v end)
 page:Slider("RCS X", 0, 100, 60, function(v) Flags.RCSX = v end)
 page:Slider("RCS Y", 0, 100, 80, function(v) Flags.RCSY = v end)
-page:Toggle("RCS Burst Mode", false, function(v) Flags.RCSBurst = v end)
+page:Toggle("後座控制連射", false, function(v) Flags.RCSBurst = v end)
 
 local shotCount = 0
 local isFiring = false
@@ -705,7 +705,7 @@ end)
 
 -- 5. AUTO FIRE (Hold to Auto-Shoot)
 
-page:Toggle("Auto Fire", false, function(v) Flags.AutoFire = v end)
+page:Toggle("自動射擊", false, function(v) Flags.AutoFire = v end)
 
 task.spawn(function()
     while task.wait() do
@@ -722,7 +722,7 @@ end)
 
 -- 6. AUTO PISTOL (Fast Switch to Pistol on Empty)
 
-page:Toggle("Quick Switch", false, function(v) Flags.QuickSwitch = v end)
+page:Toggle("快速切換", false, function(v) Flags.QuickSwitch = v end)
 
 UIS.InputBegan:Connect(function(input, gpe)
     if gpe then return end
@@ -745,30 +745,30 @@ end)
 
 -- 7. NO SPREAD
 
-page:Toggle("No Spread", false, function(v) Flags.NoSpread = v end)
-page:Toggle("No Recoil", false, function(v) Flags.NoRecoil = v end)
+page:Toggle("無散布", false, function(v) Flags.NoSpread = v end)
+page:Toggle("無後座力", false, function(v) Flags.NoRecoil = v end)
 
 -- 8. HIT SOUND
 
-page:Toggle("Hit Sound", false, function(v) Flags.HitSound = v end)
+page:Toggle("命中音效", false, function(v) Flags.HitSound = v end)
 page:Slider("Hit Volume", 1, 10, 5, function(v) Flags.HitVolume = v end)
 
 -- 9. HEADSHOT TEXT
 
-page:Toggle("Headshot Text", false, function(v) Flags.HSText = v end)
-page:Toggle("Kill Text", false, function(v) Flags.KillText = v end)
+page:Toggle("爆頭文字", false, function(v) Flags.HSText = v end)
+page:Toggle("擊殺文字", false, function(v) Flags.KillText = v end)
 
 -- 10. TEAM CHECK
 
-page:Toggle("Team Check", true, function(v) Flags.TeamCheck = v end)
-page:Toggle("Friend Check", true, function(v) Flags.FriendCheck = v end)
+page:Toggle("隊伍檢查", true, function(v) Flags.TeamCheck = v end)
+page:Toggle("好友檢查", true, function(v) Flags.FriendCheck = v end)
 
 -- 11. AIM ASSIST (Mouse Movement)
 
-page:Toggle("Aim Assist", false, function(v) Flags.AimAssist = v end)
-page:Slider("AA Smooth", 1, 20, 8, function(v) Flags.AASmooth = v end)
-page:Slider("AA FOV", 10, 180, 60, function(v) Flags.AAFov = v end)
-page:Toggle("AA Wall Check", true, function(v) Flags.AAWall = v end)
+page:Toggle("瞄準輔助", false, function(v) Flags.AimAssist = v end)
+page:Slider("反瞄平滑", 1, 20, 8, function(v) Flags.AASmooth = v end)
+page:Slider("反瞄視野", 10, 180, 60, function(v) Flags.AAFov = v end)
+page:Toggle("反瞄穿牆檢查", true, function(v) Flags.AAWall = v end)
 
 task.spawn(function()
     while task.wait() do
@@ -810,7 +810,7 @@ end)
 
 -- 12. AUTO KNIFE (Melee when close)
 
-page:Toggle("Auto Knife", false, function(v) Flags.AutoKnife = v end)
+page:Toggle("自動刀人", false, function(v) Flags.AutoKnife = v end)
 page:Slider("Knife Range", 2, 8, 4, function(v) Flags.KnifeRange = v end)
 
 task.spawn(function()
@@ -836,7 +836,7 @@ end)
 
 -- 13. HIT BOX EXPANDER
 
-page:Toggle("Hit Box Expander", false, function(v) Flags.HitBoxExpander = v end)
+page:Toggle("命中框擴大", false, function(v) Flags.HitBoxExpander = v end)
 page:Slider("HB Size", 1, 10, 3, function(v) Flags.HBSize = v end)
 
 task.spawn(function()
@@ -858,7 +858,7 @@ end)
 
 -- 14. AUTO DISCONNECT (on low HP)
 
-page:Toggle("Auto Disconnect", false, function(v) Flags.AutoDC = v end)
+page:Toggle("自動斷線", false, function(v) Flags.AutoDC = v end)
 page:Slider("DC Health", 5, 50, 10, function(v) Flags.DCHealth = v end)
 
 task.spawn(function()
@@ -876,7 +876,7 @@ end)
 
 -- 15. NO FLASH
 
-page:Toggle("No Flash", false, function(v) Flags.NoFlash = v end)
+page:Toggle("反閃光", false, function(v) Flags.NoFlash = v end)
 
 task.spawn(function()
     while task.wait(0.1) do
@@ -901,12 +901,12 @@ end)
 
 -- 16. AUTO BUY (Purchase weapons at round start)
 
-page:Toggle("Auto Buy", false, function(v) Flags.AutoBuy = v end)
-page:Dropdown({Name="Buy Primary", Flag="BuyPrimary", Options={"AK-47", "M4A4", "M4A1-S", "AWP", "SG553", "AUG"}, Default="AK-47"})
-page:Dropdown({Name="Buy Secondary", Flag="BuySecondary", Options={"Deagle", "USP-S", "Glock", "P250", "Five-SeveN"}, Default="Deagle"})
-page:Toggle("Buy Armor", true, function(v) Flags.BuyArmor = v end)
-page:Toggle("Buy Kit", true, function(v) Flags.BuyKit = v end)
-page:Toggle("Buy Grenades", false, function(v) Flags.BuyGrenades = v end)
+page:Toggle("自動購買", false, function(v) Flags.AutoBuy = v end)
+page:Dropdown({Name="購買主武器", Flag="BuyPrimary", Options={"AK-47", "M4A4", "M4A1-S", "AWP", "SG553", "AUG"}, Default="AK-47"})
+page:Dropdown({Name="購買副武器", Flag="BuySecondary", Options={"Deagle", "USP-S", "Glock", "P250", "Five-SeveN"}, Default="Deagle"})
+page:Toggle("購買護甲", true, function(v) Flags.BuyArmor = v end)
+page:Toggle("購買拆彈包", true, function(v) Flags.BuyKit = v end)
+page:Toggle("購買手榴彈", false, function(v) Flags.BuyGrenades = v end)
 
 task.spawn(function()
     while task.wait(1) do
@@ -943,7 +943,7 @@ end)
 
 -- 17. SPRINT
 
-page:Toggle("Auto Sprint", false, function(v) Flags.AutoSprint = v end)
+page:Toggle("自動衝刺", false, function(v) Flags.AutoSprint = v end)
 
 task.spawn(function()
     while task.wait(0.2) do
@@ -963,7 +963,7 @@ end)
 
 -- 18. NO FALL DAMAGE (see World tab for full version)
 
-page:Toggle("No Fall", false, function(v) Flags.NoFall = v end)
+page:Toggle("無摔落", false, function(v) Flags.NoFall = v end)
 
 task.spawn(function()
     while task.wait(0.1) do
@@ -978,49 +978,49 @@ end)
 
 -- 19. FORCE CROSSHAIR
 
-page:Toggle("Force Crosshair", false, function(v) Flags.ForceCrosshair = v end)
+page:Toggle("強制準星", false, function(v) Flags.ForceCrosshair = v end)
 
 -- 20. ZOOM SENSITIVITY
 
-page:Toggle("Scope Zoom Adjust", false, function(v) Flags.ScopeZoom = v end)
+page:Toggle("開鏡縮放調整", false, function(v) Flags.ScopeZoom = v end)
 page:Slider("Zoom Multiplier", 50, 200, 100, function(v) Flags.ZoomMult = v end)
 
 -- 21. AUTO PISTOL (Fix fire rate on semi-auto)
 
 page:Separator()
 page:Label(" Auto Pistol ")
-page:Toggle("Auto Pistol", false, function(v) Flags.AutoPistol = v end)
+page:Toggle("自動手槍", false, function(v) Flags.AutoPistol = v end)
 page:Slider("Auto Pistol RPM", 200, 900, 400, function(v) Flags.AutoPistolRPM = v end)
 
 -- 22. RAPID FIRE (Burst control)
 
 page:Label(" Rapid Fire ")
-page:Toggle("Rapid Fire", false, function(v) Flags.RapidFire = v end)
+page:Toggle("快速射擊", false, function(v) Flags.RapidFire = v end)
 page:Slider("Rapid Burst Count", 2, 10, 3, function(v) Flags.RapidBurst = v end)
 page:Slider("Rapid Burst Delay", 10, 100, 30, function(v) Flags.RapidDelay = v end)
-page:Toggle("Rapid Auto Stop", false, function(v) Flags.RapidAutoStop = v end)
+page:Toggle("快速自動急停", false, function(v) Flags.RapidAutoStop = v end)
 
 -- 23. HITCHANCE FILTER
 
 page:Label(" Hitchance ")
-page:Toggle("Hitchance Filter", false, function(v) Flags.HitchanceFilter = v end)
+page:Toggle("命中率過濾", false, function(v) Flags.HitchanceFilter = v end)
 page:Slider("Hitchance %", 20, 100, 60, function(v) Flags.Hitchance = v end)
 page:Slider("Hitchance Seed", 1, 100, 50, function(v) Flags.HCSeed = v end)
 
 -- 24. MIN DAMAGE FILTER
 
 page:Label(" Min Damage ")
-page:Toggle("Min Damage Filter", false, function(v) Flags.MinDmgFilter = v end)
+page:Toggle("最低傷害過濾", false, function(v) Flags.MinDmgFilter = v end)
 page:Slider("Min Damage", 1, 100, 20, function(v) Flags.MinDamage = v end)
-page:Toggle("Override Headshot Min Dmg", false, function(v) Flags.HSOverrideDmg = v end)
+page:Toggle("覆蓋爆頭最低傷害", false, function(v) Flags.HSOverrideDmg = v end)
 page:Slider("Headshot Min Dmg", 1, 100, 80, function(v) Flags.HSMinDmg = v end)
 
 -- 25. QUICK SWITCH
 
 page:Label(" Quick Switch ")
-page:Toggle("Knife After Shot", false, function(v) Flags.KnifeAfterShot = v end)
+page:Toggle("射擊後切刀", false, function(v) Flags.KnifeAfterShot = v end)
 page:Slider("QS Delay (ms)", 50, 500, 150, function(v) Flags.QSDelay = v end)
-page:Toggle("Auto Reload on Empty", false, function(v) Flags.AutoReloadEmpty = v end)
+page:Toggle("空彈自動換彈", false, function(v) Flags.AutoReloadEmpty = v end)
 
 
 -- AUTO PISTOL Implementation
@@ -1353,7 +1353,7 @@ end)
 
 -- GUI
 page:Label(" Backtrack ")
-page:Toggle("Enable Backtrack", false, function(v) Flags.Backtrack = v end)
+page:Toggle("啟用回溯", false, function(v) Flags.Backtrack = v end)
 page:Slider("Tick (ms)", 50, 500, 200, function(v) Flags.BacktrackTick = v / 1000 end)
 page:Slider("Max Records", 16, 128, 64, function(v) Backtrack.MaxRecords = v end)
 
@@ -1376,14 +1376,14 @@ BS.LatencyCompensation = function(basePos)
 end
 
 page:Label(" Latency Compensation ")
-page:Toggle("Enable Latency Comp", false, function(v) Flags.LatencyComp = v end)
+page:Toggle("啟用延遲補償", false, function(v) Flags.LatencyComp = v end)
 page:Slider("Factor %", 10, 200, 50, function(v) Flags.LatencyFactor = v / 100 end)
 
 -- ═══════════════════════════════════════════════════════════════
 -- LEGIT ANTI-AIM (Subtle Body Rotation)
 -- ═══════════════════════════════════════════════════════════════
 page:Label(" Legit Anti-Aim ")
-page:Toggle("Legit AA", false, function(v) Flags.LegitAA = v end)
+page:Toggle("正常反瞄", false, function(v) Flags.LegitAA = v end)
 page:Slider("Legit AA Angle", 5, 45, 15, function(v) Flags.LegitAAAngle = v end)
 page:Dropdown("Legit AA Mode", {"Sway", "Jitter", "Slow Spin"}, function(v) Flags.LegitAAMode = v end)
 
@@ -1413,24 +1413,24 @@ end)
 -- WEAPON SPECIFIC SETTINGS
 -- ═══════════════════════════════════════════════════════════════
 BS.WeaponSettings = {
-    ["AK47"]    = {FOV = 120, Smooth = 3, Bone = "Head", Hitchance = 70},
-    ["M4A4"]    = {FOV = 110, Smooth = 2.5, Bone = "Head", Hitchance = 75},
-    ["AWP"]     = {FOV = 60, Smooth = 1, Bone = "Head", Hitchance = 90},
-    ["Deagle"]  = {FOV = 80, Smooth = 2, Bone = "Head", Hitchance = 65},
-    ["USP"]     = {FOV = 100, Smooth = 2, Bone = "Head", Hitchance = 80},
-    ["Glock"]   = {FOV = 100, Smooth = 2.5, Bone = "Chest", Hitchance = 70},
-    ["P250"]    = {FOV = 90, Smooth = 2, Bone = "Head", Hitchance = 72},
-    ["MP9"]     = {FOV = 130, Smooth = 3.5, Bone = "Chest", Hitchance = 60},
-    ["MAC10"]   = {FOV = 130, Smooth = 3.5, Bone = "Chest", Hitchance = 60},
-    ["UMP45"]   = {FOV = 115, Smooth = 3, Bone = "Chest", Hitchance = 65},
-    ["XM1014"]  = {FOV = 150, Smooth = 4, Bone = "Chest", Hitchance = 85},
-    ["Nova"]    = {FOV = 150, Smooth = 4, Bone = "Chest", Hitchance = 85},
-    ["M249"]    = {FOV = 140, Smooth = 4, Bone = "Chest", Hitchance = 55},
-    ["Negev"]   = {FOV = 140, Smooth = 4, Bone = "Chest", Hitchance = 50},
+    ["AK47"]    = {FOV = 120, Smooth = 3, Bone = "頭部", Hitchance = 70},
+    ["M4A4"]    = {FOV = 110, Smooth = 2.5, Bone = "頭部", Hitchance = 75},
+    ["AWP"]     = {FOV = 60, Smooth = 1, Bone = "頭部", Hitchance = 90},
+    ["Deagle"]  = {FOV = 80, Smooth = 2, Bone = "頭部", Hitchance = 65},
+    ["USP"]     = {FOV = 100, Smooth = 2, Bone = "頭部", Hitchance = 80},
+    ["Glock"]   = {FOV = 100, Smooth = 2.5, Bone = "胸部", Hitchance = 70},
+    ["P250"]    = {FOV = 90, Smooth = 2, Bone = "頭部", Hitchance = 72},
+    ["MP9"]     = {FOV = 130, Smooth = 3.5, Bone = "胸部", Hitchance = 60},
+    ["MAC10"]   = {FOV = 130, Smooth = 3.5, Bone = "胸部", Hitchance = 60},
+    ["UMP45"]   = {FOV = 115, Smooth = 3, Bone = "胸部", Hitchance = 65},
+    ["XM1014"]  = {FOV = 150, Smooth = 4, Bone = "胸部", Hitchance = 85},
+    ["Nova"]    = {FOV = 150, Smooth = 4, Bone = "胸部", Hitchance = 85},
+    ["M249"]    = {FOV = 140, Smooth = 4, Bone = "胸部", Hitchance = 55},
+    ["Negev"]   = {FOV = 140, Smooth = 4, Bone = "胸部", Hitchance = 50},
 }
 
 page:Label(" Weapon Settings ")
-page:Toggle("Per-Weapon Config", false, function(v) Flags.WeaponConfig = v end)
+page:Toggle("每把武器設定", false, function(v) Flags.WeaponConfig = v end)
 
 BS.GetWeaponSettings = function()
     if not Flags.WeaponConfig then return nil end
@@ -1444,6 +1444,6 @@ end
 -- FRIENDLY FIRE TOGGLE
 -- ═══════════════════════════════════════════════════════════════
 page:Label(" Advanced ")
-page:Toggle("Friendly Fire", false, function(v) Flags.FriendlyFire = v end)
+page:Toggle("友軍火力", false, function(v) Flags.FriendlyFire = v end)
 
 print("[Combat] BloxStrike Combat module loaded (25 features)")

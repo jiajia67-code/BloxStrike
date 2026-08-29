@@ -252,7 +252,7 @@ end
 -- ═══════════════════════════════════════════════════════════════
 
 BS.Profiles = {
-    Current = "Default",
+    Current = "預設",
     Saved = {},
     
     Save = function(self, name)
@@ -303,10 +303,10 @@ function QuickPanel.Update()
     pcall(function()
         local active = {}
         if Flags.Aimbot then table.insert(active, {Text = "AIM", Color = Color3.new(1,0,0)}) end
-        if Flags.SilentAim then table.insert(active, {Text = "SA", Color = Color3.new(1,0.5,0)}) end
+        if Flags.SilentAim then table.insert(active, {Text = "靜瞄", Color = Color3.new(1,0.5,0)}) end
         if Flags.Ragebot then table.insert(active, {Text = "RAGE", Color = Color3.new(1,0,0)}) end
-        if Flags.ESP_Box or Flags.ESP_Name then table.insert(active, {Text = "ESP", Color = Color3.new(0,1,0)}) end
-        if Flags.AA then table.insert(active, {Text = "AA", Color = Color3.new(0,0.5,1)}) end
+        if Flags.ESP_Box or Flags.ESP_Name then table.insert(active, {Text = "透視", Color = Color3.new(0,1,0)}) end
+        if Flags.AA then table.insert(active, {Text = "反瞄", Color = Color3.new(0,0.5,1)}) end
         if Flags.Bhop then table.insert(active, {Text = "BHOP", Color = Color3.new(1,1,0)}) end
         if Flags.FOVChanger then table.insert(active, {Text = "FOV", Color = Color3.new(0.5,0,1)}) end
         if Flags.NightMode then table.insert(active, {Text = "NIGHT", Color = Color3.new(0.3,0.3,1)}) end
@@ -399,7 +399,7 @@ BS.Profiles.Saved["Rage"] = {
     Aimbot = false, SilentAim = true, Ragebot = true, RageFOV = 360, RageHC = 100,
     RageAF = true, RageDT = true, RageWall = true, RageRes = true,
     AA = true, AAPitch = "Jitter", AAYaw = "Spin", AASpd = 18,
-    FL = true, FLChoke = 10, FLStyle = "Adaptive",
+    FL = true, FLChoke = 10, FLStyle = "自適應",
     ESP_Box = true, ESP_Name = true, ESP_Health = true, ESP_Dist = true,
 }
 
@@ -415,7 +415,7 @@ BS.Profiles.Saved["HvH"] = {
 BS.Profiles.Saved["SemiRage"] = {
     Aimbot = true, SilentAim = true, Ragebot = true, RageFOV = 180, RageHC = 85,
     AA = true, AAPitch = "Emotion", AAYaw = "LBY Break", AASpd = 12,
-    FL = true, FLChoke = 8, FLStyle = "Adaptive",
+    FL = true, FLChoke = 8, FLStyle = "自適應",
     ESP_Box = true, ESP_Name = true, ESP_Health = true, ESP_Dist = true,
 }
 
@@ -427,27 +427,27 @@ BS.BindKey(Enum.KeyCode.X, function()
     Flags.ESP_Box = not Flags.ESP_Box
     Flags.ESP_Name = Flags.ESP_Box
     Flags.ESP_Health = Flags.ESP_Box
-    BS.FeatureNotify("ESP", Flags.ESP_Box)
+    BS.FeatureNotify("透視", Flags.ESP_Box)
 end)
 
 BS.BindKey(Enum.KeyCode.Z, function()
     Flags.Bhop = not Flags.Bhop
-    BS.FeatureNotify("Bhop", Flags.Bhop)
+    BS.FeatureNotify("連跳", Flags.Bhop)
 end)
 
 BS.BindKey(Enum.KeyCode.C, function()
     Flags.AA = not Flags.AA
-    BS.FeatureNotify("Anti-Aim", Flags.AA)
+    BS.FeatureNotify("反瞄準", Flags.AA)
 end)
 
 BS.BindKey(Enum.KeyCode.V, function()
     Flags.SilentAim = not Flags.SilentAim
-    BS.FeatureNotify("Silent Aim", Flags.SilentAim)
+    BS.FeatureNotify("靜默瞄準", Flags.SilentAim)
 end)
 
 BS.BindKey(Enum.KeyCode.N, function()
     Flags.NightMode = not Flags.NightMode
-    BS.FeatureNotify("Night Mode", Flags.NightMode)
+    BS.FeatureNotify("夜視模式", Flags.NightMode)
 end)
 
 BS.BindKey(Enum.KeyCode.M, function()

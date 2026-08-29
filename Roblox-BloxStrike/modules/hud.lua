@@ -173,71 +173,71 @@ BS.HUD = HUD
 
 -- SECTION 1: PERFORMANCE MONITOR
 
-page:Label("HUD Display")
-page:Toggle("FPS Display", false, function(v) Flags.HUDFPS = v end)
-page:Toggle("Ping Display", false, function(v) Flags.HUDPing = v end)
-page:Toggle("Memory Display", false, function(v) Flags.HUDMemory = v end)
-page:Toggle("Server Info", false, function(v) Flags.HUDServer = v end)
-page:Toggle("Player Count", false, function(v) Flags.HUDPlayerCount = v end)
-page:Dropdown({Name="HUD Position", Flag="HUDPos", Options={"Top-Left","Top-Center","Top-Right","Bottom-Left","Bottom-Center","Bottom-Right"}, Default="Top-Left"})
-page:Slider("HUD Size", 8, 20, 14, function(v) Flags.HUDSize = v end)
+page:Label("HUD 顯示")
+page:Toggle("FPS 顯示", false, function(v) Flags.HUDFPS = v end)
+page:Toggle("延遲顯示", false, function(v) Flags.HUDPing = v end)
+page:Toggle("記憶體顯示", false, function(v) Flags.HUDMemory = v end)
+page:Toggle("伺服器資訊", false, function(v) Flags.HUDServer = v end)
+page:Toggle("玩家數量", false, function(v) Flags.HUDPlayerCount = v end)
+page:Dropdown({Name="HUD 位置", Flag="HUDPos", Options={"左上","中上","右上","左下","中下","右下"}, Default="Top-Left"})
+page:Slider("HUD 大小", 8, 20, 14, function(v) Flags.HUDSize = v end)
 
 -- SECTION 2: FEATURE STATUS PANEL
 
-page:Label("Feature Status")
-page:Toggle("Feature Status", false, function(v) Flags.HUDFeatures = v end)
-page:Toggle("Risk Level Display", false, function(v) Flags.HUDRisk = v end)
-page:Toggle("Active Modules", false, function(v) Flags.HUDModules = v end)
-page:Toggle("Weapon Info", false, function(v) Flags.HUDWeapon = v end)
-page:Toggle("Player Info", false, function(v) Flags.HUDPlayerInfo = v end)
+page:Label("功能狀態")
+page:Toggle("功能狀態", false, function(v) Flags.HUDFeatures = v end)
+page:Toggle("風險等級顯示", false, function(v) Flags.HUDRisk = v end)
+page:Toggle("已啟用模組", false, function(v) Flags.HUDModules = v end)
+page:Toggle("武器資訊", false, function(v) Flags.HUDWeapon = v end)
+page:Toggle("玩家資訊", false, function(v) Flags.HUDPlayerInfo = v end)
 
 -- SECTION 3: K/D & COMBAT HUD
 
 page:Label("  HUD ")
-page:Toggle("K/D Display", false, function(v) Flags.HUDKD = v end)
-page:Toggle("Accuracy Display", false, function(v) Flags.HUDAccuracy = v end)
-page:Toggle("Kill Streak Display", false, function(v) Flags.HUDStreak = v end)
-page:Toggle("Velocity Display", false, function(v) Flags.HUDVelocity = v end)
-page:Toggle("Speed Display", false, function(v) Flags.HUDSpeed = v end)
-page:Toggle("Health Crosshair", false, function(v) Flags.HUDHealthCross = v end)
+page:Toggle("擊殺/死亡 顯示", false, function(v) Flags.HUDKD = v end)
+page:Toggle("命中率顯示", false, function(v) Flags.HUDAccuracy = v end)
+page:Toggle("連殺顯示", false, function(v) Flags.HUDStreak = v end)
+page:Toggle("速度顯示", false, function(v) Flags.HUDVelocity = v end)
+page:Toggle("速度顯示", false, function(v) Flags.HUDSpeed = v end)
+page:Toggle("血量十字", false, function(v) Flags.HUDHealthCross = v end)
 
 -- SECTION 4: NOTIFICATION CENTER
 
-page:Label("Combat HUD")
-page:Toggle("Notification Center", false, function(v) Flags.HUDNotifications = v end)
+page:Label("戰鬥 HUD")
+page:Toggle("通知中心", false, function(v) Flags.HUDNotifications = v end)
 page:Slider("Max Notifications", 3, 10, 5, function(v) Flags.HUDMaxNotif = v end)
-page:Toggle("Feature Toggle Notif", true, function(v) Flags.HUDFeatureNotif = v end)
-page:Toggle("Kill Notif", false, function(v) Flags.HUDKillNotif = v end)
+page:Toggle("功能切換通知", true, function(v) Flags.HUDFeatureNotif = v end)
+page:Toggle("擊殺通知", false, function(v) Flags.HUDKillNotif = v end)
 
 -- SECTION 5: WATERMARK
 
 page:Label(" Watermark ")
-page:Toggle("Watermark", false, function(v) Flags.Watermark = v end)
-page:Dropdown({Name="Watermark Style", Flag="WMStyle", Options={"Default","Compact","Minimal","CS2"}, Default="CS2"})
-page:Toggle("Show FPS", true, function(v) Flags.WMFPS = v end)
-page:Toggle("Show Ping", true, function(v) Flags.WMPing = v end)
-page:Toggle("Show Server", false, function(v) Flags.WMServer = v end)
-page:Toggle("Show Players", false, function(v) Flags.WMPlayers = v end)
-page:Toggle("Show Time", false, function(v) Flags.WMTime = v end)
+page:Toggle("浮水印", false, function(v) Flags.Watermark = v end)
+page:Dropdown({Name="Watermark Style", Flag="WMStyle", Options={"預設","Compact","Minimal","CS2 風格"}, Default="CS2"})
+page:Toggle("顯示FPS", true, function(v) Flags.WMFPS = v end)
+page:Toggle("顯示延遲", true, function(v) Flags.WMPing = v end)
+page:Toggle("顯示伺服器", false, function(v) Flags.WMServer = v end)
+page:Toggle("顯示玩家", false, function(v) Flags.WMPlayers = v end)
+page:Toggle("顯示時間", false, function(v) Flags.WMTime = v end)
 page:Separator()
 
 -- SECTION 6: SPECTATOR LIST
 
 page:Label(" Spectator List ")
-page:Toggle("Spectator List", false, function(v) Flags.SpectatorList = v end)
+page:Toggle("觀戰列表", false, function(v) Flags.SpectatorList = v end)
 page:Dropdown({Name="Spec Style", Flag="SpecStyle", Options={"Vertical","Horizontal","Compact"}, Default="Vertical"})
-page:Toggle("Show Spec Mode", true, function(v) Flags.SpecMode = v end)
-page:Toggle("Notify Spectator", false, function(v) Flags.SpecNotify = v end)
+page:Toggle("顯示觀戰模式", true, function(v) Flags.SpecMode = v end)
+page:Toggle("觀戰通知", false, function(v) Flags.SpecNotify = v end)
 page:Separator()
 
 -- SECTION 7: KILL COUNTER
 
 page:Label(" Kill Counter ")
-page:Toggle("Kill Counter", false, function(v) Flags.KillCounter = v end)
-page:Toggle("Show K/D", true, function(v) Flags.KDShow = v end)
-page:Toggle("Show HS %", true, function(v) Flags.HSShow = v end)
-page:Toggle("Show Accuracy", false, function(v) Flags.AccShow = v end)
-page:Toggle("Session Stats", false, function(v) Flags.SessionStats = v end)
+page:Toggle("擊殺計數", false, function(v) Flags.KillCounter = v end)
+page:Toggle("顯示擊殺/死亡", true, function(v) Flags.KDShow = v end)
+page:Toggle("顯示爆頭率", true, function(v) Flags.HSShow = v end)
+page:Toggle("顯示命中率", false, function(v) Flags.AccShow = v end)
+page:Toggle("場次統計", false, function(v) Flags.SessionStats = v end)
 page:Separator()
 
 -- HUD Drawing Engine (Object Pool, zero-delay)
@@ -388,20 +388,20 @@ RunService.RenderStepped:Connect(function()
         local features = {}
 
         -- Combat features
-        if Flags.Aimbot then table.insert(features, {"Aimbot", C_GREEN}) end
+        if Flags.Aimbot then table.insert(features, {"自瞄", C_GREEN}) end
         if Flags.TriggerBot then table.insert(features, {"Trigger", C_GREEN}) end
         if Flags.Ragebot then table.insert(features, {"Rage", C_RED}) end
-        if Flags.AA then table.insert(features, {"Anti-Aim", C_ORANGE}) end
+        if Flags.AA then table.insert(features, {"反瞄準", C_ORANGE}) end
         if Flags.SilentAim then table.insert(features, {"Silent", C_PURPLE}) end
 
         -- ESP features
-        if Flags.ESP_Box then table.insert(features, {"ESP", C_CYAN}) end
+        if Flags.ESP_Box then table.insert(features, {"透視", C_CYAN}) end
         if Flags.ESP_Name then table.insert(features, {"Name", C_CYAN}) end
         if Flags.ESP_Health then table.insert(features, {"HP", C_GREEN}) end
         if Flags.ESP_Skeleton then table.insert(features, {"Skel", C_YELLOW}) end
 
         -- Movement
-        if Flags.Bhop then table.insert(features, {"Bhop", C_YELLOW}) end
+        if Flags.Bhop then table.insert(features, {"連跳", C_YELLOW}) end
         if Flags.NoClip then table.insert(features, {"NoClip", C_RED}) end
         if Flags.SpeedBoost then table.insert(features, {"Speed", C_ORANGE}) end
 
@@ -439,7 +439,7 @@ RunService.RenderStepped:Connect(function()
     if Flags.HUDModules then
         local modObj = getHUDObject("modules")
         local activeCount = 0
-        local moduleNames = {"Combat", "ESP", "Rage", "Stealth", "Bhop", "Bypass"}
+        local moduleNames = {"Combat", "透視", "Rage", "Stealth", "連跳", "Bypass"}
         local moduleFlags = {Flags.Aimbot or Flags.Ragebot, Flags.ESP_Box, Flags.AA, Flags.StealthHumanize, Flags.Bhop, true}
 
         local activeModules = {}

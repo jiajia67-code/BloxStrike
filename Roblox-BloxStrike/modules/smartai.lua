@@ -22,13 +22,13 @@ BS.SmartAI = AI
 
 -- -- SECTION 1: AI 
 -- page:Label("  AI ? ")
-page:Toggle("Smart AI", true, function(v) Flags.SmartAI = v end)
-page:Toggle("Auto Optimize All", true, function(v) Flags.AI_AutoOpt = v end)
-page:Toggle("AI Learning", true, function(v) Flags.AI_Learning = v end)
-page:Toggle("AI Aggressive Mode", false, function(v) Flags.AI_Aggressive = v end)
-page:Slider("AI Confidence", 20, 95, 65, function(v) Flags.AI_Confidence = v end)
-page:Slider("AI Adapt Speed", 1, 10, 5, function(v) Flags.AI_AdaptSpeed = v end)
-page:Toggle("AI Save Profile", true, function(v) Flags.AI_SaveProfile = v end)
+page:Toggle("智能 AI", true, function(v) Flags.SmartAI = v end)
+page:Toggle("自動優化全部", true, function(v) Flags.AI_AutoOpt = v end)
+page:Toggle("AI 學習", true, function(v) Flags.AI_Learning = v end)
+page:Toggle("AI 進攻模式", false, function(v) Flags.AI_Aggressive = v end)
+page:Slider("AI 信心度", 20, 95, 65, function(v) Flags.AI_Confidence = v end)
+page:Slider("AI 適應速度", 1, 10, 5, function(v) Flags.AI_AdaptSpeed = v end)
+page:Toggle("AI 儲存設定檔", true, function(v) Flags.AI_SaveProfile = v end)
 page:Separator()
 page:Label("  /  ")
 page:Button({Name=" (", Color=Color3.fromRGB(0, 200, 80)}, function()
@@ -56,23 +56,23 @@ end)
 
 -- -- SECTION 2: AI --
     page:Label(" AI ")
-page:Toggle("AI Aimbot Tuner", true, function(v) Flags.AI_AimTune = v end)
-page:Toggle("AI ESP Tuner", true, function(v) Flags.AI_ESPTune = v end)
-page:Toggle("AI Rage Tuner", true, function(v) Flags.AI_RageTune = v end)
-page:Toggle("AI Movement Tuner", true, function(v) Flags.AI_MoveTune = v end)
-page:Toggle("AI Stealth Tuner", true, function(v) Flags.AI_StealthTune = v end)
-page:Toggle("AI KillFX Tuner", true, function(v) Flags.AI_KillFX = v end)
-page:Toggle("AI Playstyle Detection", true, function(v) Flags.AI_Playstyle = v end)
-page:Toggle("AI Counter-Aim", true, function(v) Flags.AI_CounterAim = v end)
-page:Toggle("AI Threat Response", true, function(v) Flags.AI_ThreatResp = v end)
-page:Toggle("AI Map Adapt", true, function(v) Flags.AI_MapAdapt = v end)
-page:Toggle("AI Safety Tuner", true, function(v) Flags.AI_SafetyTune = v end)
-page:Toggle("AI HVH Tuner", true, function(v) Flags.AI_HVHTune = v end)
-page:Toggle("AI Viewmodel Tuner", true, function(v) Flags.AI_VMTune = v end)
-page:Toggle("AI World Tuner", true, function(v) Flags.AI_WorldTune = v end)
-page:Toggle("AI Chat Tuner", true, function(v) Flags.AI_ChatTune = v end)
-page:Toggle("AI Bypass Tuner", true, function(v) Flags.AI_BypassTune = v end)
-page:Toggle("AI Bhop Tuner", true, function(v) Flags.AI_BhopTune = v end)
+page:Toggle("AI 自瞄調優", true, function(v) Flags.AI_AimTune = v end)
+page:Toggle("AI 透視調優", true, function(v) Flags.AI_ESPTune = v end)
+page:Toggle("AI 暴力調優", true, function(v) Flags.AI_RageTune = v end)
+page:Toggle("AI 移動調優", true, function(v) Flags.AI_MoveTune = v end)
+page:Toggle("AI 隱蔽調優", true, function(v) Flags.AI_StealthTune = v end)
+page:Toggle("AI 擊殺調優", true, function(v) Flags.AI_KillFX = v end)
+page:Toggle("AI 遊戲風格偵測", true, function(v) Flags.AI_Playstyle = v end)
+page:Toggle("AI 反瞄對策", true, function(v) Flags.AI_CounterAim = v end)
+page:Toggle("AI 威脅回應", true, function(v) Flags.AI_ThreatResp = v end)
+page:Toggle("AI 地圖適應", true, function(v) Flags.AI_MapAdapt = v end)
+page:Toggle("AI 安全調優", true, function(v) Flags.AI_SafetyTune = v end)
+page:Toggle("AI HVH調優", true, function(v) Flags.AI_HVHTune = v end)
+page:Toggle("AI 角色調優", true, function(v) Flags.AI_VMTune = v end)
+page:Toggle("AI 世界調優", true, function(v) Flags.AI_WorldTune = v end)
+page:Toggle("AI 聊天調優", true, function(v) Flags.AI_ChatTune = v end)
+page:Toggle("AI 繞過調優", true, function(v) Flags.AI_BypassTune = v end)
+page:Toggle("AI 連跳調優", true, function(v) Flags.AI_BhopTune = v end)
 
 -- AI STATE
 local AIState = {
@@ -100,7 +100,7 @@ local AIState = {
     },
 
     -- Playstyle Detection
-    Playstyle = "Balanced", -- Aggressive / Passive / Tactical / Sniper / Runner / Balanced
+    Playstyle = "平衡", -- Aggressive / Passive / Tactical / Sniper / Runner / Balanced
     PlaystyleConfidence = 0,
     PlaystyleHistory = {},
 
@@ -110,7 +110,7 @@ local AIState = {
     PerformanceTrend = {},  -- Performance over time
 
     -- Threat Assessment
-    ThreatLevel = "Normal",
+    ThreatLevel = "普通",
     LobbySkill = "Medium",  -- Easy / Medium / Hard / VeryHard / Cheater
     LobbySkillScore = 50,
     CounterStrategy = "None",
@@ -301,7 +301,7 @@ local function detectPlaystyle()
     end
 
     -- Find best with confidence
-    local best, bestScore = "Balanced", 0
+    local best, bestScore = "平衡", 0
     for style, sc in pairs(scores) do
         if sc > bestScore then
             best = style
@@ -1573,7 +1573,7 @@ local function adaptToMap()
         end)
         mapState.Maps[placeId] = {
             Name = mapName,
-            BestStrategy = "Balanced",
+            BestStrategy = "平衡",
             AvgPerformance = 50,
             PlayCount = 0,
             -- LastPlayed = tick(),
