@@ -1,10 +1,12 @@
 {
-    "version": "3.2",
+    "version": "3.3",
     "date": "2026-08-29",
     "changelog": [
+        "v3.3: 支援所有主流執行器（Potassium, Fluxus, Wave, Hydrogen, Delta...）",
+        "v3.3: 7種 HTTP 方法自動偵測",
+        "v3.3: 修復 loadstring nil value 錯誤",
         "v3.2: 並行 HttpGet 載入，速度提升 5-10 倍",
         "v3.2: 分階段進度條（下載50% + 載入50%）",
-        "v3.2: 下載時間獨立顯示",
         "v3.1: HttpGet 模組載入器，消除字串轉義問題",
         "v3.1: 順暢 HSL RGB 載入動畫",
         "v3.1: 中文 GUI 分頁（自瞄/透視/暴力/雜項/世界/關於）",
