@@ -159,46 +159,115 @@ pcall(function()
     end
 end)
 
--- ═══ Loading GUI ═══
+-- ═══ Premium Loading GUI ═══
 local GUI = Instance.new('ScreenGui')
 GUI.Name = 'BloxStrike_Load'
 GUI.ResetOnSpawn = false
 GUI.IgnoreGuiInset = true
+GUI.DisplayOrder = 999
 GUI.Parent = Player.PlayerGui
 
+-- Full-screen gradient overlay
 local Overlay = Instance.new('Frame')
 Overlay.Size = UDim2.new(1, 0, 1, 0)
 Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Overlay.BackgroundTransparency = 0.15
+Overlay.BackgroundTransparency = 0.05
 Overlay.BorderSizePixel = 0
 Overlay.Parent = GUI
 
+-- Animated scanline effect
+local Scanline = Instance.new('Frame')
+Scanline.Size = UDim2.new(1, 0, 0, 2)
+Scanline.BackgroundColor3 = Color3.fromRGB(0, 255, 200)
+Scanline.BackgroundTransparency = 0.7
+Scanline.BorderSizePixel = 0
+Scanline.ZIndex = 5
+Scanline.Parent = Overlay
+
+-- Main panel with glass effect
 local Panel = Instance.new('Frame')
-Panel.Size = UDim2.new(0, 420, 0, 300)
-Panel.Position = UDim2.new(0.5, -210, 0.5, -150)
-Panel.BackgroundColor3 = Color3.fromRGB(12, 12, 20)
+Panel.Size = UDim2.new(0, 460, 0, 340)
+Panel.Position = UDim2.new(0.5, -230, 0.5, -170)
+Panel.BackgroundColor3 = Color3.fromRGB(8, 8, 16)
+Panel.BackgroundTransparency = 0.1
 Panel.BorderSizePixel = 0
 Panel.Parent = GUI
-Instance.new('UICorner', Panel).CornerRadius = UDim.new(0, 16)
+Instance.new('UICorner', Panel).CornerRadius = UDim.new(0, 20)
 
+-- Glass overlay
+local Glass = Instance.new('Frame')
+Glass.Size = UDim2.new(1, 0, 1, 0)
+Glass.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Glass.BackgroundTransparency = 0.92
+Glass.BorderSizePixel = 0
+Glass.Parent = Panel
+Instance.new('UICorner', Glass).CornerRadius = UDim.new(0, 20)
+
+-- Outer glow border (thick, transparent)
+local GlowBorder = Instance.new('UIStroke')
+GlowBorder.Thickness = 4
+GlowBorder.Color = Color3.fromRGB(0, 200, 255)
+GlowBorder.Transparency = 0.5
+GlowBorder.Parent = Panel
+
+-- Inner border
 local Border = Instance.new('UIStroke')
-Border.Thickness = 2
-Border.Color = Color3.fromRGB(0, 255, 255)
+Border.Thickness = 1.5
+Border.Color = Color3.fromRGB(0, 255, 220)
 Border.Parent = Panel
+
+-- Top accent line
+local AccentLine = Instance.new('Frame')
+AccentLine.Size = UDim2.new(1, -40, 0, 2)
+AccentLine.Position = UDim2.new(0, 20, 0, 70)
+AccentLine.BackgroundColor3 = Color3.fromRGB(0, 255, 200)
+AccentLine.BackgroundTransparency = 0.5
+AccentLine.BorderSizePixel = 0
+AccentLine.Parent = Panel
+
+-- Title with shadow
+local TitleShadow = Instance.new('TextLabel')
+TitleShadow.Size = UDim2.new(1, -20, 0, 50)
+TitleShadow.Position = UDim2.new(0, 12, 0, 17)
+TitleShadow.BackgroundTransparency = 1
+TitleShadow.Text = 'BLOXSTRIKE v' .. CURRENT_VERSION
+TitleShadow.TextColor3 = Color3.fromRGB(0, 80, 120)
+TitleShadow.TextSize = 30
+TitleShadow.Font = Enum.Font.GothamBlack
+TitleShadow.TextTransparency = 0.5
+TitleShadow.Parent = Panel
 
 local Title = Instance.new('TextLabel')
 Title.Size = UDim2.new(1, -20, 0, 50)
 Title.Position = UDim2.new(0, 10, 0, 15)
 Title.BackgroundTransparency = 1
 Title.Text = 'BLOXSTRIKE v' .. CURRENT_VERSION
-Title.TextColor3 = Color3.fromRGB(0, 255, 255)
-Title.TextSize = 28
-Title.Font = Enum.Font.GothamBold
+Title.TextColor3 = Color3.fromRGB(0, 255, 220)
+Title.TextSize = 30
+Title.Font = Enum.Font.GothamBlack
 Title.Parent = Panel
 
+-- Version tag
+local VersionTag = Instance.new('TextLabel')
+VersionTag.Size = UDim2.new(0, 60, 0, 18)
+VersionTag.Position = UDim2.new(1, -70, 0, 20)
+VersionTag.BackgroundColor3 = Color3.fromRGB(0, 255, 200)
+VersionTag.BackgroundTransparency = 0.85
+VersionTag.BorderSizePixel = 0
+VersionTag.Text = 'v' .. CURRENT_VERSION
+VersionTag.TextColor3 = Color3.fromRGB(0, 255, 200)
+VersionTag.TextSize = 11
+VersionTag.Font = Enum.Font.GothamBold
+VersionTag.Parent = Panel
+Instance.new('UICorner', VersionTag).CornerRadius = UDim.new(0, 8)
+Instance.new('UIStroke', VersionTag).Color = Color3.fromRGB(0, 255, 200)
+Instance.new('UIStroke', VersionTag).Thickness = 0.5
+Instance.new('UIStroke', VersionTag).Transparency = 0.5
+
+-- Update label
 local UpdateLabel = Instance.new('TextLabel')
-UpdateLabel.Size = UDim2.new(1, -20, 0, 20)
-UpdateLabel.Position = UDim2.new(0, 10, 0, 48)
+UpdateLabel.Size = UDim2.new(1, -20, 0, 18)
+UpdateLabel.Position = UDim2.new(0, 10, 0, 50)
 UpdateLabel.BackgroundTransparency = 1
 UpdateLabel.Text = ''
 UpdateLabel.TextColor3 = Color3.fromRGB(255, 200, 50)
@@ -207,64 +276,119 @@ UpdateLabel.Font = Enum.Font.GothamBold
 UpdateLabel.TextXAlignment = Enum.TextXAlignment.Right
 UpdateLabel.Parent = Panel
 
+-- Status
 local StatusLabel = Instance.new('TextLabel')
-StatusLabel.Size = UDim2.new(1, -20, 0, 25)
-StatusLabel.Position = UDim2.new(0, 10, 0, 75)
+StatusLabel.Size = UDim2.new(1, -40, 0, 22)
+StatusLabel.Position = UDim2.new(0, 20, 0, 78)
 StatusLabel.BackgroundTransparency = 1
-StatusLabel.Text = '初始化...'
-StatusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
-StatusLabel.TextSize = 14
+StatusLabel.Text = 'Initializing...'
+StatusLabel.TextColor3 = Color3.fromRGB(140, 140, 160)
+StatusLabel.TextSize = 13
 StatusLabel.Font = Enum.Font.Gotham
+StatusLabel.TextXAlignment = Enum.TextXAlignment.Left
 StatusLabel.Parent = Panel
 
+-- Progress bar background with gradient
 local BarBG = Instance.new('Frame')
-BarBG.Size = UDim2.new(1, -40, 0, 20)
-BarBG.Position = UDim2.new(0, 20, 0, 110)
-BarBG.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+BarBG.Size = UDim2.new(1, -40, 0, 8)
+BarBG.Position = UDim2.new(0, 20, 0, 108)
+BarBG.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
 BarBG.BorderSizePixel = 0
 BarBG.Parent = Panel
-Instance.new('UICorner', BarBG).CornerRadius = UDim.new(0, 10)
+Instance.new('UICorner', BarBG).CornerRadius = UDim.new(1, 0)
 
+-- Progress bar glow (behind main bar)
+local BarGlow = Instance.new('Frame')
+BarGlow.Size = UDim2.new(0, 0, 0, 12)
+BarGlow.Position = UDim2.new(0, 0, -2, 0)
+BarGlow.BackgroundColor3 = Color3.fromRGB(0, 255, 200)
+BarGlow.BackgroundTransparency = 0.6
+BarGlow.BorderSizePixel = 0
+BarGlow.Parent = BarBG
+Instance.new('UICorner', BarGlow).CornerRadius = UDim.new(1, 0)
+
+-- Progress bar fill
 local BarFill = Instance.new('Frame')
 BarFill.Size = UDim2.new(0, 0, 1, 0)
 BarFill.BackgroundColor3 = Color3.fromRGB(0, 255, 200)
 BarFill.BorderSizePixel = 0
 BarFill.Parent = BarBG
-Instance.new('UICorner', BarFill).CornerRadius = UDim.new(0, 10)
+Instance.new('UICorner', BarFill).CornerRadius = UDim.new(1, 0)
 
+-- Gradient on bar
+local BarGradient = Instance.new('UIGradient')
+BarGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 180, 255)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 200)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 150)),
+})
+BarGradient.Parent = BarFill
+
+-- Percentage
 local PctLabel = Instance.new('TextLabel')
-PctLabel.Size = UDim2.new(1, -40, 0, 25)
-PctLabel.Position = UDim2.new(0, 20, 0, 138)
+PctLabel.Size = UDim2.new(1, -40, 0, 22)
+PctLabel.Position = UDim2.new(0, 20, 0, 120)
 PctLabel.BackgroundTransparency = 1
 PctLabel.Text = '0%'
 PctLabel.TextColor3 = Color3.fromRGB(0, 255, 200)
-PctLabel.TextSize = 16
-PctLabel.Font = Enum.Font.GothamBold
+PctLabel.TextSize = 18
+PctLabel.Font = Enum.Font.GothamBlack
+PctLabel.TextXAlignment = Enum.TextXAlignment.Right
 PctLabel.Parent = Panel
 
+-- Module log
 local LogFrame = Instance.new('ScrollingFrame')
-LogFrame.Size = UDim2.new(1, -40, 0, 110)
-LogFrame.Position = UDim2.new(0, 20, 0, 170)
+LogFrame.Size = UDim2.new(1, -40, 0, 130)
+LogFrame.Position = UDim2.new(0, 20, 0, 150)
 LogFrame.BackgroundTransparency = 1
 LogFrame.BorderSizePixel = 0
-LogFrame.ScrollBarThickness = 4
+LogFrame.ScrollBarThickness = 3
+LogFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 255, 200)
 LogFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 LogFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 LogFrame.Parent = Panel
 
 local LogLayout = Instance.new('UIListLayout')
-LogLayout.Padding = UDim.new(0, 3)
+LogLayout.Padding = UDim.new(0, 2)
 LogLayout.SortOrder = Enum.SortOrder.LayoutOrder
 LogLayout.Parent = LogFrame
 
--- RGB Animation
+-- Premium RGB Animation
 local rgbTime = 0
+local scanY = 0
 local animConn = RunService.Heartbeat:Connect(function(dt)
-    rgbTime = rgbTime + dt * 80
-    Border.Color = hsl(rgbTime % 360, 1, 0.6)
-    BarFill.BackgroundColor3 = hsl((rgbTime * 0.7) % 360, 0.8, 0.55)
-    PctLabel.TextColor3 = hsl((rgbTime * 1.2 + 60) % 360, 0.8, 0.7)
-    Title.TextColor3 = hsl(rgbTime % 360, 1, 0.75)
+    rgbTime = rgbTime + dt * 60
+    
+    -- Smooth color cycling
+    local mainHue = rgbTime % 360
+    local c1 = hsl(mainHue, 1, 0.55)
+    local c2 = hsl((mainHue + 120) % 360, 0.9, 0.6)
+    local c3 = hsl((mainHue + 240) % 360, 0.8, 0.5)
+    
+    -- Border glow
+    Border.Color = c1
+    GlowBorder.Color = c2
+    GlowBorder.Transparency = 0.4 + math.sin(rgbTime * 0.05) * 0.2
+    
+    -- Title color
+    Title.TextColor3 = hsl(mainHue, 1, 0.75)
+    TitleShadow.TextColor3 = hsl(mainHue, 0.8, 0.2)
+    
+    -- Progress bar gradient offset
+    BarGradient.Offset = Vector2.new(math.sin(rgbTime * 0.02) * 0.3, 0)
+    BarFill.BackgroundColor3 = c1
+    BarGlow.BackgroundColor3 = c2
+    PctLabel.TextColor3 = c1
+    AccentLine.BackgroundColor3 = c3
+    
+    -- Scanline animation
+    scanY = (scanY + dt * 200) % 800
+    Scanline.Position = UDim2.new(0, 0, 0, scanY - 100)
+    Scanline.BackgroundColor3 = hsl(mainHue, 1, 0.7)
+    
+    -- Version tag pulse
+    local pulse = 0.85 + math.sin(rgbTime * 0.08) * 0.1
+    VersionTag.BackgroundTransparency = pulse
 end)
 
 local ok, fail = 0, 0
@@ -416,21 +540,45 @@ HintLabel.TextSize = 12
 HintLabel.Font = Enum.Font.Gotham
 HintLabel.Parent = Panel
 
-task.wait(1.5)
+task.wait(2)
 
+-- Premium fade out
 if animConn then animConn:Disconnect() end
-for t = 0, 1, 0.05 do
+
+-- Panel slide up + fade
+local panelStart = Panel.Position
+for t = 0, 1, 0.02 do
     pcall(function()
-        Overlay.BackgroundTransparency = 0.15 + t * 0.85
-        Panel.BackgroundTransparency = t
+        -- Fade overlay
+        Overlay.BackgroundTransparency = 0.05 + t * 0.95
+        
+        -- Panel slide up + fade + shrink
+        Panel.Position = UDim2.new(
+            panelStart.X.Scale, panelStart.X.Offset,
+            panelStart.Y.Scale - t * 0.05, panelStart.Y.Offset - t * 20
+        )
+        Panel.BackgroundTransparency = t * 0.5
+        
+        -- All descendants fade
         for _, v in ipairs(Panel:GetDescendants()) do
-            if v:IsA('TextLabel') then v.TextTransparency = t end
-            if v:IsA('Frame') then v.BackgroundTransparency = t end
-            if v:IsA('UIStroke') then v.Transparency = t end
+            pcall(function()
+                if v:IsA('TextLabel') then
+                    v.TextTransparency = t
+                    v.TextStrokeTransparency = t
+                elseif v:IsA('Frame') then
+                    v.BackgroundTransparency = math.min(1, v.BackgroundTransparency + t * 0.5)
+                elseif v:IsA('UIStroke') then
+                    v.Transparency = t
+                elseif v:IsA('UIGradient') then
+                    v.Transparency = NumberSequence.new(t)
+                end
+            end)
         end
     end)
-    task.wait(0.03)
+    task.wait(0.016) -- ~60fps
 end
-GUI:Destroy()
+
+-- Final cleanup
+pcall(function() GUI:Destroy() end)
 
 print('[BloxStrike] v' .. CURRENT_VERSION .. ' loaded! ' .. ok .. '/' .. total .. ' modules (' .. elapsed .. 'ms)')
