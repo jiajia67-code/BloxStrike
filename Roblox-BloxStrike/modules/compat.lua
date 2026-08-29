@@ -29,6 +29,7 @@ pcall(function()
         executorVersion = ver or "Unknown"
     elseif getexecutorname then
         executorName = getexecutorname()
+    end
 end)
 
 Compat.Executor = executorName
@@ -497,22 +498,20 @@ Compat.TouchInput = {
 
 -- Detect touch input for mobile
 if Compat.IsMobile then
-    -- UserInputService.TouchStarted:Connect(function(input, gpe)
-        if gpe then return end
-        Compat.TouchInput.Active = true
-        Compat.TouchInput.LastTouch = input.Position
-        
-        -- Double tap detection (for menu toggle)
-        local now = tick()
-        if now - Compat.TouchInput.LastTapTime < Compat.TouchInput.DoubleTapThreshold then
-            -- Double tap detected
-            _G.BS_DoubleTap = true
-        end
-        Compat.TouchInput.LastTapTime = now
-    end)
-    
-    -- UserInputService.TouchEnded:Connect(function(input, gpe)
-        Compat.TouchInput.Active = false
+    pcall(function()
+        UserInputService.TouchStarted:Connect(function(input, gpe)
+            if gpe then return end
+            Compat.TouchInput.Active = true
+            Compat.TouchInput.LastTouch = input.Position
+            local now = tick()
+            if now - Compat.TouchInput.LastTapTime < Compat.TouchInput.DoubleTapThreshold then
+                _G.BS_DoubleTap = true
+            end
+            Compat.TouchInput.LastTapTime = now
+        end)
+        UserInputService.TouchEnded:Connect(function(input, gpe)
+            Compat.TouchInput.Active = false
+        end)
     end)
 end
 
@@ -589,7 +588,7 @@ task.delay(1, function()
     -- Compat.PrintReport()
 end)
 
-print("[Compat] BloxStrike Compatibility Module loaded"
-print("[Compat] Supports: All executors + PC + Mobile + Emulators"
+print("[Compat] BloxStrike Compatibility Module loaded")
+print("[Compat] Supports: All executors + PC + Mobile + Emulators")
 
 return Compat
