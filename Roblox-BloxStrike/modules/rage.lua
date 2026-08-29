@@ -3012,21 +3012,21 @@ lplr.CharacterRemoving:Connect(function()
     if vizTgtLine then vizTgtLine.Visible=false end
     if saFovCircle then saFovCircle.Visible=false end
     if aaVizCircle then aaVizCircle.Visible=false end
-end)print("[Rage] BloxStrike Rage v3.0 - CS2 HVH Edition")
+-- [optimized] end)print("[Rage] BloxStrike Rage v3.0 - CS2 HVH Edition")
 print("[Rage] All features loaded successfully")
-print("[Rage] 1  Ragebot (HC, Bone, Sort, Double Tap, Triple Tap)")
-print("[Rage] 1A Multipoint + Safe Point + Damage Override + Force Aim")
-print("[Rage] 1B Silent Aim (4 modes, Backtrack, Magic Bullet)")
-print("[Rage] 1C PSilent + Rapid Fire NEW")
-print("[Rage] 1D Bullet Tracer + Hit Marker")
-print("[Rage] 2  Anti-Aim (Pitch, Yaw, Speed, Fake Duck)")
-print("[Rage] 2B Desync + Emotion + Lean + LBY Breaker + Manual AA NEW")
-print("[Rage] 3  Fake Lag (Constant, Adaptive, Random, Tick)")
-print("[Rage] 3B Exploits: Hideshots + Onshot + Fake Duck NEW")
-print("[Rage] 4  Resolver (Smart, Brute, Moving AA)")
-print("[Rage] 4B Moving AA Resolver + Side Detection + Anim Breaker NEW")
-print("[Rage] 5  HVH Utilities (Slide Walk, Pixel Surf, Quick Switch)")
-print("[Rage] 6  HVH Presets (Full Rage, Anti-Oneshot)")
-print("[Rage] 7  Advanced HVH (HVH Super, Auto AA/FL/Resolver)")
-print("[Rage] 8  HVH Statistics"
-print("[Rage] "
+-- [optimized] print("[Rage] 1  Ragebot (HC, Bone, Sort, Double Tap, Triple Tap)")
+-- [optimized] print("[Rage] 1A Multipoint + Safe Point + Damage Override + Force Aim")
+-- [optimized] print("[Rage] 1B Silent Aim (4 modes, Backtrack, Magic Bullet)")
+-- [optimized] print("[Rage] 1C PSilent + Rapid Fire NEW")
+-- [optimized] print("[Rage] 1D Bullet Tracer + Hit Marker")
+-- [optimized] print("[Rage] 2  Anti-Aim (Pitch, Yaw, Speed, Fake Duck)")
+-- [optimized] print("[Rage] 2B Desync + Emotion + Lean + LBY Breaker + Manual AA NEW")
+-- [optimized] print("[Rage] 3  Fake Lag (Constant, Adaptive, Random, Tick)")
+-- [optimized] print("[Rage] 3B Exploits: Hideshots + Onshot + Fake Duck NEW")
+-- [optimized] print("[Rage] 4  Resolver (Smart, Brute, Moving AA)")
+-- [optimized] print("[Rage] 4B Moving AA Resolver + Side Detection + Anim Breaker NEW")
+-- [optimized] print("[Rage] 5  HVH Utilities (Slide Walk, Pixel Surf, Quick Switch)")
+-- [optimized] print("[Rage] 6  HVH Presets (Full Rage, Anti-Oneshot)")
+-- [optimized] print("[Rage] 7  Advanced HVH (HVH Super, Auto AA/FL/Resolver)")
+-- [optimized] print("[Rage] 8  HVH Statistics"
+-- [optimized] print("[Rage] "

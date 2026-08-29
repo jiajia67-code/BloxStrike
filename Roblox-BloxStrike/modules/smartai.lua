@@ -2016,8 +2016,8 @@ end)
 BS.AIState = AIState
 
 print("[SmartAI] BloxStrike Smart AI v2.0 loaded")
-print("[SmartAI] Features: Playstyle Detection, Lobby Assessment,")
-print("[SmartAI]   Auto Aimbot/ESP/Rage/Movement/Stealth/Viewmodel/World/Chat/Bypass/Bhop Tuning,")
-print("[SmartAI]   Safety Mode, Aggressive Mode, Balanced Mode, Auto Select,")
-print("[SmartAI]   Counter-Aim, Threat Response, Map Adaptation,")
-print("[SmartAI]   Self-Learning, AI HUD Display"
+-- [optimized] print("[SmartAI] Features: Playstyle Detection, Lobby Assessment,")
+-- [optimized] print("[SmartAI]   Auto Aimbot/ESP/Rage/Movement/Stealth/Viewmodel/World/Chat/Bypass/Bhop Tuning,")
+-- [optimized] print("[SmartAI]   Safety Mode, Aggressive Mode, Balanced Mode, Auto Select,")
+-- [optimized] print("[SmartAI]   Counter-Aim, Threat Response, Map Adaptation,")
+-- [optimized] print("[SmartAI]   Self-Learning, AI HUD Display"

@@ -76,10 +76,10 @@ end
 if Knit and Knit.Controllers then
     local count = 0
     for _ in pairs(Knit.Controllers) do count = count + 1 end
-    print("[API] Controllers: " .. count)
+    -- [optimized] print("[API] Controllers: " .. count)
 end
 if api.NetManaged then
-    print("[API] _NetManaged: " .. #api.NetManaged:GetChildren())
+    -- [optimized] print("[API] _NetManaged: " .. #api.NetManaged:GetChildren())
 end
 
 -- PLAYER STATE
@@ -322,11 +322,11 @@ end
 
 -- CONTROLLER SHORTCUTS
 
-function api.startSprint()
+-- [optimized] function api.startSprint()
     pcall(function() api.bw.SprintController:startSprinting() end)
 end
 
-function api.stopSprint()
+-- [optimized] function api.stopSprint()
     pcall(function() api.bw.SprintController:stopSprinting() end)
 end
 

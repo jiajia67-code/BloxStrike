@@ -1676,8 +1676,8 @@ BS.CheatDetect = CD
 BS.PlayerData = PlayerData
 
 print("[CheatDetect] BloxStrike Cheat Detect v1.0 loaded")
-print("[CheatDetect] Features: Aimbot Detector, Wallhack Detector,")
-print("[CheatDetect]   ESP Detector, Speedhack Detector, Triggerbot Detector,")
-print("[CheatDetect]   Spinbot Detector, Teleport Detector, Macro Detector,")
-print("[CheatDetect]   NoRecoil Detector, SilentAim Detector, Snapbot Detector")
-print("[CheatDetect] Auto-scan interval: " .. (Flags.CD_ScanInterval or 3) .. "s"
+-- [optimized] print("[CheatDetect] Features: Aimbot Detector, Wallhack Detector,")
+-- [optimized] print("[CheatDetect]   ESP Detector, Speedhack Detector, Triggerbot Detector,")
+-- [optimized] print("[CheatDetect]   Spinbot Detector, Teleport Detector, Macro Detector,")
+-- [optimized] print("[CheatDetect]   NoRecoil Detector, SilentAim Detector, Snapbot Detector")
+-- [optimized] print("[CheatDetect] Auto-scan interval: " .. (Flags.CD_ScanInterval or 3) .. "s"

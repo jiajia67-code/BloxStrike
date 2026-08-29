@@ -707,7 +707,7 @@ pcall(function()
                     Flags[key] = false
                 end
             end
-            print("[Panic] All features disabled!")
+            -- [optimized] print("[Panic] All features disabled!")
         end
     end)
 end)

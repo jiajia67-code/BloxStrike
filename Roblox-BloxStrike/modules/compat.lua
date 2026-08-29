@@ -83,8 +83,8 @@ pcall(function()
 end)
 
 print("[Compat] Executor: " .. executorName .. " v" .. executorVersion)
-print("[Compat] Device: " .. (Compat.IsMobile and "Mobile" or Compat.IsEmulator and "Emulator" or "PC"))
-print("[Compat] Screen: " .. Compat.ScreenSize.X .. "x" .. Compat.ScreenSize.Y .. " | Scale: " .. string.format("%.2f", Compat.Scale))
+-- [optimized] print("[Compat] Device: " .. (Compat.IsMobile and "Mobile" or Compat.IsEmulator and "Emulator" or "PC"))
+-- [optimized] print("[Compat] Screen: " .. Compat.ScreenSize.X .. "x" .. Compat.ScreenSize.Y .. " | Scale: " .. string.format("%.2f", Compat.Scale))
 
 -- SECTION 3: FILESYSTEM  
 
@@ -549,12 +549,12 @@ Compat.Features = {
 -- SECTION 17: PRINTER  
 
 function Compat.PrintReport()
-    print("[Compat]  Executor Compatibility Report ")
+    -- [optimized] print("[Compat]  Executor Compatibility Report ")
     print("[Compat] Executor: " .. executorName .. " v" .. executorVersion)
-    print("[Compat] Device: " .. (Compat.IsMobile and " Mobile" or Compat.IsEmulator and " Emulator" or " PC"))
-    print("[Compat] Screen: " .. Compat.ScreenSize.X .. "x" .. Compat.ScreenSize.Y)
-    print("[Compat] Scale: " .. string.format("%.2f", Compat.Scale))
-    print("[Compat]  Available Features ")
+    -- [optimized] print("[Compat] Device: " .. (Compat.IsMobile and " Mobile" or Compat.IsEmulator and " Emulator" or " PC"))
+    -- [optimized] print("[Compat] Screen: " .. Compat.ScreenSize.X .. "x" .. Compat.ScreenSize.Y)
+    -- [optimized] print("[Compat] Scale: " .. string.format("%.2f", Compat.Scale))
+    -- [optimized] print("[Compat]  Available Features ")
     
     local available = 0
     local total = 0
@@ -563,7 +563,7 @@ function Compat.PrintReport()
         if has then available = available + 1 end
     end
     
-    print("[Compat] APIs: " .. available .. "/" .. total .. " available")
+    -- [optimized] print("[Compat] APIs: " .. available .. "/" .. total .. " available")
     
     -- Print missing features
     local missing = {}
@@ -573,12 +573,12 @@ function Compat.PrintReport()
         end
     end
     if #missing > 0 then
-        print("[Compat] Missing: " .. table.concat(missing, ", "))
-        print("[Compat] Features using missing APIs will be disabled or use fallbacks")
+        -- [optimized] print("[Compat] Missing: " .. table.concat(missing, ", "))
+        -- [optimized] print("[Compat] Features using missing APIs will be disabled or use fallbacks")
     else
-        print("[Compat]  All APIs available  Full functionality")
+        -- [optimized] print("[Compat]  All APIs available  Full functionality")
     end
-    print("[Compat] ")
+    -- [optimized] print("[Compat] ")
 end
 
  -- Expose
@@ -590,6 +590,6 @@ task.delay(1, function()
 end)
 
 print("[Compat] BloxStrike Compatibility Module loaded")
-print("[Compat] Supports: All executors + PC + Mobile + Emulators")
+-- [optimized] print("[Compat] Supports: All executors + PC + Mobile + Emulators")
 
 return Compat

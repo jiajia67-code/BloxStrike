@@ -400,6 +400,6 @@ Ping.Average = Ping.Average or 0
 
 BS.Ping = Ping
 
-print("[Core] BloxStrike Core ready | Ping: " .. Ping.Quality)
+-- [optimized] print("[Core] BloxStrike Core ready | Ping: " .. Ping.Quality)
 
 return BS

@@ -56,7 +56,7 @@ function Bypass.backupMetatables()
                     __pow = mt.__pow,
                     __len = mt.__len,
                 }
-                print("[Bypass] Original metatables backed up")
+                -- [optimized] print("[Bypass] Original metatables backed up")
             end
         end
     end)
@@ -71,7 +71,7 @@ function Bypass.restoreMetatables()
                 for name, func in pairs(Bypass.OriginalMetatables) do
                     mt[name] = func
                 end
-                print("[Bypass] Original metatables restored")
+                -- [optimized] print("[Bypass] Original metatables restored")
             end
         end
     end)
@@ -164,7 +164,7 @@ function Bypass.spoofCheckcaller()
             end
             -- Store original for emergency restore
             Bypass._originalCheckcaller = oldCheckcaller
-            print("[Bypass] checkcaller spoofed  always returns false")
+            -- [optimized] print("[Bypass] checkcaller spoofed  always returns false")
         end
     end)
 end
@@ -295,7 +295,7 @@ function Bypass.filterChangedEvents(instance)
                     local source = info.source:lower()
                     if source:find("anticheat") or source:find("monitor") or source:find("detect") then
                         -- conn:Disconnect()
-                        print("[Bypass] Filtered AC Changed connection: " .. instance.Name)
+                        -- [optimized] print("[Bypass] Filtered AC Changed connection: " .. instance.Name)
                     end
                 end
             end
@@ -314,7 +314,7 @@ function Bypass.filterDescendantEvents(parent)
                     local source = info.source:lower()
                     if source:find("anticheat") or source:find("monitor") or source:find("detect") then
                         -- conn:Disconnect()
-                        print("[Bypass] Filtered AC DescendantAdded connection")
+                        -- [optimized] print("[Bypass] Filtered AC DescendantAdded connection")
                     end
                 end
             end
@@ -624,7 +624,7 @@ function Bypass.emergencyBypass()
                 Flags[k] = false
             end
         end
-        print("[Bypass] Emergency bypass activated")
+        -- [optimized] print("[Bypass] Emergency bypass activated")
     end)
 end
 
@@ -1198,7 +1198,7 @@ function Bypass.hookNamecall()
             return oldNamecall(self, ...)
         end) or oldNamecall
 
-        print("[Bypass] __namecall hook installed")
+        -- [optimized] print("[Bypass] __namecall hook installed")
     end)
 end
 
@@ -1212,7 +1212,7 @@ local executorFingerprint = {
     Spoofed = false,
 }
 
-function Bypass.spoofExecutorFingerprint()
+-- [optimized] function Bypass.spoofExecutorFingerprint()
     pcall(function()
         if executorFingerprint.Spoofed then return end
 
@@ -1271,11 +1271,11 @@ function Bypass.spoofExecutorFingerprint()
         end
 
         executorFingerprint.Spoofed = true
-        print("[Bypass] Executor fingerprint spoofed")
+        -- [optimized] print("[Bypass] Executor fingerprint spoofed")
     end)
 end
 
-function Bypass.restoreExecutorFingerprint()
+-- [optimized] function Bypass.restoreExecutorFingerprint()
     pcall(function()
         for name, value in pairs(executorFingerprint.Originals) do
             if name:sub(1, 5) == "genv_" then
@@ -1286,7 +1286,7 @@ function Bypass.restoreExecutorFingerprint()
             end
         end
         executorFingerprint.Spoofed = false
-        print("[Bypass] Executor fingerprint restored")
+        -- [optimized] print("[Bypass] Executor fingerprint restored")
     end)
 end
 
@@ -1361,7 +1361,7 @@ function Bypass.disconnectAllWrapped()
         end
         signalProtection.WrappedConnections[id] = nil
     end
-    print("[Bypass] All wrapped connections disconnected")
+    -- [optimized] print("[Bypass] All wrapped connections disconnected")
 end
 
 Bypass.SignalProtection = signalProtection
@@ -1766,8 +1766,8 @@ function Bypass.activateAll()
         -- Bypass.scanForSignatures()
         -- Bypass.applySignatureEvasion()
 
-        print("[Bypass]  All 30 bypass systems activated ")
-        print("[Bypass] Protection Level: MAXIMUM")
+        -- [optimized] print("[Bypass]  All 30 bypass systems activated ")
+        -- [optimized] print("[Bypass] Protection Level: MAXIMUM")
     end)
 end
 
@@ -1785,39 +1785,39 @@ task.spawn(function()
 end)
 
 print("[Bypass] BloxStrike HVH Bypass v4.0 loaded")
-print("[Bypass] ")
-print("[Bypass] 30 Advanced Bypass Systems:")
-print("[Bypass]   1  Metamethod Hook Protection")
-print("[Bypass]   2  Environment Spoofing")
-print("[Bypass]   3  Thread Hiding")
-print("[Bypass]   4  Memory Protection")
-print("[Bypass]   5  Signal Filtering")
-print("[Bypass]   6  Property Change Interception")
-print("[Bypass]   7  Remote Obfuscation")
-print("[Bypass]   8  Advanced Timing Obfuscation")
-print("[Bypass]   9  GC Protection")
-print("[Bypass]   10 CFrame Validation Bypass")
-print("[Bypass]   11 Teleport Detection Bypass")
-print("[Bypass]   12 Heartbeat Monitoring Bypass")
-print("[Bypass]   13 Behavioral Analysis Bypass")
-print("[Bypass]   14 Emergency Bypass System")
-print("[Bypass]   15 Injection Artifact Cloaking")
-print("[Bypass]   16 Anti-Debug Protection")
-print("[Bypass]   17 Replay Protection")
-print("[Bypass]   18 Integrity Monitor")
-print("[Bypass]   19 Property Interception v2")
-print("[Bypass]   20 Network Fingerprint Evasion")
-print("[Bypass]   21 Emergency Sandbox Detection")
-print("[Bypass]   22 __namecall Hook Protection       NEW")
-print("[Bypass]   23 Executor Fingerprint Spoof       NEW")
-print("[Bypass]   24 Signal Hook Protection            NEW")
-print("[Bypass]   25 Remote Call Camouflage             NEW")
-print("[Bypass]   26 Memory Region Cloaking             NEW")
-print("[Bypass]   27 AC Signature Evasion               NEW")
-print("[Bypass]   28 Heartbeat Spoofing                 NEW")
-print("[Bypass]   29 Advanced Anti-Dump                 NEW")
-print("[Bypass]   30 Unified Activation Engine           NEW")
-print("[Bypass] ")
+-- [optimized] print("[Bypass] ")
+-- [optimized] print("[Bypass] 30 Advanced Bypass Systems:")
+-- [optimized] print("[Bypass]   1  Metamethod Hook Protection")
+-- [optimized] print("[Bypass]   2  Environment Spoofing")
+-- [optimized] print("[Bypass]   3  Thread Hiding")
+-- [optimized] print("[Bypass]   4  Memory Protection")
+-- [optimized] print("[Bypass]   5  Signal Filtering")
+-- [optimized] print("[Bypass]   6  Property Change Interception")
+-- [optimized] print("[Bypass]   7  Remote Obfuscation")
+-- [optimized] print("[Bypass]   8  Advanced Timing Obfuscation")
+-- [optimized] print("[Bypass]   9  GC Protection")
+-- [optimized] print("[Bypass]   10 CFrame Validation Bypass")
+-- [optimized] print("[Bypass]   11 Teleport Detection Bypass")
+-- [optimized] print("[Bypass]   12 Heartbeat Monitoring Bypass")
+-- [optimized] print("[Bypass]   13 Behavioral Analysis Bypass")
+-- [optimized] print("[Bypass]   14 Emergency Bypass System")
+-- [optimized] print("[Bypass]   15 Injection Artifact Cloaking")
+-- [optimized] print("[Bypass]   16 Anti-Debug Protection")
+-- [optimized] print("[Bypass]   17 Replay Protection")
+-- [optimized] print("[Bypass]   18 Integrity Monitor")
+-- [optimized] print("[Bypass]   19 Property Interception v2")
+-- [optimized] print("[Bypass]   20 Network Fingerprint Evasion")
+-- [optimized] print("[Bypass]   21 Emergency Sandbox Detection")
+-- [optimized] print("[Bypass]   22 __namecall Hook Protection       NEW")
+-- [optimized] print("[Bypass]   23 Executor Fingerprint Spoof       NEW")
+-- [optimized] print("[Bypass]   24 Signal Hook Protection            NEW")
+-- [optimized] print("[Bypass]   25 Remote Call Camouflage             NEW")
+-- [optimized] print("[Bypass]   26 Memory Region Cloaking             NEW")
+-- [optimized] print("[Bypass]   27 AC Signature Evasion               NEW")
+-- [optimized] print("[Bypass]   28 Heartbeat Spoofing                 NEW")
+-- [optimized] print("[Bypass]   29 Advanced Anti-Dump                 NEW")
+-- [optimized] print("[Bypass]   30 Unified Activation Engine           NEW")
+-- [optimized] print("[Bypass] ")
 
 
 

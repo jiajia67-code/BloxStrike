@@ -2504,7 +2504,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -2563,7 +2563,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -2637,10 +2637,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] Self-heal completed")
+-- [optimized] print("[Stealth] Self-heal completed")
     end)
 end
 
@@ -2916,7 +2916,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -2975,7 +2975,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -3049,10 +3049,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] getfenv environment leak prevention activated")
+-- [optimized] print("[Stealth] getfenv environment leak prevention activated")
     end)
 end
 
@@ -3175,7 +3175,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -3234,7 +3234,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -3308,10 +3308,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] Raw metamethod hook evasion ready")
+-- [optimized] print("[Stealth] Raw metamethod hook evasion ready")
     end)
 end
 
@@ -3430,7 +3430,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -3489,7 +3489,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -3563,10 +3563,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] ToString trap evasion activated")
+-- [optimized] print("[Stealth] ToString trap evasion activated")
     end)
 end
 
@@ -3645,7 +3645,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -3704,7 +3704,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -3778,10 +3778,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] Coroutine.wrap stack overflow evasion ready")
+-- [optimized] print("[Stealth] Coroutine.wrap stack overflow evasion ready")
     end)
 end
 
@@ -3856,7 +3856,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -3915,7 +3915,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -3989,10 +3989,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] CoreGui reference evasion ready")
+-- [optimized] print("[Stealth] CoreGui reference evasion ready")
     end)
 end
 
@@ -4094,7 +4094,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -4153,7 +4153,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -4227,10 +4227,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] getfenv level scanning evasion activated")
+-- [optimized] print("[Stealth] getfenv level scanning evasion activated")
     end)
 end
 
@@ -4287,7 +4287,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -4346,7 +4346,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -4420,10 +4420,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth]  Advanced evasion systems activated ")
+-- [optimized] print("[Stealth]  Advanced evasion systems activated ")
     end)
 end
 
@@ -4475,7 +4475,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -4534,7 +4534,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -4608,10 +4608,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] BloxStrike Stealth v4.0  ")
+-- [optimized] print("[Stealth] BloxStrike Stealth v4.0  ")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -4647,7 +4647,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -4706,7 +4706,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -4780,10 +4780,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] ")
+-- [optimized] print("[Stealth] ")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -4819,7 +4819,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -4878,7 +4878,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -4952,10 +4952,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] 28 ")
+-- [optimized] print("[Stealth] 28 ")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -4991,7 +4991,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -5050,7 +5050,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -5124,10 +5124,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth]   1-12:  Callstack/Environment/Hook/Obfuscation ")
+-- [optimized] print("[Stealth]   1-12:  Callstack/Environment/Hook/Obfuscation ")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -5163,7 +5163,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -5222,7 +5222,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -5296,10 +5296,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth]   13-21: SSVL///ML/////")
+-- [optimized] print("[Stealth]   13-21: SSVL///ML/////")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -5335,7 +5335,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -5394,7 +5394,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -5468,10 +5468,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth]   22: getfenv Environment Leak Prevention     NEW (DevForum 2025.07)")
+-- [optimized] print("[Stealth]   22: getfenv Environment Leak Prevention     NEW (DevForum 2025.07)")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -5507,7 +5507,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -5566,7 +5566,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -5640,10 +5640,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth]   23: Raw Metamethod Hook Evasion            NEW (DevForum 2025.07)")
+-- [optimized] print("[Stealth]   23: Raw Metamethod Hook Evasion            NEW (DevForum 2025.07)")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -5679,7 +5679,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -5738,7 +5738,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -5812,10 +5812,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth]   24: ToString Trap Evasion                   NEW (DevForum 2023.10)")
+-- [optimized] print("[Stealth]   24: ToString Trap Evasion                   NEW (DevForum 2023.10)")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -5851,7 +5851,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -5910,7 +5910,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -5984,10 +5984,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth]   25: Coroutine.wrap Stack Overflow Evasion   NEW (DevForum 2023.10)")
+-- [optimized] print("[Stealth]   25: Coroutine.wrap Stack Overflow Evasion   NEW (DevForum 2023.10)")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -6023,7 +6023,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -6082,7 +6082,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -6156,10 +6156,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth]   26: CoreGui Reference Evasion              NEW (DevForum 2023.10)")
+-- [optimized] print("[Stealth]   26: CoreGui Reference Evasion              NEW (DevForum 2023.10)")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -6195,7 +6195,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -6254,7 +6254,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -6328,10 +6328,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth]   27: getfenv Level Scanning Evasion         NEW (DevForum 2025.07)")
+-- [optimized] print("[Stealth]   27: getfenv Level Scanning Evasion         NEW (DevForum 2025.07)")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -6367,7 +6367,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -6426,7 +6426,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -6500,10 +6500,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth]   28: Unified Anti-Detection Activation       NEW")
+-- [optimized] print("[Stealth]   28: Unified Anti-Detection Activation       NEW")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -6539,7 +6539,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -6598,7 +6598,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -6672,10 +6672,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] ")
+-- [optimized] print("[Stealth] ")
 
 -- ═══════════════════════════════════════════════════════════════
 -- HWID SPOOFER
@@ -6711,7 +6711,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -6770,7 +6770,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -6844,10 +6844,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] F10=Nuclear | F9=Safe | Risk: " .. Stealth.RiskLevel .. "%")
+-- [optimized] print("[Stealth] F10=Nuclear | F9=Safe | Risk: " .. Stealth.RiskLevel .. "%")
 -- ═══════════════════════════════════════════════════════════════
 -- ANTI-DETECTION SYSTEM v5.0 - Advanced Features
 -- ═══════════════════════════════════════════════════════════════
@@ -6881,7 +6881,7 @@ function Stealth.AntiTamper.VerifyIntegrity()
         for name, func in pairs(getfenv()) do
             if type(func) == "function" and Stealth.AntiTamper.Checksums[name] then
                 if #string.dump(func) ~= Stealth.AntiTamper.Checksums[name] then
-                    warn("[Stealth] Tamper detected: " .. name)
+                    -- [optimized] warn("[Stealth] Tamper detected: " .. name)
                 end
             end
         end
@@ -6993,7 +6993,7 @@ function BS.HWIDSpoofer:Activate()
             getmachineid = function() return self.SpoofedID end
         end
     end)
-    print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
+    -- [optimized] print("[Stealth] HWID Spoofer active: " .. self.SpoofedID)
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -7052,7 +7052,7 @@ function BS.AntiScreenshot:Activate()
             end
         end)
     end)
-    print("[Stealth] Anti-Screenshot active")
+    -- [optimized] print("[Stealth] Anti-Screenshot active")
 end
 
 -- ═══════════════════════════════════════════════════════════════
@@ -7126,10 +7126,10 @@ page:Label(" Anti-Screenshot ")
 page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() end end)
 page:Separator()
 page:Label(" Statistics ")
-page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
+-- [optimized] page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
 page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
-print("[Stealth] Anti-detection v5.0 activated (8 new systems)")
+-- [optimized] print("[Stealth] Anti-detection v5.0 activated (8 new systems)")
 end
 
 Stealth.ActivateAllAntiDetection()

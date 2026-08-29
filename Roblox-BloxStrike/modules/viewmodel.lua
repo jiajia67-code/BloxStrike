@@ -310,10 +310,10 @@ BS.Viewmodel = {
         Flags.VMScaleVal = preset.Scale * 100
         Flags.VMFOV = true
         Flags.VMFOVVal = preset.FOV
-        print("[Viewmodel] Applied preset: " .. name)
+        -- [optimized] print("[Viewmodel] Applied preset: " .. name)
     end,
 }
 
 local presetNames = {} for k, _ in pairs(ViewmodelPresets) do table.insert(presetNames, k) end
 print("[Viewmodel] BloxStrike Viewmodel Changer loaded")
-print("[Viewmodel] Presets: " .. table.concat(presetNames, ", "))
+-- [optimized] print("[Viewmodel] Presets: " .. table.concat(presetNames, ", "))

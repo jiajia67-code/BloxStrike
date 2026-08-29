@@ -708,5 +708,5 @@ BS.CombatAssist = CA
 BS.CA = CA
 
 print("[CombatAssist] BloxStrike Combat Assist v1.0 loaded")
-print("[CombatAssist] Features: Chat Assistant, Spectator Detection,")
-print("[CombatAssist]   Player Rating, Map Memory, Session Stats")
+-- [optimized] print("[CombatAssist] Features: Chat Assistant, Spectator Detection,")
+-- [optimized] print("[CombatAssist]   Player Rating, Map Memory, Session Stats")

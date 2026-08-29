@@ -806,5 +806,5 @@ HUD.trackHit = function() SessionHits = SessionHits + 1 end
 BS.HUD = HUD
 
 print("[HUD] BloxStrike HUD v1.0 loaded")
-print("[HUD] Features: Performance Monitor, Feature Status, Combat HUD,")
-print("[HUD]   Notification Center, Health Crosshair, Velocity Display")
+-- [optimized] print("[HUD] Features: Performance Monitor, Feature Status, Combat HUD,")
+-- [optimized] print("[HUD]   Notification Center, Health Crosshair, Velocity Display")

@@ -386,6 +386,6 @@ end
 BS.Webhook = Webhook
 
 print("[Webhook] BloxStrike Discord Webhook module loaded")
-print("[Webhook] Set URL in UI to enable | Supports: syn.request, http_request, request")
+-- [optimized] print("[Webhook] Set URL in UI to enable | Supports: syn.request, http_request, request")
 
 return Webhook

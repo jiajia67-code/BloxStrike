@@ -67,7 +67,7 @@ if not Rayfield then
     }
     BS.Win = {
         Tab = function(self, name)
-            print('[UI] Stub tab: ' .. name)
+            -- [optimized] print('[UI] Stub tab: ' .. name)
             return setmetatable({}, {__index = stubPage})
         end
     }
@@ -492,4 +492,4 @@ end)
 -- ═══════════════════════════════════════════════════════════════
 
 print("[UI] BloxStrike UI v3.0 loaded (Rayfield)")
-print("[UI] INSERT: Menu | X: ESP | Z: Bhop | C: AA | V: SA | N: Night | M: NoScope")
+-- [optimized] print("[UI] INSERT: Menu | X: ESP | Z: Bhop | C: AA | V: SA | N: Night | M: NoScope")

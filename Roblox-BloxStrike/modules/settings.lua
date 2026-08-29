@@ -126,7 +126,7 @@ local function saveSettings(presetName)
                 Duration = 3,
             })
         end)
-        print("[Settings] Saved " .. tostring(#settings) .. " settings to " .. SETTINGS_DIR .. SETTINGS_FILE)
+        -- [optimized] print("[Settings] Saved " .. tostring(#settings) .. " settings to " .. SETTINGS_DIR .. SETTINGS_FILE)
     end)
 end
 
@@ -134,7 +134,7 @@ end
 local function loadSettings()
     pcall(function()
         if not safeIsFile(SETTINGS_DIR .. SETTINGS_FILE) then
-            warn("[Settings] No saved settings found!")
+            -- [optimized] warn("[Settings] No saved settings found!")
             pcall(function()
                 game:GetService("StarterGui"):SetCore("SendNotification", {
                     Title = " Settings",
@@ -174,7 +174,7 @@ end
 local function loadPreset(name)
     local preset = Presets[name]
     if not preset then
-        warn("[Settings] Preset '" .. name .. "' not found!")
+        -- [optimized] warn("[Settings] Preset '" .. name .. "' not found!")
         -- return
     end
 
@@ -195,7 +195,7 @@ local function loadPreset(name)
             Duration = 3,
         })
     end)
-    print("[Settings] Applied preset: " .. name)
+    -- [optimized] print("[Settings] Applied preset: " .. name)
 end
 
  -- Reset Settings
@@ -216,7 +216,7 @@ local function resetSettings()
             Duration = 2,
         })
     end)
-    print("[Settings] Reset to defaults")
+    -- [optimized] print("[Settings] Reset to defaults")
 end
 
  -- Export Settings (String)
@@ -285,4 +285,4 @@ task.delay(2, function()
 end)
 
 print("[Settings] BloxStrike Settings module loaded")
-print("[Settings] Commands: BS.Settings.Save/Load/LoadPreset/Reset/Export/Import")
+-- [optimized] print("[Settings] Commands: BS.Settings.Save/Load/LoadPreset/Reset/Export/Import")
