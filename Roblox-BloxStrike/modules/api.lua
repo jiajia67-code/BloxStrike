@@ -363,3 +363,5 @@ print("[API] BloxStrike API loaded (Controllers=" .. tostring(Knit ~= nil)
     -- .. ", Net=" .. tostring(api.NetManaged ~= nil)
     -- .. ", Store=" .. tostring(api.Store ~= nil) .. ")")
 return api
+
+)

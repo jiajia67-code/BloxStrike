@@ -140,7 +140,6 @@ local function calcPerformanceScore()
         local kdImpact = math.clamp((kd - 1) * 10, -25, 25)
         score = score + kdImpact
         factors.KD = kdImpact
-    end
 
     -- 2. /     local recentKills = #deathAnalysis.RecentKills
     local recentDeaths = #deathAnalysis.RecentDeaths
@@ -152,21 +151,18 @@ local function calcPerformanceScore()
         local deathPenalty = math.min((recentDeaths - recentKills) * 4, 20)
         score = score - deathPenalty
         factors.Streak = -deathPenalty
-    end
 
     -- 3.     if s.SessionShots > 0 then
         local acc = s.SessionHits / s.SessionShots
         local accImpact = math.clamp((acc - 0.3) * 50, -15, 15)
         score = score + accImpact
         factors.Accuracy = accImpact
-    end
 
     -- 4.     if s.SessionKills > 0 then
         local hsRate = s.SessionHeadshots / s.SessionKills
         local hsImpact = math.clamp((hsRate - 0.3) * 25, -10, 10)
         score = score + hsImpact
         factors.Headshot = hsImpact
-    end
 
     -- 5.      if s.SessionKills > 0 then
         local dmgPerKill = s.SessionDamage / s.SessionKills
@@ -174,7 +170,6 @@ local function calcPerformanceScore()
         local dmgImpact = efficiency * 10
         score = score + dmgImpact
         factors.DamageEff = dmgImpact
-    end
 
     -- 6.     local sessionMin = (tick() - s.SessionStartTime) / 60
     score = score + math.min(sessionMin / 10, 5)
@@ -185,14 +180,11 @@ local function calcPerformanceScore()
         if tick() - entry.Time < 60 then
             recentPerf = recentPerf + entry.Score
             recentCount = recentCount + 1
-        end
-    end
     if recentCount > 0 then
         recentPerf = recentPerf / recentCount
         local trend = recentPerf - score
         -- score = score + math.clamp(trend * 0.3, -10, 10)
         factors.Trend = trend * 0.3
-    end
 
     -- 8.      if s.AvgEngagementDist and s.AvgEngagementDist > 0 then
         -- <20m? aggressive play
@@ -201,19 +193,14 @@ local function calcPerformanceScore()
             score = score + 3
         elseif s.AvgEngagementDist > 60 then
             score = score + 2
-        end
-    end
 
     -- 9.      if s.AvgReactionTime and s.AvgReactionTime > 0 then
         if s.AvgReactionTime < 200 then
             score = score + 5
         elseif s.AvgReactionTime > 500 then
             score = score - 5
-        end
-    end
 
     return math.clamp(math.floor(score), 0, 100)
-end
 
 function AI.trackKill(victim, headshot, dist, weapon)
     table.insert(AIState.SessionKills + 0 > 0 and deathAnalysis.RecentKills or deathAnalysis.RecentKills, tick())
@@ -222,16 +209,12 @@ function AI.trackKill(victim, headshot, dist, weapon)
     for i = #deathAnalysis.RecentKills, 1, -1 do
         if now - deathAnalysis.RecentKills[i] > 60 then
             table.remove(deathAnalysis.RecentKills, i)
-        end
-    end
     -- TODO
     if dist then
         AIState.AvgEngagementDist = ((AIState.AvgEngagementDist or 0) + dist) / 2
-    end
     -- TODO
     table.insert(AIState.PerformanceTrend, { Time = tick(), Score = calcPerformanceScore(), Type = "Kill" })
     if #AIState.PerformanceTrend > 100 then table.remove(AIState.PerformanceTrend, 1) end
-end
 
 function AI.trackDeath(killer, dist)
     table.insert(deathAnalysis.RecentDeaths, tick())
@@ -239,11 +222,8 @@ function AI.trackDeath(killer, dist)
     for i = #deathAnalysis.RecentDeaths, 1, -1 do
         if now - deathAnalysis.RecentDeaths[i] > 60 then
             table.remove(deathAnalysis.RecentDeaths, i)
-        end
-    end
     table.insert(AIState.PerformanceTrend, { Time = tick(), Score = calcPerformanceScore(), Type = "Death" })
     if #AIState.PerformanceTrend > 100 then table.remove(AIState.PerformanceTrend, 1) end
-end
 
 -- -- SECTION 4: PLAYSTYLE DETECTOR 
 local function detectPlaystyle()
@@ -271,7 +251,6 @@ local function detectPlaystyle()
     elseif wType == "rifle" then scores.Tactical = scores.Tactical + 10
     elseif wType == "smg" then scores.Aggressive = scores.Aggressive + 15
     elseif wType == "pistol" then scores.Tactical = scores.Tactical + 5
-    end
 
     -- C.      if AIState.SessionDeaths > 0 then
         local kd = AIState.SessionKills / AIState.SessionDeaths
@@ -2033,4 +2012,4 @@ print("[SmartAI] Features: Playstyle Detection, Lobby Assessment,")
 print("[SmartAI]   Auto Aimbot/ESP/Rage/Movement/Stealth/Viewmodel/World/Chat/Bypass/Bhop Tuning,")
 print("[SmartAI]   Safety Mode, Aggressive Mode, Balanced Mode, Auto Select,")
 print("[SmartAI]   Counter-Aim, Threat Response, Map Adaptation,")
-print("[SmartAI]   Self-Learning, AI HUD Display")
+print("[SmartAI]   Self-Learning, AI HUD Display"

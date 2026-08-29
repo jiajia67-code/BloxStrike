@@ -29,7 +29,6 @@ pcall(function()
         executorVersion = ver or "Unknown"
     elseif getexecutorname then
         executorName = getexecutorname()
-    end
 end)
 
 Compat.Executor = executorName
@@ -51,7 +50,6 @@ pcall(function()
     elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
         -- Could be a 2-in-1 device or emulator
         Compat.IsEmulator = true
-    end
     
     -- Detect PC
     if UserInputService.KeyboardEnabled and UserInputService.MouseEnabled then
@@ -591,7 +589,7 @@ task.delay(1, function()
     -- Compat.PrintReport()
 end)
 
-print("[Compat] BloxStrike Compatibility Module loaded")
-print("[Compat] Supports: All executors + PC + Mobile + Emulators")
+print("[Compat] BloxStrike Compatibility Module loaded"
+print("[Compat] Supports: All executors + PC + Mobile + Emulators"
 
 return Compat

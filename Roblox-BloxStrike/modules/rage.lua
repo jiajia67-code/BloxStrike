@@ -28,11 +28,9 @@ local function safeDrawingNew(class)
     if Compat and Compat.DrawingNew then return Compat.DrawingNew(class) end
     local s, r = pcall(function() return Drawing.new(class) end)
     return s and r or nil
-end
 local function safeMouse1Click()
     if Compat and Compat.Mouse1Click then Compat.Mouse1Click() return end
     safeMouse1Click()
-end
 
 -- GLOBAL RAGE STATE
 local RAGE = {
@@ -677,14 +675,11 @@ page:Button({Name="[HVH] Show Stats", Color=Color3.fromRGB(200,200,100)}, functi
         if Flags[f] or Flags[f:gsub(" ","")] then
             activeFeatures = activeFeatures + 1
             table.insert(activeNames, f)
-        end
-    end
     local text = string.format("? HVH \n: %d\n", activeFeatures)
     if #activeNames > 0 then
         text = text .. "?: " .. table.concat(activeNames, ", ")
     else
         text = text .. "HVH "
-    end
     pcall(function() game:GetService("StarterGui"):SetCore("SendNotification",{Title=" HVH",Text=text,Duration=8}) end)
 end)
 
@@ -737,10 +732,8 @@ task.spawn(function()
                         autoPeekActive = true
                     else
                         autoPeekActive = false
-                    end
                 elseif mode == "Toggle" then
                     -- Toggle handled by keybind system
-                end
                 
                 if autoPeekActive then
                     -- Move right/left based on nearest enemy
@@ -759,10 +752,6 @@ task.spawn(function()
                                 if d < nearDist then
                                     nearDist = d
                                     nearest = eHrp
-                                end
-                            end
-                        end
-                    end
                     
                     if nearest then
                         local toEnemy = (nearest.Position - myHrp.Position).Unit
@@ -778,14 +767,9 @@ task.spawn(function()
                             local angle = (Flags.AutoPeekAngle or 30) / 100
                             task.wait(0.05)
                             myHrp.Velocity = -peekSide * 50 * angle
-                        end
-                    end
                 else
                     myHrp.Velocity = Vector3.new(0, myHrp.Velocity.Y, 0)
-                end
             end)
-        end
-    end
 end)
 
 -- EDGE ANTI-AIM Implementation
@@ -817,7 +801,6 @@ task.spawn(function()
                     if Flags.EdgeAutoDesync then
                         local offset = Flags.EdgeDesyncOff or 30
                         Flags.AABodyYawO = offset
-                    end
                     
                     -- Freestand
                     if Flags.EdgeFreestand then
@@ -825,8 +808,6 @@ task.spawn(function()
                             Flags.AAYaw = "Manual Left"
                         elseif rightRay and not leftRay then
                             Flags.AAYaw = "Manual Right"
-                        end
-                    end
                 end
             end)
         end
@@ -3049,5 +3030,5 @@ print("[Rage] 4B Moving AA Resolver + Side Detection + Anim Breaker NEW")
 print("[Rage] 5  HVH Utilities (Slide Walk, Pixel Surf, Quick Switch)")
 print("[Rage] 6  HVH Presets (Full Rage, Anti-Oneshot)")
 print("[Rage] 7  Advanced HVH (HVH Super, Auto AA/FL/Resolver)")
-print("[Rage] 8  HVH Statistics")
-print("[Rage] ")
+print("[Rage] 8  HVH Statistics"
+print("[Rage] "

@@ -1817,3 +1817,6 @@ print("[Bypass]   28 Heartbeat Spoofing                 NEW")
 print("[Bypass]   29 Advanced Anti-Dump                 NEW")
 print("[Bypass]   30 Unified Activation Engine           NEW")
 print("[Bypass] ")
+
+)
+end
