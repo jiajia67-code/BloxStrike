@@ -1143,7 +1143,7 @@ function AI.autoSelectMode()
         decision = "Balanced"
     end
 
-    -- if decision == "Safe" then
+    if decision == "Safe" then
         AI.activateSafeMode()
     elseif decision == "Aggressive" then
         AI.activateAggressiveMode()

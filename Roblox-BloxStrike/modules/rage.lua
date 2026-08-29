@@ -739,7 +739,8 @@ task.spawn(function()
                         autoPeekActive = false
                     end
                 elseif mode == "Toggle" then
-                    -- Toggle handled by keybind system                if autoPeekActive then
+                    -- Toggle handled by keybind system
+                    if autoPeekActive then
                     local cam = workspace.CurrentCamera
                     local lookDir = cam.CFrame.LookVector
                     local rightDir = cam.CFrame.RightVector

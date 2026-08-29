@@ -729,7 +729,7 @@ U:Button({Name="Server Hop", Color=Color3.fromRGB(60,100,140)}, function()
             end
         end
     end)
-end
+end)
 
 task.spawn(function()
     while task.wait(5) do

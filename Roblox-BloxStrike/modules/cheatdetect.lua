@@ -1660,6 +1660,8 @@ task.spawn(function()
             pcall(function() CD.fullScan() end)
 
 
+        end
+    end)
 end)
 
 -- Cleanup on player leaving

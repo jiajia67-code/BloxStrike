@@ -336,6 +336,7 @@ Luau.safeCall = function(obj, methodName, ...)
     local method = obj[methodName]
     if type(method) ~= "function" then return nil end
     return method(obj, ...)
+end
 
 
 -- Feature gate: only run code if feature is available

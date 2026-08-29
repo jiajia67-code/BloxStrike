@@ -1132,8 +1132,8 @@ task.spawn(function()
 end)
 
 -- Expose functions to combat module
-Combat.shouldShoot = shouldShoot
-Combat.checkMinDamage = checkMinDamage
+pcall(function() Combat.shouldShoot = shouldShoot end)
+pcall(function() Combat.checkMinDamage = checkMinDamage end)
 
 
 
