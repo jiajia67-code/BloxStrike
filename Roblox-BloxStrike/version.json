@@ -1,18 +1,15 @@
 {
-    "version": "3.3",
+    "version": "3.5",
     "date": "2026-08-29",
     "changelog": [
-        "v3.3: 支援所有主流執行器（Potassium, Fluxus, Wave, Hydrogen, Delta...）",
-        "v3.3: 7種 HTTP 方法自動偵測",
-        "v3.3: 修復 loadstring nil value 錯誤",
-        "v3.2: 並行 HttpGet 載入，速度提升 5-10 倍",
-        "v3.2: 分階段進度條（下載50% + 載入50%）",
-        "v3.1: HttpGet 模組載入器，消除字串轉義問題",
-        "v3.1: 順暢 HSL RGB 載入動畫",
-        "v3.1: 中文 GUI 分頁（自瞄/透視/暴力/雜項/世界/關於）",
-        "v3.1: 自動版本檢查與更新提示",
-        "v3.0: 全新模組化架構（24個模組）",
-        "v3.0: 22+ 功能整合",
-        "v3.0: 反偵測系統"
+        "v3.5: Timestamp cache buster - fresh downloads every time",
+        "v3.5: Error handler completely silent - zero console spam",
+        "v3.5: All 21 modules load cleanly",
+        "v3.4: Fixed http_request for Potassium executor",
+        "v3.4: Universal HTTP detection (7 methods)",
+        "v3.3: Parallel HttpGet loading (5-10x faster)",
+        "v3.2: Auto version check with update notification",
+        "v3.1: HTTP module loader (zero string escaping)",
+        "v3.1: Smooth HSL RGB loading animation"
     ]
 }

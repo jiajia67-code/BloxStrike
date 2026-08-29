@@ -257,7 +257,7 @@ function BS.rollbackState(stepsBack)
         for k, v in pairs(snap.Flags) do
             Flags[k] = v
         end
-        print("[ErrorHandler]  Rolled back to snapshot: " .. snap.Name .. " from " .. math.floor(tick() - snap.Time) .. "s ago")
+        -- [silenced] print("[ErrorHandler]  Rolled back to snapshot: " .. snap.Name .. " from " .. math.floor(tick() - snap.Time) .. "s ago")
         ErrorLog.RecoverCount = ErrorLog.RecoverCount + 1
     end)
 end
@@ -296,7 +296,7 @@ function BS.safeCall(func, context, ...)
 
         -- If cascade detected, emergency rollback
         if ErrorLog.CascadeCount > 5 then
-            print("[ErrorHandler]  CASCADE DETECTED  emergency rollback + disable dangerous features")
+            -- [silenced] print("[ErrorHandler]  CASCADE DETECTED  emergency rollback + disable dangerous features")
             ErrorLog.CascadeCount = 0
             BS.emergencyPanic()
             return nil, errMsg
@@ -325,7 +325,7 @@ function BS.safeCall(func, context, ...)
 
             -- Auto-rollback on critical
             if ErrorLog.CrashCount > 3 then
-                print("[ErrorHandler]  Multiple crashes  rolling back to safe state")
+                -- [silenced] print("[ErrorHandler]  Multiple crashes  rolling back to safe state")
                 BS.rollbackState(2)
             end
 
@@ -392,7 +392,7 @@ function BS.trackConnection(name, connection)
             end)
             Connections[id] = nil
             ConnectionCount = ConnectionCount - 1
-            print("[ErrorHandler]  Auto-disconnected leaked connection: " .. (name or "unknown"))
+            -- [silenced] print("[ErrorHandler]  Auto-disconnected leaked connection: " .. (name or "unknown"))
         end
     end)
     return id
@@ -424,7 +424,7 @@ task.spawn(function()
                 end
             end
             if leaked > 0 then
-                print("[ErrorHandler]  Cleaned " .. leaked .. " leaked connections")
+                -- [silenced] print("[ErrorHandler]  Cleaned " .. leaked .. " leaked connections")
             end
         end)
     end
@@ -464,7 +464,7 @@ task.spawn(function()
             local now = tick()
             for id, data in pairs(LoopHeartbeats) do
                 if data and data.Alive and now - data.LastYield > DEAD_LOOP_TIMEOUT then
-                    print("[ErrorHandler]  Dead loop detected: " .. (data.Name or "?") .. "  killing")
+                    -- [silenced] print("[ErrorHandler]  Dead loop detected: " .. (data.Name or "?") .. "  killing")
                     data.Alive = false
                     ErrorLog.CrashCount = ErrorLog.CrashCount + 1
                 end
@@ -481,18 +481,18 @@ function BS.reloadModule(moduleName)
             or script.Parent and script.Parent:FindFirstChild("modules") and script.Parent.modules:FindFirstChild(moduleName)
 
         if modPath then
-            print("[ErrorHandler] Reloading module: " .. moduleName)
+            -- [silenced] print("[ErrorHandler] Reloading module: " .. moduleName)
             package.loaded[tostring(modPath)] = nil
             local success, result = pcall(require, modPath)
             if success then
-                print("[ErrorHandler]  Module reloaded: " .. moduleName)
+                -- [silenced] print("[ErrorHandler]  Module reloaded: " .. moduleName)
                 ErrorLog.ModuleStatus[moduleName] = "reloaded"
             else
-                print("[ErrorHandler]  Reload failed: " .. moduleName .. "  " .. tostring(result):sub(1, 60))
+                -- [silenced] print("[ErrorHandler]  Reload failed: " .. moduleName .. "  " .. tostring(result):sub(1, 60))
                 ErrorLog.ModuleStatus[moduleName] = "failed"
             end
         else
-            print("[ErrorHandler]  Module not found: " .. moduleName)
+            -- [silenced] print("[ErrorHandler]  Module not found: " .. moduleName)
             ErrorLog.ModuleStatus[moduleName] = "not_found"
         end
     end)
@@ -535,13 +535,13 @@ task.spawn(function()
                     -- Disable after 5 consecutive errors
                     if td.ConsecutiveErrors >= 5 then
                         td.Enabled = false
-                        print("[ErrorHandler]  Task '" .. name .. "' disabled (5 errors): " .. td.LastError:sub(1, 50))
+                        -- [silenced] print("[ErrorHandler]  Task '" .. name .. "' disabled (5 errors): " .. td.LastError:sub(1, 50))
                         -- Re-enable after cooldown, with gradual health recovery
                         task.delay(30, function()
                             td.Enabled = true
                             td.ConsecutiveErrors = 0
                             td.HealthScore = 50 -- start at half health
-                            print("[ErrorHandler]  Task '" .. name .. "' re-enabled (health: 50)")
+                            -- [silenced] print("[ErrorHandler]  Task '" .. name .. "' re-enabled (health: 50)")
                         end)
                     end
                 else
@@ -571,7 +571,7 @@ pcall(function()
 
         if severity == "critical" or severity == "catastrophic" then
             ErrorLog.CrashCount = ErrorLog.CrashCount + 1
-            print("[ErrorHandler]  GLOBAL " .. severity:upper() .. ": " .. errMsg:sub(1, 80))
+            -- [silenced] print("[ErrorHandler]  GLOBAL " .. severity:upper() .. ": " .. errMsg:sub(1, 80))
         end
 
         -- Try auto-fix
@@ -598,7 +598,7 @@ task.spawn(function()
             -- Camera check
             local cam = workspace.CurrentCamera
             if not cam or not cam.CFrame then
-                print("[ErrorHandler]  Camera invalid  recovering")
+                -- [silenced] print("[ErrorHandler]  Camera invalid  recovering")
                 pcall(function()
                     pcall(function() workspace.CurrentCamera = Instance.new("Camera", workspace) end)
                 end)
@@ -608,12 +608,12 @@ task.spawn(function()
             local alive = BS.alive and BS.alive() or false
             local hrp = BS.hrp and BS.hrp() or nil
             if alive and not hrp then
-                print("[ErrorHandler]  HRP missing but alive  recovery attempt")
+                -- [silenced] print("[ErrorHandler]  HRP missing but alive  recovery attempt")
             end
 
             -- FPS health
             if BS.Perf and BS.Perf.FPS and BS.Perf.FPS < 10 then
-                print("[ErrorHandler]  Critically low FPS: " .. BS.Perf.FPS)
+                -- [silenced] print("[ErrorHandler]  Critically low FPS: " .. BS.Perf.FPS)
                 -- Emergency: reduce rendering load
                 pcall(function()
                     Flags.ESP_Glow = false
@@ -629,7 +629,7 @@ task.spawn(function()
                 if now - e.Time < 30 then recentErrors = recentErrors + 1 end
             end
             if recentErrors > 10 then
-                print("[ErrorHandler]  HIGH ERROR RATE: " .. recentErrors .. " errors in 30s  entering safe mode")
+                -- [silenced] print("[ErrorHandler]  HIGH ERROR RATE: " .. recentErrors .. " errors in 30s  entering safe mode")
                 BS.emergencyPanic()
             end
         end)
@@ -640,7 +640,7 @@ end)
 
 function BS.emergencyPanic()
     pcall(function()
-        print("[ErrorHandler]  EMERGENCY PANIC  disabling all dangerous features")
+        -- [silenced] print("[ErrorHandler]  EMERGENCY PANIC  disabling all dangerous features")
 
         -- Disable dangerous features
         Flags.Ragebot = false
