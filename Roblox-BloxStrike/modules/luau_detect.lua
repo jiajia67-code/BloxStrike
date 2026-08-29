@@ -326,9 +326,9 @@ Luau.safeGet = function(obj, ...)
     for _, key in ipairs({...}) do
         if current == nil then return nil end
         current = current[key]
-
+    end
     return current
-
+end
 
 -- Safe method call: prevents nil index on method calls
 Luau.safeCall = function(obj, methodName, ...)

@@ -1379,6 +1379,7 @@ local remoteCamouflage = {
 
 -- Send a remote call with camouflage
 function Bypass.camouflagedFire(remote, ...)
+    local args = {...}
     if not remote or not remote:IsA("RemoteEvent") then return false end
     if not Bypass.validateRemote(remote) then return false end
 
@@ -1432,7 +1433,7 @@ function Bypass.camouflagedFire(remote, ...)
     end
 
     -- Fire the actual remote
-    pcall(function() remote:FireServer(...) end)
+    pcall(function() remote:FireServer(unpack(args)) end)
     return true
 end
 

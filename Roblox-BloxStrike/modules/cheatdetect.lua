@@ -1442,28 +1442,27 @@ lplr.CharacterAdded:Connect(function()
 end)
 
  -- Player Join Alert
--- Players.PlayerAdded:Connect(function(player)
-    if Flags.CheatDetect and Flags.CD_Alerts then
-        task.delay(5, function()
-            -- Check if this player has been flagged before (persistent data)
-            if isfile and isfile("BloxStrike/CheatLog.json") then
+pcall(function()
+    Players.PlayerAdded:Connect(function(player)
+        if Flags.CheatDetect and Flags.CD_Alerts then
+            task.delay(5, function()
                 pcall(function()
-                    local log = HttpService:JSONDecode(readfile("BloxStrike/CheatLog.json"))
-                    if log[tostring(player.UserId)] then
-                        local prevScore = log[tostring(player.UserId)].Score or 0
-                        if prevScore > 50 then
-                            CD.sendAlert(
-                                -- " ",
-                                string.format("%s  (%.0f%%)",
-                                    player.Name, prevScore),
-                                Color3.fromRGB(255, 150, 0), 8
-                            )
+                    if isfile and isfile("BloxStrike/CheatLog.json") then
+                        local log = HttpService:JSONDecode(readfile("BloxStrike/CheatLog.json"))
+                        if log and log[tostring(player.UserId)] then
+                            local prevScore = log[tostring(player.UserId)].Score or 0
+                            if prevScore > 50 then
+                                CD.sendAlert(
+                                    string.format("%s (%.0f%%)", player.Name, prevScore),
+                                    Color3.fromRGB(255, 150, 0), 8
+                                )
+                            end
                         end
                     end
                 end)
-            end
-        end)
-    end
+            end)
+        end
+    end)
 end)
 
  -- Persist Cheat Log

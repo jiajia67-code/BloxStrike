@@ -653,7 +653,7 @@ task.spawn(function()
                 local dist = (myHrp.Position - bomb.Position).Magnitude
                 if dist <= (Flags.DefuseRange or 5) then
                     if BS.api.hasDefuseKit and BS.api.hasDefuseKit() then
-                        BS.equipTool("defuse") or BS.equipTool("kit")
+                        pcall(function() BS.equipTool("defuse") end)
                         task.wait(0.1)
                     end
                     local h = BS.hum()

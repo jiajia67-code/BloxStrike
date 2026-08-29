@@ -677,12 +677,15 @@ page:Button({Name="[HVH] Show Stats", Color=Color3.fromRGB(200,200,100)}, functi
         if Flags[f] or Flags[f:gsub(" ","")] then
             activeFeatures = activeFeatures + 1
             table.insert(activeNames, f)
-    local text = string.format("? HVH \n: %d\n", activeFeatures)
+        end
+    end
+    local text = string.format("HVH Stats\nActive: %d\n", activeFeatures)
     if #activeNames > 0 then
-        text = text .. "?: " .. table.concat(activeNames, ", ")
+        text = text .. "Features: " .. table.concat(activeNames, ", ")
     else
-        text = text .. "HVH "
-    pcall(function() game:GetService("StarterGui"):SetCore("SendNotification",{Title=" HVH",Text=text,Duration=8}) end)
+        text = text .. "No features active"
+    end
+    pcall(function() game:GetService("StarterGui"):SetCore("SendNotification",{Title="HVH Stats",Text=text,Duration=8}) end)
 end)
 
 -- SECTION 9: AUTO PEEK

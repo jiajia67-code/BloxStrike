@@ -28,11 +28,28 @@ local rayfieldURLs = {
     "https://raw.githubusercontent.com/jensonhirst/Rayfield/main/source",
 }
 
+local function fetchUrl(url)
+    if http_request then
+        local ok, res = pcall(function() return http_request({Url=url, Method='GET'}) end)
+        if ok and res and res.Body then return res.Body end
+    end
+    if request then
+        local ok, res = pcall(function() return request({Url=url, Method='GET'}) end)
+        if ok and res and res.Body then return res.Body end
+    end
+    local ok, res = pcall(function() return game:HttpGet(url, true) end)
+    if ok and res and #res > 0 then return res end
+    return nil
+end
+
 while not Rayfield and loadAttempts < maxAttempts do
     loadAttempts = loadAttempts + 1
     for _, url in ipairs(rayfieldURLs) do
         pcall(function()
-            Rayfield = loadstring(game:HttpGet(url, true))()
+            local src = fetchUrl(url)
+            if src and #src > 0 then
+                Rayfield = loadstring(src)()
+            end
         end)
         if Rayfield then break end
     end

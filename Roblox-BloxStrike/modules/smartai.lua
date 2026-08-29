@@ -1052,17 +1052,17 @@ function AI.autoSelectMode()
     local indicators = AIState.LobbyIndicators or {}
     local confidence = AIState.PlaystyleConfidence or 50
 
-    -- local safeScore = 0   -- 
-    local aggrScore = 0   -- 
-    local balScore = 0    -- 
+    local safeScore = 0
+    local aggrScore = 0
+    local balScore = 0
 
-    -- 1.      if skill > 80 then safeScore = safeScore + 40
+    if skill > 80 then safeScore = safeScore + 40
     elseif skill > 65 then safeScore = safeScore + 25; balScore = balScore + 10
     elseif skill > 50 then balScore = balScore + 20
     elseif skill > 30 then aggrScore = aggrScore + 15; balScore = balScore + 10
     else aggrScore = aggrScore + 25 end
 
-    -- 2.      if indicators.Cheaters then
+    if indicators.Cheaters then
         safeScore = safeScore + 50
     end
 

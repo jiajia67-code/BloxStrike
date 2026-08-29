@@ -51,6 +51,7 @@ pcall(function()
     elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
         -- Could be a 2-in-1 device or emulator
         Compat.IsEmulator = true
+    end
     
     -- Detect PC
     if UserInputService.KeyboardEnabled and UserInputService.MouseEnabled then

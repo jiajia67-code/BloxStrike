@@ -73,7 +73,7 @@ if Knit then
 end
 
  -- 6. Dump
-if Knit then
+if Knit and Knit.Controllers then
     local count = 0
     for _ in pairs(Knit.Controllers) do count = count + 1 end
     print("[API] Controllers: " .. count)

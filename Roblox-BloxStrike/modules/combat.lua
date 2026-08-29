@@ -733,10 +733,10 @@ UIS.InputBegan:Connect(function(input, gpe)
                 local name = tool.Name:lower()
                 if name:find("knife") or name:find("bayonet") then
                     -- Switch to primary
-                    BS.equipTool("ak") or BS.equipTool("m4") or BS.equipTool("rifle")
+                    pcall(function() BS.equipTool("ak") end)
                 else
                     -- Switch to knife
-                    BS.equipTool("knife") or BS.equipTool("bayonet")
+                    pcall(function() BS.equipTool("knife") end)
                 end
             end
         end)

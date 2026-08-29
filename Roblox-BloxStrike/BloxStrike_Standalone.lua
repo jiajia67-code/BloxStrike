@@ -356,6 +356,40 @@ for i, name in ipairs(MODULE_ORDER) do
         local execOk, execErr = pcall(function()
             local fn, compileErr = loadstring(code)
             if not fn then error('Compile: ' .. (compileErr or 'unknown')) end
+            -- Inject globals into module environment
+            local env = getfenv(fn)
+            env.BS = _G.BS
+            env.Flags = _G.Flags
+            env._G = _G
+            env.game = game
+            env.workspace = workspace
+            env.Instance = Instance
+            env.Color3 = Color3
+            env.UDim2 = UDim2
+            env.UDim = UDim
+            env.Vector3 = Vector3
+            env.Vector2 = Vector2
+            env.CFrame = CFrame
+            env.Enum = Enum
+            env.tick = tick
+            env.wait = wait
+            env.pcall = pcall
+            env.xpcall = xpcall
+            env.error = error
+            env.warn = warn
+            env.print = print
+            env.pairs = pairs
+            env.ipairs = ipairs
+            env.table = table
+            env.string = string
+            env.math = math
+            env.task = task
+            env.unpack = unpack or table.unpack
+            env.httpGet = httpGet
+            env.http_request = http_request
+            env.request = request
+            env.loadstring = loadstring
+            setfenv(fn, env)
             fn()
         end)
         logModule(name, execOk, not execOk and tostring(execErr):sub(1, 50) or nil)
