@@ -1,15 +1,6 @@
---!nocheck
 --[[
     BLOXSTRIKE v3.0 — OPTIMIZED Injection Loader
-    速度優化版 - 比原版快 3-5 倍
-    
-    優化項目：
-    - 精簡模組搜尋路徑（從12個減到3個）
-    - 最小化環境注入代碼
-    - 移除多餘的 debug print
-    - 優化模組載入函數
-    - 快取檔案讀取
-    - 並行載入獨立模組
+    Speed optimized version - 3-5x faster
 ]]
 
 -- ═══════════════════════════════════════════════════════════════
@@ -17,7 +8,8 @@
 -- ═══════════════════════════════════════════════════════════════
 
 if game.PlaceId ~= 114234929420007 then
-    warn("[BloxStrike] Wrong game! Join: https://www.roblox.com/games/114234929420007/BloxStrike")
+    warn("[BloxStrike] Wrong game! Please join BloxStrike game.")
+    warn("PlaceId: 114234929420007")
     return
 end
 
