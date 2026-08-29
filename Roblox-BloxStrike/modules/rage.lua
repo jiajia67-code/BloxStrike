@@ -741,7 +741,7 @@ task.spawn(function()
                 elseif mode == "Toggle" then
                     -- Toggle handled by keybind system
                     if autoPeekActive then
-                    local cam = workspace.CurrentCamera
+                        local cam = workspace.CurrentCamera
                     local lookDir = cam.CFrame.LookVector
                     local rightDir = cam.CFrame.RightVector
                     local nearest = nil
@@ -765,6 +765,7 @@ task.spawn(function()
                         myHrp.Velocity = peekSide * 50
                     else
                         myHrp.Velocity = Vector3.new(0, myHrp.Velocity.Y, 0)
+                    end
                     end
                 end
             end

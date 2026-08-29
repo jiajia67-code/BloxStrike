@@ -915,15 +915,15 @@ function BS.BombTimer:Stop()
 end
 
 -- GUI
-page:Label(" Grenade ")
-page:Toggle("手榴彈預覽", false, function(v) Flags.GrenadePreview = v end)
-page:Slider("手榴彈力度", 20, 100, 50, function(v) Flags.GrenadeForce = v end)
-page:Button({Name="跳投"}, function() BS.JumpThrow() end)
-page:Button({Name="快速投擲"}, function() BS.QuickNade() end)
-page:Separator()
-page:Label(" Bomb ")
-page:Button({Name="Start Timer (40s)"}, function() BS.BombTimer:Start("A", 40) end)
-page:Button({Name="Stop Timer"}, function() BS.BombTimer:Stop() end)
+M:Label(" Grenade ")
+M:Toggle("手榴彈預覽", false, function(v) Flags.GrenadePreview = v end)
+M:Slider("手榴彈力度", 20, 100, 50, function(v) Flags.GrenadeForce = v end)
+M:Button({Name="跳投"}, function() BS.JumpThrow() end)
+M:Button({Name="快速投擲"}, function() BS.QuickNade() end)
+M:Separator()
+M:Label(" Bomb ")
+M:Button({Name="Start Timer (40s)"}, function() BS.BombTimer:Start("A", 40) end)
+M:Button({Name="Stop Timer"}, function() BS.BombTimer:Stop() end)
 
 print("[Utility] BloxStrike Utility module v2.0 loaded (Misc + Utility + Settings)")
 

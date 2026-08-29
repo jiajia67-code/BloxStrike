@@ -1364,12 +1364,12 @@ RunService.RenderStepped:Connect(function(dt)
 end)
 
 -- Cleanup
-lplr.CharacterRemoving:Connect(function()
+if lplr then pcall(function() lplr.CharacterRemoving:Connect(function()
     for i=1, PMax.L do pcall(function() LinePool[i].Visible=false end) end
     for i=1, PMax.T do pcall(function() TextPool[i].Visible=false end) end
     for i=1, PMax.S do pcall(function() SquarePool[i].Visible=false end) end
     for i=1, PMax.C do pcall(function() CirclePool[i].Visible=false end) end
-end)
+end) end)
 
 
 -- ═══════════════════════════════════════════════════════════════

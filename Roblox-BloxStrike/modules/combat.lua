@@ -175,7 +175,7 @@ task.spawn(function()
                 local candidates = {}
 
                 -- Find all valid targets
-                for _, e in pairs(BS.enemies()) do
+                for _, e in pairs(BS.enemies and BS.enemies() or {}) do
                     if not e.HRP or not e.Hum or e.Hum.Health <= 0 then continue end
                     if Flags.AimbotTeamCheck and lplr.Team and e.Player.Team == lplr.Team then continue end
                     if Flags.AimbotFriend and lplr:IsFriendsWith(e.Player.UserId) then continue end
@@ -501,7 +501,7 @@ task.spawn(function()
                 local mouseTarget = rayResult and rayResult.Instance
                 if not cam or not mouseTarget or not myHrp then return end
 
-                for _, e in pairs(BS.enemies()) do
+                for _, e in pairs(BS.enemies and BS.enemies() or {}) do
                     if e.Char and mouseTarget:IsDescendantOf(e.Char) then
                         -- Team check
                         if Flags.TBTeamCheck and lplr.Team and e.Player.Team == lplr.Team then continue end
@@ -599,7 +599,7 @@ task.spawn(function()
                     saFov = BS.PA.getAdaptSilentRange(saFov)
                 end
                 local best, bestDist = nil, saFov
-                for _, e in pairs(BS.enemies()) do
+                for _, e in pairs(BS.enemies and BS.enemies() or {}) do
                     local aimPos = Flags.SAHeadshot
                         and (e.Head and e.Head.Position or e.HRP.Position + Vector3.new(0, 1.5, 0))
                         or e.HRP.Position
@@ -780,7 +780,7 @@ task.spawn(function()
                 if not cam or not myHrp then return end
 
                 local best, bestDist = nil, Flags.AAFov or 60
-                for _, e in pairs(BS.enemies()) do
+                for _, e in pairs(BS.enemies and BS.enemies() or {}) do
                     local aimPos = e.Head and e.Head.Position or e.HRP.Position + Vector3.new(0, 1.5, 0)
                     if Flags.AAWall and not BS.hasLineOfSight(myHrp.Position, aimPos) then
                         continue
@@ -842,7 +842,7 @@ page:Slider("HB Size", 1, 10, 3, function(v) Flags.HBSize = v end)
 task.spawn(function()
     while task.wait(0.1) do
         if Flags.HitBoxExpander then
-            for _, e in pairs(BS.enemies()) do
+            for _, e in pairs(BS.enemies and BS.enemies() or {}) do
                 if e.HRP then
                     pcall(function()
                         e.HRP.Size = Vector3.new(Flags.HBSize or 3, Flags.HBSize or 3, Flags.HBSize or 3)

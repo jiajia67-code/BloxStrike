@@ -1810,11 +1810,6 @@ function AI.fullAnalysis()
             Title = " AI ",
             -- Text = string.format(
                 -- ": %s (%.0f%%)\n?: %s (%.0f%%)\n: %d/100\n: %s",
-                AIState.Playstyle, AIState.PlaystyleConfidence,
-                AIState.LobbySkill, AIState.LobbySkillScore,
-                calcPerformanceScore(),
-                AIState.CounterStrategy),
-            Duration = 6,
         })
     end)
 end
