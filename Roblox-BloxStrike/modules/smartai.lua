@@ -1819,29 +1819,13 @@ function AI.showStatus()
     local perf = calcPerformanceScore()
     local uptime = math.floor((tick() - AIState.SessionStartTime) / 60)
 
-    local statusText = string.format(
-        -- " AI \n" ..
-        -- "\n" ..
-        -- "?: %d/100\n" ..
-        -- "?: %s (%.0f%%)\n" ..
-        -- ": %s (%.0f%%)\n" ..
-        -- ": %s\n" ..
-        -- "?: %s\n" ..
-        -- "\n" ..
-        -- "K/D: %d/%d | HS: %d\n" ..
-        -- " %.0f%%\n" ..
-        -- ": %d\n" ..
-        -- "?: %d",
-        -- perf,
-        AIState.Playstyle, AIState.PlaystyleConfidence,
-        AIState.LobbySkill, AIState.LobbySkillScore,
-        AIState.ThreatLevel,
-        AIState.CounterStrategy,
-        AIState.SessionKills, AIState.SessionDeaths, AIState.SessionHeadshots,
-        AIState.SessionShots > 0 and (AIState.SessionHits / AIState.SessionShots * 100) or 0,
-        -- uptime,
-        -- #AIState.Decisions
-    )
+    local kd = AIState.SessionDeaths > 0 and (AIState.SessionKills / AIState.SessionDeaths) or AIState.SessionKills
+    local acc = AIState.SessionShots > 0 and math.floor(AIState.SessionHits / AIState.SessionShots * 100) or 0
+    local statusText = "[AI] P:" .. tostring(AIState.Playstyle or "?")
+        .. " K/D:" .. tostring(AIState.SessionKills or 0) .. "/" .. tostring(AIState.SessionDeaths or 0)
+        .. " HS:" .. tostring(AIState.SessionHeadshots or 0)
+        .. " Acc:" .. tostring(acc) .. "%"
+        .. " Perf:" .. tostring(perf or 0)
 
     pcall(function()
          StarterGui:SetCore("SendNotification", {
