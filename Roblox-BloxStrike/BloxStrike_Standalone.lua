@@ -25,7 +25,7 @@ local GUI = Instance.new("ScreenGui")
 GUI.Name = "BloxStrike_Load"
 GUI.ResetOnSpawn = false
 GUI.IgnoreGuiInset = true
-pcall(function() Player.PlayerGui:WaitForChild("BloxStrike_Load"):Destroy() end)
+pcall(function() local g = Player.PlayerGui:FindFirstChild("BloxStrike_Load") if g then g:Destroy() end end)
 GUI.Parent = Player.PlayerGui
 
 local Overlay = Instance.new("Frame")
