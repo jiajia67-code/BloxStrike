@@ -1,8 +1,7 @@
---[[BloxStrike v3.3 - Universal Executor Support]]
--- 支援所有主流執行器（Potassium, Fluxus, Wave, Hydrogen, Delta...）
+--[[BloxStrike v3.4 - Fixed HTTP for all executors]]
 
 if game.PlaceId ~= 114234929420007 then
-    warn('[BloxStrike] 錯誤的遊戲！需要 BloxStrike')
+    warn('[BloxStrike] Wrong game!')
     return
 end
 
@@ -11,53 +10,60 @@ _G.BS = _G.BS or {}
 _G.Flags = Flags
 _G.BS.Flags = Flags
 
-local CURRENT_VERSION = '3.3'
+local CURRENT_VERSION = '3.4'
 local t0 = tick()
 local BASE_URL = "https://raw.githubusercontent.com/jiajia67-code/BloxStrike/main/Roblox-BloxStrike/modules/"
 local VERSION_URL = "https://raw.githubusercontent.com/jiajia67-code/BloxStrike/main/Roblox-BloxStrike/version.json"
 
--- ═══ UNIVERSAL HTTP GET ═══
--- Try multiple methods to support ALL executors
+-- ═══ Universal HTTP ═══
 local function httpGet(url)
-    -- Method 1: syn.request (Synapse, Fluxus, Wave, Potassium)
-    if syn and syn.request then
-        local r = syn.request({Url = url, Method = 'GET'})
-        if r and r.Body then return r.Body end
-    end
-    -- Method 2: http_request (Synapse X)
+    -- Method 1: http_request (Fluxus, Potassium - confirmed working)
     if http_request then
-        local r = http_request({Url = url, Method = 'GET'})
-        if r and r.Body then return r.Body end
+        local ok, res = pcall(function()
+            return http_request({Url = url, Method = 'GET'})
+        end)
+        if ok and res and res.Body then return res.Body end
     end
-    -- Method 3: request (various)
+    -- Method 2: request (also confirmed working)
     if request then
-        local r = request({Url = url, Method = 'GET'})
-        if r and r.Body then return r.Body end
+        local ok, res = pcall(function()
+            return request({Url = url, Method = 'GET'})
+        end)
+        if ok and res and res.Body then return res.Body end
     end
-    -- Method 4: HttpService (universal, may be blocked)
-    local ok, result = pcall(function()
-        return game:GetService("HttpService"):GetAsync(url)
-    end)
-    if ok and result then return result end
-    -- Method 5: game:HttpGet (Fluxus, Electron, some others)
-    local ok2, result2 = pcall(function()
-        return game:HttpGet(url, true)
-    end)
-    if ok2 and result2 then return result2 end
-    -- Method 6: game:HttpGetAsync (newer executors)
-    local ok3, result3 = pcall(function()
+    -- Method 3: syn.request
+    if syn and syn.request then
+        local ok, res = pcall(function()
+            return syn.request({Url = url, Method = 'GET'})
+        end)
+        if ok and res and res.Body then return res.Body end
+    end
+    -- Method 4: game:HttpGetAsync
+    local ok4, res4 = pcall(function()
         return game:HttpGetAsync(url)
     end)
-    if ok3 and result3 then return result3 end
-    -- Method 7: fluxus fluxusrequest
-    if fluxusrequest then
-        local r = fluxusrequest({Url = url, Method = 'GET'})
-        if r and r.Body then return r.Body end
-    end
+    if ok4 and res4 and #res4 > 0 then return res4 end
+    -- Method 5: game:HttpGet
+    local ok5, res5 = pcall(function()
+        return game:HttpGet(url, true)
+    end)
+    if ok5 and res5 and #res5 > 0 then return res5 end
+    -- Method 6: HttpService
+    local ok6, res6 = pcall(function()
+        return game:GetService("HttpService"):GetAsync(url)
+    end)
+    if ok6 and res6 and #res6 > 0 then return res6 end
     return nil
 end
 
--- ═══ Module List ═══
+-- Test HTTP on startup
+local httpTest = httpGet("https://httpbin.org/get")
+if not httpTest then
+    warn('[BloxStrike] CRITICAL: No HTTP method works!')
+    return
+end
+
+-- Module names
 local MOD_CN = {
     ['compat'] = '兼容層',
     ['core'] = '核心',
@@ -91,7 +97,7 @@ local MODULE_ORDER = {
     'errorhandler', 'events', 'luau_detect'
 }
 
--- ═══ Utilities ═══
+-- HSL
 local function hsl(h, s, l)
     h = h % 360
     local c = (1 - math.abs(2*l-1)) * s
@@ -120,20 +126,7 @@ local function isNewer(a, b)
     return false
 end
 
--- ═══ Detect HTTP Method ═══
-local httpMethod = 'unknown'
-pcall(function()
-    if syn and syn.request then httpMethod = 'syn.request'
-    elseif http_request then httpMethod = 'http_request'
-    elseif request then httpMethod = 'request'
-    else
-        local ok = pcall(function() game:HttpGet('https://httpbin.org/get', true) end)
-        if ok then httpMethod = 'game:HttpGet' end
-    end
-end)
-print('[BloxStrike] HTTP 方法: ' .. httpMethod)
-
--- ═══ AUTO UPDATE CHECK ═══
+-- Auto update check
 local latestVersion = nil
 local changelog = {}
 local updateCheckDone = false
@@ -145,9 +138,7 @@ task.spawn(function()
             local ver = response:match('"version"%s*:%s*"([^"]+)"')
             if ver then latestVersion = ver end
             for item in response:gmatch('"([^"]+)"') do
-                if item:match('^v%d') then
-                    changelog[#changelog+1] = item
-                end
+                if item:match('^v%d') then changelog[#changelog+1] = item end
             end
         end)
     end
@@ -159,7 +150,7 @@ local Players = game:GetService('Players')
 local RunService = game:GetService('RunService')
 local Player = Players.LocalPlayer
 
--- Cleanup old GUI
+-- Cleanup
 pcall(function()
     for _, g in ipairs(Player.PlayerGui:GetChildren()) do
         if g.Name == 'BloxStrike_Load' then g:Destroy() end
@@ -264,7 +255,7 @@ LogLayout.Padding = UDim.new(0, 3)
 LogLayout.SortOrder = Enum.SortOrder.LayoutOrder
 LogLayout.Parent = LogFrame
 
--- Smooth RGB Animation
+-- RGB Animation
 local rgbTime = 0
 local animConn = RunService.Heartbeat:Connect(function(dt)
     rgbTime = rgbTime + dt * 80
@@ -301,15 +292,14 @@ local function updateProgress(i, total, name)
     end
 end
 
--- ═══ Wait for version check ═══
+-- Wait for version check
 local waitStart = tick()
 while not updateCheckDone and (tick() - waitStart) < 3 do
     task.wait(0.1)
 end
 
 if latestVersion and isNewer(latestVersion, CURRENT_VERSION) then
-    UpdateLabel.Text = 'A0 有新版本 v' .. latestVersion .. ' (目前 v' .. CURRENT_VERSION .. ')'
-    Title.Text = 'BLOXSTRIKE v' .. CURRENT_VERSION .. ' 92 v' .. latestVersion
+    UpdateLabel.Text = 'A0 v' .. latestVersion .. ' available'
     for i = 1, math.min(#changelog, 3) do
         local cl = Instance.new('TextLabel')
         cl.Size = UDim2.new(1, 0, 0, 16)
@@ -325,52 +315,43 @@ if latestVersion and isNewer(latestVersion, CURRENT_VERSION) then
     task.wait(2)
 end
 
--- ═══════════════════════════════════════════════
--- PARALLEL DOWNLOAD + SEQUENTIAL EXECUTE
--- ═══════════════════════════════════════════════
+-- ═══ PARALLEL DOWNLOAD ═══
 local total = #MODULE_ORDER
 local downloaded = {}
 local dlDone = 0
-local dlTotal = total
 
--- Phase 1: PARALLEL DOWNLOAD
-StatusLabel.Text = '並行下載 ' .. total .. ' 個模組...'
+StatusLabel.Text = 'Parallel download ' .. total .. ' modules...'
 task.wait(0.1)
 
 for _, name in ipairs(MODULE_ORDER) do
     task.spawn(function()
         local result = httpGet(BASE_URL .. name .. '.lua')
-        if result and result ~= '' then
-            downloaded[name] = result
-        else
-            downloaded[name] = nil
-        end
+        downloaded[name] = result  -- nil if failed
         dlDone = dlDone + 1
-        local pct = math.floor(dlDone / dlTotal * 50)
+        local pct = math.floor(dlDone / total * 50)
         BarFill.Size = UDim2.new(pct / 100, 0, 1, 0)
         PctLabel.Text = pct .. '%'
-        StatusLabel.Text = '下載: ' .. (MOD_CN[name] or name) .. ' (' .. dlDone .. '/' .. dlTotal .. ')'
+        StatusLabel.Text = 'Download: ' .. (MOD_CN[name] or name) .. ' (' .. dlDone .. '/' .. total .. ')'
     end)
 end
 
--- Wait for ALL downloads
-while dlDone < dlTotal do
+while dlDone < total do
     task.wait(0.05)
 end
 
 local dlTime = math.floor((tick() - t0) * 1000)
-logModule('_download', true, dlTime .. 'ms 並行下載完成')
+logModule('_dl', true, dlTime .. 'ms parallel download')
 
--- Phase 2: SEQUENTIAL EXECUTE
+-- ═══ SEQUENTIAL EXECUTE ═══
 for i, name in ipairs(MODULE_ORDER) do
     local progress = 50 + math.floor(i / total * 50)
     BarFill.Size = UDim2.new(progress / 100, 0, 1, 0)
     PctLabel.Text = progress .. '%'
-    StatusLabel.Text = '載入: ' .. (MOD_CN[name] or name) .. ' (' .. i .. '/' .. total .. ')'
+    StatusLabel.Text = 'Load: ' .. (MOD_CN[name] or name) .. ' (' .. i .. '/' .. total .. ')'
 
     local code = downloaded[name]
     if not code then
-        logModule(name, false, '下載失敗')
+        logModule(name, false, 'download failed')
     else
         local execOk, execErr = pcall(function()
             local fn, compileErr = loadstring(code)
@@ -385,16 +366,15 @@ end
 -- Finalize
 BarFill.Size = UDim2.new(1, 0, 1, 0)
 PctLabel.Text = '100%'
-StatusLabel.Text = '載入完成！'
+StatusLabel.Text = 'Done!'
 task.wait(0.3)
 
--- Results
+local elapsed = math.floor((tick() - t0) * 1000)
 local ResultLabel = Instance.new('TextLabel')
 ResultLabel.Size = UDim2.new(1, -20, 0, 30)
 ResultLabel.Position = UDim2.new(0, 10, 1, -35)
 ResultLabel.BackgroundTransparency = 1
-local elapsed = math.floor((tick() - t0) * 1000)
-ResultLabel.Text = '¹4 ' .. ok .. ' 成功  ¹8 ' .. fail .. ' 失敗  F1 ' .. elapsed .. 'ms (下載' .. dlTime .. 'ms)'
+ResultLabel.Text = '¹4 ' .. ok .. ' OK  ¹8 ' .. fail .. ' FAIL  F1 ' .. elapsed .. 'ms (' .. dlTime .. 'ms dl)'
 ResultLabel.TextColor3 = fail == 0 and Color3.fromRGB(0, 255, 150) or Color3.fromRGB(255, 200, 50)
 ResultLabel.TextSize = 13
 ResultLabel.Font = Enum.Font.GothamBold
@@ -404,7 +384,7 @@ local HintLabel = Instance.new('TextLabel')
 HintLabel.Size = UDim2.new(1, -20, 0, 20)
 HintLabel.Position = UDim2.new(0, 10, 1, -55)
 HintLabel.BackgroundTransparency = 1
-HintLabel.Text = '按 INSERT 鍵打開選單'
+HintLabel.Text = 'Press INSERT to open menu'
 HintLabel.TextColor3 = Color3.fromRGB(120, 120, 120)
 HintLabel.TextSize = 12
 HintLabel.Font = Enum.Font.Gotham
@@ -412,7 +392,6 @@ HintLabel.Parent = Panel
 
 task.wait(1.5)
 
--- Fade out animation
 if animConn then animConn:Disconnect() end
 for t = 0, 1, 0.05 do
     pcall(function()
@@ -428,7 +407,4 @@ for t = 0, 1, 0.05 do
 end
 GUI:Destroy()
 
-print('[BloxStrike] v' .. CURRENT_VERSION .. ' 載入完成! ' .. ok .. '/' .. total .. ' 模組 (' .. elapsed .. 'ms)')
-if latestVersion and isNewer(latestVersion, CURRENT_VERSION) then
-    warn('[BloxStrike] A0 有新版本 v' .. latestVersion .. ' 可用!')
-end
+print('[BloxStrike] v' .. CURRENT_VERSION .. ' loaded! ' .. ok .. '/' .. total .. ' modules (' .. elapsed .. 'ms)')
