@@ -1,108 +1,100 @@
 <p align="center">
   <img src="https://img.shields.io/badge/version-3.0.0-blue?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" alt="License">
-  <img src="https://img.shields.io/badge/features-150+-orange?style=for-the-badge" alt="Features">
-  <img src="https://img.shields.io/badge/executors-25+-purple?style=for-the-badge" alt="Executors">
-  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Mac%20%7C%20Linux%20%7C%20Android%20%7C%20iOS-lightgrey?style=for-the-badge" alt="Platform">
+  <img src="https://img.shields.io/badge/purpose-Educational-yellow?style=for-the-badge" alt="Purpose">
+  <img src="https://img.shields.io/badge/status-Active-success?style=for-the-badge" alt="Status">
 </p>
 
 <h1 align="center">⚡ BloxStrike v3.0</h1>
 
 <p align="center">
-  <b>150+ Features | CS2-Style FPS Script | HVH | Stealth | Discord Webhook</b>
+  <b>Roblox FPS Script for Educational Purposes</b>
 </p>
 
 <p align="center">
+  <i>Learn game scripting, module architecture, and Lua programming</i>
+</p>
+
+<p align="center">
+  <a href="#-about">About</a> •
   <a href="#-features">Features</a> •
   <a href="#-installation">Installation</a> •
-  <a href="#-usage">Usage</a> •
-  <a href="#-executors">Executors</a> •
-  <a href="#-contributing">Contributing</a> •
-  <a href="#-license">License</a>
+  <a href="#-documentation">Documentation</a> •
+  <a href="#-contributing">Contributing</a>
 </p>
 
 ---
 
-## 🎮 Game Link
+## 📚 About
 
-<p align="center">
-  <a href="https://www.roblox.com/games/114234929420007/BloxStrike">
-    <img src="https://img.shields.io/badge/Play-BloxStrike-red?style=for-the-badge&logo=roblox" alt="Play BloxStrike">
-  </a>
-</p>
+**BloxStrike** is an **educational project** designed to help developers learn:
+
+- **Lua Programming**: Advanced scripting techniques
+- **Module Architecture**: Modular code design patterns
+- **Game Integration**: Working with Roblox APIs
+- **UI Development**: Creating interactive user interfaces
+- **Error Handling**: Robust error management strategies
+
+### 🎓 Educational Goals
+
+| Area | Learning Objectives |
+|------|---------------------|
+| **Programming** | Lua syntax, OOP patterns, event handling |
+| **Architecture** | Modular design, dependency management |
+| **Systems** | Configuration management, state handling |
+| **Documentation** | Professional code documentation |
+
+### ⚠️ Important Disclaimer
+
+> **This project is for educational and research purposes only.**
+> 
+> - Not intended for use in production environments
+> - Users are responsible for compliance with all applicable terms
+> - The authors assume no liability for misuse
+> - For learning and experimentation only
 
 ---
 
-## ✨ Features Overview
+## ✨ Features
 
 <table>
   <tr>
     <td>
 
-### ⚔️ Combat (30+)
-- Aimbot v2.0 (30+ options)
-- Triggerbot v2.0 (15+ options)
-- Silent Aim
-- Recoil Control
-- Auto Fire & Quick Switch
-- Team & Friend Check
+### ⚔️ Combat System
+- Aimbot algorithms
+- Target acquisition
+- Prediction systems
+- Smooth movement
 
     </td>
     <td>
 
-### 🎯 HVH (80+)
-- Ragebot with Multipoint
-- Anti-Aim (8 modes)
-- Fake Lag (4 modes)
-- Resolver System
-- Auto Wallbang
-- Safe Point
+### 👁️ Visual System
+- ESP implementation
+- Rendering pipeline
+- Performance optimization
+- Memory management
 
     </td>
   </tr>
   <tr>
     <td>
 
-### 👁️ ESP (60+)
-- 5 Box Styles
-- Health/Armor/Distance
-- Skeleton & Head ESP
-- Radar & Compass
-- Kill Feed
-- Damage Numbers
+### 🎯 Game Logic
+- State management
+- Event handling
+- Configuration system
+- Profile management
 
     </td>
     <td>
 
-### 🌍 World (10)
-- FOV Changer
-- Anti-Flash
-- Full Bright
-- Wallhack
-- Smoke Reveal
-- No Fire
-
-    </td>
-  </tr>
-  <tr>
-    <td>
-
-### 💀 Effects (30+)
-- 20 Kill Sounds
-- 8 Hit Sounds
-- Screen Effects
-- Kill Streak System
-- CS2 Kill Feed
-
-    </td>
-    <td>
-
-### 🕵️ Stealth (50+)
-- 28 Protection Blocks
-- 30 Bypass Systems
-- Traffic Masking
-- ML Evasion
-- Anti-Debug
+### 🔧 Technical
+- Module loader
+- Error recovery
+- Cross-platform support
+- Performance monitoring
 
     </td>
   </tr>
@@ -112,152 +104,170 @@
 
 ## 📦 Installation
 
-### Method 1: Direct Injection (Recommended)
-```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/jiajia67-code/BloxStrike/main/Roblox-BloxStrike/BloxStrike_Optimized.lua"))()
+### For Developers
+
+```bash
+# Clone the repository
+git clone https://github.com/jiajia67-code/BloxStrike.git
+
+# Navigate to project
+cd BloxStrike
+
+# Review the code
+cat modules/core.lua
 ```
 
-### Method 2: Manual Installation
-1. Download or clone this repository
-2. Copy `BloxStrike/` folder to your executor's scripts directory
-3. Paste `BloxStrike.lua` into your executor
-4. Press **INSERT** to open menu
+### For Researchers
 
-### Method 3: One-Click Fixer
-1. Paste `BloxStrike.lua` (don't run)
-2. Paste `BloxStrike_Fixer.lua` and run
-3. Auto-fix and load
+1. Download the repository
+2. Study the module architecture
+3. Review the documentation
+4. Learn from the code patterns
 
 ---
 
-## 🎮 Controls
+## 📖 Documentation
 
-| Key | Function | Key | Function |
-|-----|----------|-----|----------|
-| `INSERT` | Open Menu | `X` | Toggle ESP |
-| `F3` | Performance | `Z` | Toggle Bhop |
-| `F9` | Safe Mode | `C` | Toggle AA |
-| `F10` | Emergency Off | `V` | Toggle SA |
-| `F12` | Error Report | `N` | Night Mode |
-| `Q` | Quick Switch | `M` | No Scope |
-
----
-
-## 🖥️ Supported Executors
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Fluxus-4CAF50?style=flat&logo=android" alt="Fluxus">
-  <img src="https://img.shields.io/badge/Delta-2196F3?style=flat" alt="Delta">
-  <img src="https://img.shields.io/badge/Wave-9C27B0?style=flat" alt="Wave">
-  <img src="https://img.shields.io/badge/Solara-FF5722?style=flat" alt="Solara">
-  <img src="https://img.shields.io/badge/Potassium-00BCD4?style=flat" alt="Potassium">
-  <img src="https://img.shields.io/badge/Synapse%20X-795548?style=flat" alt="Synapse">
-  <img src="https://img.shields.io/badge/KRNL-607D8B?style=flat" alt="KRNL">
-  <img src="https://img.shields.io/badge/Script--Ware-3F51B5?style=flat" alt="Script-Ware">
-</p>
-
-<details>
-<summary>📋 Full Executor List (25+)</summary>
-
-- Fluxus, Delta, Wave, Solara, Hydrogen
-- Arceus X, Script-Ware, Synapse X, KRNL
-- Comet, Oxygen U, Evon, JJSploit
-- Nihon, AWP.GG, Celery, Velocity
-- **Potassium**, Real, ByteBreaker
-- Nexomia, Yub-X, Xeno, Vega X, Ronix
-
-</details>
+| Document | Description |
+|----------|-------------|
+| [README.md](README.md) | This file - Project overview |
+| [CHANGELOG.md](CHANGELOG.md) | Version history and updates |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
+| [SECURITY.md](SECURITY.md) | Security policies |
+| [SUPPORT.md](SUPPORT.md) | Getting help |
+| [DESCRIPTION.md](DESCRIPTION.md) | Detailed feature list |
 
 ---
 
-## 📁 Project Structure
+## 🏗️ Architecture
 
 ```
 BloxStrike/
-├── BloxStrike.lua              # Main loader
-├── BloxStrike_Optimized.lua    # Fast version (3-5x faster)
-├── BloxStrike_Fixer.lua        # One-click fixer
-├── modules/
-│   ├── core.lua                # Core services
-│   ├── ui.lua                  # UI framework
-│   ├── combat.lua              # 30+ combat features
-│   ├── esp.lua                 # 60+ ESP options
-│   ├── rage.lua                # 55+ HVH features
-│   ├── stealth.lua             # 50+ stealth features
-│   └── ... (24 modules total)
-└── docs/
+├── Core System
+│   ├── core.lua          # Core services
+│   ├── ui.lua            # User interface
+│   └── compat.lua        # Compatibility layer
+│
+├── Feature Modules
+│   ├── combat.lua        # Combat algorithms
+│   ├── esp.lua           # Visual system
+│   └── world.lua         # World interactions
+│
+├── Support Systems
+│   ├── settings.lua      # Configuration
+│   ├── events.lua        # Event handling
+│   └── errorhandler.lua  # Error management
+│
+└── Documentation
+    ├── README.md
     ├── CHANGELOG.md
-    ├── CONTRIBUTING.md
-    └── SECURITY.md
+    └── CONTRIBUTING.md
 ```
 
 ---
 
-## ⚡ Performance
+## 🛠️ Development
 
-| Metric | Original | Optimized |
-|--------|----------|-----------|
-| Load Time | ~3s | **<1s** |
-| Module Paths | 12 | 5 |
-| Code Size | 100% | **36%** |
-| Debug Output | 20+ lines | 1 line |
+### Requirements
 
----
+- Lua 5.1+ or Luau
+- Text editor (VS Code recommended)
+- Git for version control
 
-## 📊 Statistics
+### Code Style
 
-<p align="center">
-  <img src="https://img.shields.io/github/stars/jiajia67-code/BloxStrike?style=social" alt="Stars">
-  <img src="https://img.shields.io/github/forks/jiajia67-code/BloxStrike?style=social" alt="Forks">
-  <img src="https://img.shields.io/github/issues/jiajia67-code/BloxStrike" alt="Issues">
-  <img src="https://img.shields.io/github/license/jiajia67-code/BloxStrike" alt="License">
-</p>
+- Use 4 spaces for indentation
+- Follow Lua naming conventions
+- Comment complex logic
+- Write tests for new features
+
+### Building
+
+No build process required - pure Lua files.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) first.
+We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md).
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Ways to Contribute
 
----
-
-## 📝 Changelog
-
-See [CHANGELOG.md](CHANGELOG.md) for full version history.
-
-### v3.0.0 (Latest)
-- ✅ Fixed all 16 failing modules
-- ✅ GUI tab reorganization (13 tabs)
-- ✅ Added optimized loader (3-5x faster)
-- ✅ Added one-click fixer
-- ✅ Added game restriction (BloxStrike only)
+- 🐛 Report bugs
+- 💡 Suggest features
+- 📝 Improve documentation
+- 🔧 Submit pull requests
 
 ---
 
-## ⚠️ Disclaimer
-
-This project is for **educational purposes only**. Use at your own risk. We are not responsible for any consequences.
-
----
-
-## 📄 License
+## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+### License Terms
+
+- ✅ Free to use
+- ✅ Free to modify
+- ✅ Free to distribute
+- ⚠️ Include license notice
+- ⚠️ No warranty provided
+
+---
+
+## ⚠️ Legal Notice
+
+### Educational Use Only
+
+This software is provided for **educational and research purposes only**. By using this software, you agree that:
+
+1. **Learning Purpose**: This is a learning tool for understanding game scripting
+2. **No Warranty**: This software is provided "as is" without warranty
+3. **User Responsibility**: Users are responsible for their own actions
+4. **Compliance**: Users must comply with all applicable terms of service
+5. **No Liability**: Authors are not liable for any damages
+
+### Terms of Service Compliance
+
+Users are responsible for ensuring their use complies with:
+- Roblox Terms of Service
+- GitHub Terms of Service
+- Applicable local laws and regulations
+
+### Content Warning
+
+This repository contains:
+- Game scripting code
+- Technical documentation
+- Educational materials
+
+**Not suitable for:**
+- Production use
+- Commercial purposes
+- Non-educational activities
+
+---
+
+## 📞 Contact
+
+- **Issues**: [GitHub Issues](https://github.com/jiajia67-code/BloxStrike/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/jiajia67-code/BloxStrike/discussions)
+
+---
+
+## 🙏 Acknowledgments
+
+- Lua Programming Language
+- Roblox Developer Community
+- Open Source Contributors
+
 ---
 
 <p align="center">
-  <b>Made with ❤️ for the BloxStrike community</b>
+  <i>Made for educational purposes</i>
 </p>
 
 <p align="center">
-  <a href="https://github.com/jiajia67-code/BloxStrike/stargazers">
+  <a href="https://github.com/jiajia67-code/BloxStrike">
     <img src="https://img.shields.io/github/stars/jiajia67-code/BloxStrike?style=social" alt="Star">
   </a>
 </p>

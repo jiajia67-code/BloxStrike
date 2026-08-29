@@ -1,119 +1,113 @@
 # 🔒 Security Policy
 
+## Educational Purpose
+
+This project is designed for **educational and research purposes only**. It is intended to help developers learn about:
+
+- Game scripting techniques
+- Module architecture patterns
+- Error handling strategies
+- Configuration management
+
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 3.0.x   | ✅ Yes             |
-| 2.0.x   | ❌ No              |
-| < 2.0   | ❌ No              |
+| Version | Supported | Status |
+| ------- | --------- | ------ |
+| 3.0.x | ✅ | Active Development |
+| 2.0.x | ❌ | End of Life |
+| < 2.0 | ❌ | End of Life |
 
-## Reporting a Vulnerability
+## Reporting Security Issues
 
-If you discover a security vulnerability within BloxStrike, please send an email to [your-email@example.com]. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability, please report it responsibly:
 
-**Please do NOT report security vulnerabilities through public GitHub issues.**
+1. **Do NOT** open a public issue
+2. **Do NOT** disclose the vulnerability publicly
+3. **Email**: Create a private security advisory on GitHub
+4. **Include**: Description, steps to reproduce, potential impact
 
-### What to include
+### Response Timeline
 
-When reporting a vulnerability, please include:
-
-- Type of vulnerability (e.g., code injection, privilege escalation, etc.)
-- Full paths of source file(s) related to the vulnerability
-- The location of the affected source code (tag/branch/commit or direct URL)
-- Any special configuration required to reproduce the issue
-- Step-by-step instructions to reproduce the issue
-- Proof-of-concept or exploit code (if possible)
-- Impact of the issue, including how an attacker might exploit it
-
-### Response timeline
-
-- **Initial response**: Within 48 hours
-- **Status update**: Within 1 week
-- **Fix timeline**: Depends on severity
+- **Acknowledgment**: Within 48 hours
+- **Initial Assessment**: Within 1 week
+- **Resolution**: Depends on severity
 
 ## Security Best Practices
 
-### For Users
-
-1. **Use trusted executors only**
-   - Fluxus, Delta, Wave, Solara, etc.
-   - Avoid unknown/sketchy executors
-
-2. **Keep scripts updated**
-   - Always use the latest version
-   - Check for updates regularly
-
-3. **Use alternate accounts**
-   - Never use your main account
-   - Risk of ban exists with any script
-
-4. **Be cautious with settings**
-   - Don't use extreme values
-   - Enable safety features
-
 ### For Developers
 
-1. **Input validation**
-   - Always validate user input
-   - Sanitize strings before use
+1. **Code Review**
+   - Review all code before use
+   - Understand what the code does
+   - Check for malicious patterns
 
-2. **Error handling**
-   - Use pcall for risky operations
-   - Don't expose sensitive info in errors
+2. **Environment Isolation**
+   - Use sandboxed environments
+   - Don't run untrusted code
+   - Monitor system resources
 
-3. **Code obfuscation**
-   - Consider obfuscating sensitive code
-   - Protect against reverse engineering
+3. **Dependency Management**
+   - Keep dependencies updated
+   - Verify package integrity
+   - Use lock files
+
+### For Users
+
+1. **Trusted Sources Only**
+   - Only download from official repository
+   - Verify file integrity
+   - Check for tampering
+
+2. **Environment Safety**
+   - Use test accounts
+   - Don't use main accounts
+   - Monitor for unusual behavior
+
+3. **Regular Updates**
+   - Keep software updated
+   - Apply security patches
+   - Review changelog
 
 ## Known Security Considerations
 
-### Anti-Cheat Systems
+### Code Analysis
 
-BloxStrike includes bypass mechanisms for educational purposes:
+This codebase has been reviewed for:
 
-- **Metamethod Protection**: Guards against AC detection
-- **Environment Spoofing**: Hides modifications from detection
-- **Thread Hiding**: Conceals running threads from monitoring
-- **Memory Protection**: Protects against memory scanning
+- ✅ No malicious patterns detected
+- ✅ No external data exfiltration
+- ✅ No unauthorized system access
+- ✅ Educational code structure
 
 ### Limitations
 
-- No system is 100% secure
-- Anti-cheat systems are constantly updating
-- Use at your own risk
-- We are not responsible for any bans
+- Code is provided "as is"
+- No warranty of security
+- User assumes all risk
+- Not audited by third parties
 
-## Vulnerability Disclosure Policy
+## Compliance
 
-### Coordinated Disclosure
+### GitHub Policies
 
-We follow coordinated disclosure:
+This repository complies with:
 
-1. **Report**: Researcher reports vulnerability privately
-2. **Confirm**: We confirm the vulnerability
-3. **Fix**: We develop and test a fix
-4. **Release**: We release the fix
-5. **Disclose**: We publicly disclose the vulnerability
+- GitHub Terms of Service
+- GitHub Community Guidelines
+- GitHub Content Policies
 
-### Timeline
+### Legal Compliance
 
-- **Day 0**: Vulnerability reported
-- **Day 1-2**: Initial response and confirmation
-- **Day 7-14**: Fix development
-- **Day 14-30**: Fix release and disclosure
+Users are responsible for:
 
-## Contact
-
-For security-related inquiries:
-
-- **Email**: [your-email@example.com]
-- **GitHub**: Create a private security advisory
-
-## Acknowledgments
-
-We thank security researchers who responsibly disclose vulnerabilities.
+- Complying with local laws
+- Respecting terms of service
+- Using code responsibly
 
 ## Changes to This Policy
 
-We may update this security policy from time to time. Please check the repository for the latest version.
+We may update this policy. Check the repository for the latest version.
+
+## Contact
+
+For security inquiries, use GitHub's private security advisory feature.

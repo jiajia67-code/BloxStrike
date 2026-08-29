@@ -1,113 +1,110 @@
 # 🤝 Contributing to BloxStrike
 
-Thank you for your interest in contributing to BloxStrike! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to this educational project!
 
 ## 📋 Table of Contents
 
-- [Code of Conduct](#code-of-conduct)
+- [About](#about)
 - [How to Contribute](#how-to-contribute)
-- [Development Setup](#development-setup)
+- [Development Guidelines](#development-guidelines)
 - [Pull Request Process](#pull-request-process)
-- [Coding Standards](#coding-standards)
-- [Reporting Bugs](#reporting-bugs)
-- [Suggesting Features](#suggesting-features)
+- [Code of Conduct](#code-of-conduct)
 
-## 📜 Code of Conduct
+## About
 
-- Be respectful and inclusive
-- Focus on constructive feedback
-- Help create a welcoming environment
-- No harassment or discrimination
+BloxStrike is an **educational project** designed to help developers learn:
 
-## 🚀 How to Contribute
+- Lua programming techniques
+- Module architecture patterns
+- Game integration methods
+- Documentation best practices
 
-### 1. Fork the Repository
-```bash
-# Click the "Fork" button on GitHub
-# Then clone your fork
-git clone https://github.com/YOUR_USERNAME/BloxStrike.git
+We welcome contributions that enhance the educational value of this project.
+
+## How to Contribute
+
+### 🐛 Report Bugs
+
+If you find a bug:
+
+1. Check existing issues first
+2. Create a new issue with:
+   - Clear description
+   - Steps to reproduce
+   - Expected vs actual behavior
+   - Environment details
+
+### 💡 Suggest Features
+
+Feature suggestions should:
+
+1. Have educational value
+2. Be well-documented
+3. Follow existing patterns
+4. Include examples
+
+### 📝 Improve Documentation
+
+Documentation contributions are welcome:
+
+1. Fix typos or errors
+2. Add examples
+3. Improve clarity
+4. Translate to other languages
+
+### 🔧 Submit Code
+
+Code contributions should:
+
+1. Follow coding standards
+2. Include documentation
+3. Add tests if applicable
+4. Be well-commented
+
+## Development Guidelines
+
+### Code Style
+
+```lua
+-- Use 4 spaces for indentation
+local function example()
+    -- Comment complex logic
+    return true
+end
 ```
 
-### 2. Create a Branch
-```bash
-# Create a feature branch
-git checkout -b feature/your-feature-name
+### Naming Conventions
 
-# Or a bug fix branch
-git checkout -b fix/your-bug-fix
-```
+- **Variables**: `camelCase`
+- **Functions**: `camelCase`
+- **Constants**: `UPPER_CASE`
+- **Tables**: `PascalCase`
 
-### 3. Make Your Changes
-- Follow the coding standards below
-- Test your changes thoroughly
-- Update documentation if needed
+### Documentation
 
-### 4. Commit Your Changes
-```bash
-# Stage your changes
-git add .
+- Comment complex algorithms
+- Explain non-obvious logic
+- Include examples where helpful
+- Keep comments up-to-date
 
-# Commit with a clear message
-git commit -m "feat: Add new feature description"
-```
+### Testing
 
-### 5. Push to Your Fork
-```bash
-git push origin feature/your-feature-name
-```
+- Test on multiple platforms
+- Verify error handling
+- Check performance impact
+- Document test results
 
-### 6. Create a Pull Request
-- Go to the original repository
-- Click "New Pull Request"
-- Select your branch
-- Add a clear description
-
-## 💻 Development Setup
-
-### Prerequisites
-- A Roblox executor (for testing)
-- Git
-- Text editor (VS Code recommended)
-
-### Project Structure
-```
-BloxStrike/
-├── BloxStrike.lua          # Main loader
-├── modules/
-│   ├── core.lua            # Core services
-│   ├── ui.lua              # UI framework
-│   ├── combat.lua          # Combat features
-│   ├── esp.lua             # ESP system
-│   └── ...                 # Other modules
-└── docs/
-    └── ...                 # Documentation
-```
-
-### Making Changes
-
-1. **Module Files**: Edit files in `modules/` directory
-2. **Main Loader**: Edit `BloxStrike.lua` for loader changes
-3. **Testing**: Test in Roblox before submitting
-
-## 📝 Pull Request Process
+## Pull Request Process
 
 ### Before Submitting
-- [ ] Test your changes in-game
-- [ ] Ensure no syntax errors
-- [ ] Follow coding standards
-- [ ] Update documentation if needed
 
-### PR Title Format
-Use conventional commits:
-- `feat:` - New feature
-- `fix:` - Bug fix
-- `docs:` - Documentation
-- `style:` - Formatting
-- `refactor:` - Code refactoring
-- `test:` - Adding tests
-- `chore:` - Maintenance
+- [ ] Code follows style guidelines
+- [ ] Documentation is updated
+- [ ] Changes are tested
+- [ ] Commit messages are clear
 
-### PR Description Template
+### PR Template
+
 ```markdown
 ## Description
 Brief description of changes
@@ -115,137 +112,49 @@ Brief description of changes
 ## Type of Change
 - [ ] Bug fix
 - [ ] New feature
-- [ ] Documentation update
+- [ ] Documentation
 - [ ] Other
 
+## Educational Value
+How does this help learners?
+
 ## Testing
-- [ ] Tested in BloxStrike game
-- [ ] No syntax errors
-- [ ] Features work as expected
-
-## Checklist
-- [ ] Code follows project style
-- [ ] Documentation updated
-- [ ] Changes tested locally
+- [ ] Tested locally
+- [ ] No errors
+- [ ] Works as expected
 ```
 
-## 📐 Coding Standards
+### Review Process
 
-### Lua Style Guide
+1. **Initial Review**: Check for completeness
+2. **Code Review**: Verify quality
+3. **Testing**: Ensure functionality
+4. **Merge**: If all checks pass
 
-1. **Indentation**: Use 4 spaces
-```lua
-if condition then
-    doSomething()
-end
-```
+## Code of Conduct
 
-2. **Naming Conventions**:
-- Variables: `camelCase`
-- Functions: `camelCase`
-- Constants: `UPPER_CASE`
-- Tables: `PascalCase`
+### Our Standards
 
-3. **Comments**:
-```lua
--- Single line comment
+- Be respectful and inclusive
+- Focus on learning
+- Provide constructive feedback
+- Help others grow
 
---[[
-    Multi-line comment
-    For complex explanations
-]]
-```
+### Unacceptable Behavior
 
-4. **Error Handling**:
-```lua
--- Always use pcall for risky operations
-pcall(function()
-    riskyOperation()
-end)
-```
+- Harassment or discrimination
+- Offensive language
+- Spam or self-promotion
+- Malicious contributions
 
-5. **Module Structure**:
-```lua
-local Module = {}
+## Questions?
 
-function Module.feature()
-    -- Implementation
-end
+If you have questions:
 
-return Module
-```
+1. Check existing documentation
+2. Search GitHub Issues
+3. Open a new issue with `question` label
 
-### Git Commit Messages
+## Thank You!
 
-- Use present tense: "Add feature" not "Added feature"
-- Use imperative mood: "Move cursor" not "Moves cursor"
-- Keep first line under 72 characters
-- Reference issues when applicable
-
-## 🐛 Reporting Bugs
-
-### Bug Report Template
-```markdown
-**Describe the bug**
-A clear description of what the bug is.
-
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '...'
-3. See error
-
-**Expected behavior**
-What you expected to happen.
-
-**Screenshots**
-If applicable, add screenshots.
-
-**Environment:**
-- Executor: [e.g., Fluxus, Delta]
-- Device: [e.g., PC, Mobile]
-- Game: BloxStrike
-
-**Additional context**
-Any other context about the problem.
-```
-
-## 💡 Suggesting Features
-
-### Feature Request Template
-```markdown
-**Is your feature request related to a problem?**
-A clear description of the problem.
-
-**Describe the solution you'd like**
-What you want to happen.
-
-**Describe alternatives you've considered**
-Other solutions you've thought about.
-
-**Additional context**
-Any other context or screenshots.
-```
-
-## 🏷️ Labels
-
-We use labels to categorize issues and PRs:
-
-- `bug` - Something isn't working
-- `enhancement` - New feature or request
-- `documentation` - Documentation improvements
-- `good first issue` - Good for newcomers
-- `help wanted` - Extra attention is needed
-- `question` - Further information is requested
-
-## 📞 Questions?
-
-If you have questions about contributing:
-
-1. Check existing issues and discussions
-2. Open a new issue with the `question` label
-3. Be patient and respectful
-
-## 🙏 Thank You!
-
-Your contributions help make BloxStrike better for everyone. Thank you for taking the time to contribute!
+Your contributions help make this project better for everyone. Thank you for taking the time to contribute to this educational resource!
