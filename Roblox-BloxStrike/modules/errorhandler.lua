@@ -321,7 +321,7 @@ function BS.safeCall(func, context, ...)
             learnErrorPattern(errMsg, context)
         elseif severity == "critical" or severity == "catastrophic" then
             ErrorLog.CrashCount = ErrorLog.CrashCount + 1
-            print(string.format("[ErrorHandler]  %s in %s: %s", severity:upper(), context or "?", errMsg:sub(1, 80)))
+            -- [silenced] critical error logged
 
             -- Auto-rollback on critical
             if ErrorLog.CrashCount > 3 then
@@ -338,7 +338,7 @@ function BS.safeCall(func, context, ...)
         else
             -- Log non-critical
             if severity ~= "info" then
-                print(string.format("[ErrorHandler]  %s in %s: %s", severity, context or "?", errMsg:sub(1, 60)))
+                -- [silenced] non-critical error logged
             end
         end
 
@@ -996,8 +996,4 @@ BS.ErrorHandler = {
  -- Startup state snapshot
 BS.saveStateSnapshot("startup")
 
-print("")
-print("   BloxStrike Error Handler v2.0 loaded   ")
-print("  16                           ")
-print("  F12 =                          ")
-print("")
+print("[BloxStrike] ErrorHandler loaded (F12 = report)")
