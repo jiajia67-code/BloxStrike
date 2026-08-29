@@ -15,7 +15,7 @@ pcall(function() Workspace = game:GetService("Workspace") end)
 local lplr = Players.LocalPlayer
 
 if not BS.Win then warn("[World] BS.Win not available - ui.lua may have failed") return end
-local page = BS.Win:Tab("WORLD")
+local page = BS.Win:Tab("世界")
 if not page or not page.Toggle then warn("[World] Failed to create tab!") return end
 
 -- 1. FOV CHANGER

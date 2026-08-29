@@ -14,7 +14,7 @@ local function getMousePos()
     return mousePos
 end
 
-local E = BS.Win:Tab("ESP")
+local E = BS.Win:Tab("透視")
 if not E or not E.Toggle then warn("[ESP] Failed to create tab!") return end
 
 -- GUI SECTION  60+ Options

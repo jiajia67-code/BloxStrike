@@ -19,7 +19,7 @@ pcall(function() StarterGui = game:GetService("StarterGui") end)
 local lplr = Players.LocalPlayer
 
 if not BS.Win then warn("[HUD] BS.Win not available - ui.lua may have failed") return end
-local page = BS.Win:Tab("MISC")
+local page = BS.Win:Tab("雜項")
 if not page or not page.Toggle then warn("[HUD] Failed to create tab!") return end
 
 local HUD = {}
