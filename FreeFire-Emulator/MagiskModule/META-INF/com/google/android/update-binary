@@ -1,0 +1,19 @@
+#!/sbin/sh
+# ═══ Magisk Module Installer ═══
+# This script installs the Magisk module
+
+ZIPFILE=$3
+OUTFD=$2
+TMPDIR=/dev/tmp
+
+# 建立暫存目錄
+mkdir -p $TMPDIR
+
+# 解壓縮模組
+unzip -o "$ZIPFILE" -d $TMPDIR
+
+# 執行安裝腳本
+sh $TMPDIR/customize.sh
+
+# 清理
+rm -rf $TMPDIR

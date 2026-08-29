@@ -1,0 +1,22 @@
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\bin\Release\net10.0-windows\FreeFire Emulator.exe
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\bin\Release\net10.0-windows\FreeFire Emulator.deps.json
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\bin\Release\net10.0-windows\FreeFire Emulator.runtimeconfig.json
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\bin\Release\net10.0-windows\FreeFire Emulator.dll
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\bin\Release\net10.0-windows\FreeFire Emulator.pdb
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\bin\Release\net10.0-windows\ImGui.NET.dll
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\bin\Release\net10.0-windows\runtimes\linux-x64\native\libcimgui.so
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\bin\Release\net10.0-windows\runtimes\osx\native\libcimgui.dylib
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\bin\Release\net10.0-windows\runtimes\win-arm64\native\cimgui.dll
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\bin\Release\net10.0-windows\runtimes\win-x64\native\cimgui.dll
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\bin\Release\net10.0-windows\runtimes\win-x86\native\cimgui.dll
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\obj\Release\net10.0-windows\FreeFire Emulator.csproj.AssemblyReference.cache
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\obj\Release\net10.0-windows\FreeFire Emulator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\obj\Release\net10.0-windows\FreeFire Emulator.AssemblyInfoInputs.cache
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\obj\Release\net10.0-windows\FreeFire Emulator.AssemblyInfo.cs
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\obj\Release\net10.0-windows\FreeFire Emulator.csproj.CoreCompileInputs.cache
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\obj\Release\net10.0-windows\FreeFire.01A81B98.Up2Date
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\obj\Release\net10.0-windows\FreeFire Emulator.dll
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\obj\Release\net10.0-windows\refint\FreeFire Emulator.dll
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\obj\Release\net10.0-windows\FreeFire Emulator.pdb
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\obj\Release\net10.0-windows\FreeFire Emulator.genruntimeconfig.cache
+C:\Users\fff92\Desktop\GameCheats\FreeFire-Emulator\obj\Release\net10.0-windows\ref\FreeFire Emulator.dll

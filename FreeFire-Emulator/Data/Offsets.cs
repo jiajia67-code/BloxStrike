@@ -1,0 +1,120 @@
+namespace FreeFire_Emulator.Data
+{
+    internal enum GameVersion { Normal, India }
+    internal static class Offsets
+    {
+        public static GameVersion CurrentVersion = GameVersion.Normal;
+        private static bool IsN => CurrentVersion == GameVersion.Normal;
+        private static class N {
+            public const nint InitBase=0xA988FDC,StaticClass=0x5C,CurrentMatch=0x50,MatchStatus=0x8C,LocalPlayer=0x94,DictionaryEntities=0x68;
+            public const nint Player_IsDead=0x50,Player_Name=0x2DC,Player_Name_Length=0x8,Player_Name_Data=0xC,Player_Data=0x48,PlayerID=0x268;
+            public const nint BaseProfileInfo=0x18CC,Player_ShadowBase=0x18B8,XPose=0x78,IsClientBot=0x2E4;
+            public const nint AvatarManager=0x4C0,Avatar=0xA8,Avatar_IsVisible=0x95,Avatar_Data=0x14,Avatar_Data_IsTeam=0x59;
+            public const nint FollowCamera=0x450,Camera=0x18,AimRotation=0x400,MainCameraTransform=0x24C;
+            public const nint Weapon=0x3F4,WeaponData=0x58,WeaponRecoil=0x0C,IsCombineWeapon=0xD8,WeaponOnHand=0x54,CombineWeaponOnHand=0x58;
+            public const nint WeaponInfo=0x64,WeaponID=0x14,WeaponParams=0x6C,WeaponParams_FireInterval=0x1C;
+            public const nint LastAimingInfoFromWeapon=0x3F4,IsFiring=0x540,StartPosition=0x38,RayDir=0x2C;
+            public const nint LockedAimingCollider=0x54,HeadCollider=0x4A4,sAim1=0x978,sAim2=0x540;
+            public const nint ViewMatrix=0xE8,Vida=0xC,MatrixPosition=0x60;
+            public const nint PlayerAttributes=0x4BC,LocalPlayerAttributes=0x4BC,NoReload=0x99,RunSpeedUpScale=0x1D8;
+            public const nint GameTimer=0x10,FixedDeltaTime=0x24,Pool_Health=0x10;
+            public const nint CurrentObserver=0xB4,ObserverPlayer=0x28,FallingSpeedUpScale=0x190,FireInterval=0x188;
+            public const nint MovementComponent=0x124C,MoveCompIsGrounded=0x150,InSnowSlideWayDashing=0x1480,LevelUp=0x14A8;
+            public const nint Head=0x458,Spine=0x460,Hip=0x45C,Root=0x46C;
+            public const nint LeftHand=0x498,RightHand=0x494,LeftElbow=0x4A0,RightElbow=0x49C,LeftFoot=0x47C,RightFoot=0x480;
+        }
+        private static class I {
+            public const nint InitBase=0xAAA5B20,StaticClass=0x5C,CurrentMatch=0x50,MatchStatus=0x3C,LocalPlayer=0x94,DictionaryEntities=0x68;
+            public const nint Player_IsDead=0x50,Player_Name=0x2E4,Player_Name_Length=0x8,Player_Name_Data=0xC,Player_Data=0x48,PlayerID=0x268;
+            public const nint BaseProfileInfo=0x18DC,Player_ShadowBase=0x18C8,XPose=0x78,IsClientBot=0x2E4;
+            public const nint AvatarManager=0x4C8,Avatar=0xA8,Avatar_IsVisible=0x95,Avatar_Data=0x14,Avatar_Data_IsTeam=0x59;
+            public const nint FollowCamera=0x458,Camera=0x18,AimRotation=0x408,MainCameraTransform=0x250;
+            public const nint Weapon=0x3FC,WeaponData=0x58,WeaponRecoil=0x0C,IsCombineWeapon=0xD8,WeaponOnHand=0x54,CombineWeaponOnHand=0x58;
+            public const nint WeaponInfo=0x64,WeaponID=0x14,WeaponParams=0x6C,WeaponParams_FireInterval=0x1C;
+            public const nint LastAimingInfoFromWeapon=0x978,IsFiring=0x540,StartPosition=0x38,RayDir=0x2C;
+            public const nint LockedAimingCollider=0x54,HeadCollider=0x4AC,sAim1=0x540,sAim2=0x978;
+            public const nint ViewMatrix=0x2F4,Vida=0x10,MatrixPosition=0x60;
+            public const nint PlayerAttributes=0x4C4,LocalPlayerAttributes=0x4BC,NoReload=0x99,RunSpeedUpScale=0x1D8;
+            public const nint GameTimer=0x10,FixedDeltaTime=0x24,Pool_Health=0x10;
+            public const nint CurrentObserver=0xB4,ObserverPlayer=0x28,FallingSpeedUpScale=0x1D4,FireInterval=0x188;
+            public const nint MovementComponent=0x124C,MoveCompIsGrounded=0x150,InSnowSlideWayDashing=0x15E8,LevelUp=0x14B8;
+            public const nint Head=0x460,Spine=0x468,Hip=0x470,Root=0x474;
+            public const nint LeftHand=0x48C,RightHand=0x498,LeftElbow=0x4A4,RightElbow=0x4A8,LeftFoot=0x484,RightFoot=0x480;
+        }
+        public static nint InitBase=>IsN?N.InitBase:I.InitBase;
+        public static nint StaticClass=>IsN?N.StaticClass:I.StaticClass;
+        public static nint CurrentMatch=>IsN?N.CurrentMatch:I.CurrentMatch;
+        public static nint MatchStatus=>IsN?N.MatchStatus:I.MatchStatus;
+        public static nint LocalPlayer=>IsN?N.LocalPlayer:I.LocalPlayer;
+        public static nint DictionaryEntities=>N.DictionaryEntities;
+        public static nint Player_IsDead=>IsN?N.Player_IsDead:I.Player_IsDead;
+        public static nint Player_Name=>IsN?N.Player_Name:I.Player_Name;
+        public static nint Player_Name_Length=>N.Player_Name_Length;
+        public static nint Player_Name_Data=>N.Player_Name_Data;
+        public static nint Player_Data=>IsN?N.Player_Data:I.Player_Data;
+        public static nint PlayerID=>IsN?N.PlayerID:I.PlayerID;
+        public static nint BaseProfileInfo=>IsN?N.BaseProfileInfo:I.BaseProfileInfo;
+        public static nint Player_ShadowBase=>IsN?N.Player_ShadowBase:I.Player_ShadowBase;
+        public static nint XPose=>IsN?N.XPose:I.XPose;
+        public static nint IsClientBot=>IsN?N.IsClientBot:I.IsClientBot;
+        public static nint AvatarManager=>IsN?N.AvatarManager:I.AvatarManager;
+        public static nint Avatar=>N.Avatar;
+        public static nint Avatar_IsVisible=>N.Avatar_IsVisible;
+        public static nint Avatar_Data=>N.Avatar_Data;
+        public static nint Avatar_Data_IsTeam=>N.Avatar_Data_IsTeam;
+        public static nint FollowCamera=>IsN?N.FollowCamera:I.FollowCamera;
+        public static nint Camera=>N.Camera;
+        public static nint AimRotation=>IsN?N.AimRotation:I.AimRotation;
+        public static nint MainCameraTransform=>IsN?N.MainCameraTransform:I.MainCameraTransform;
+        public static nint Weapon=>IsN?N.Weapon:I.Weapon;
+        public static nint WeaponData=>IsN?N.WeaponData:I.WeaponData;
+        public static nint WeaponRecoil=>N.WeaponRecoil;
+        public static nint IsCombineWeapon=>N.IsCombineWeapon;
+        public static nint WeaponOnHand=>N.WeaponOnHand;
+        public static nint CombineWeaponOnHand=>N.CombineWeaponOnHand;
+        public static nint WeaponInfo=>N.WeaponInfo;
+        public static nint WeaponID=>N.WeaponID;
+        public static nint WeaponParams=>IsN?N.WeaponParams:I.WeaponParams;
+        public static nint WeaponParams_FireInterval=>N.WeaponParams_FireInterval;
+        public static nint LastAimingInfoFromWeapon=>IsN?N.LastAimingInfoFromWeapon:I.LastAimingInfoFromWeapon;
+        public static nint IsFiring=>IsN?N.IsFiring:I.IsFiring;
+        public static nint StartPosition=>IsN?N.StartPosition:I.StartPosition;
+        public static nint RayDir=>IsN?N.RayDir:I.RayDir;
+        public static nint LockedAimingCollider=>IsN?N.LockedAimingCollider:I.LockedAimingCollider;
+        public static nint HeadCollider=>IsN?N.HeadCollider:I.HeadCollider;
+        public static nint sAim1=>IsN?N.sAim1:I.sAim1;
+        public static nint sAim2=>IsN?N.sAim2:I.sAim2;
+        public static nint ViewMatrix=>IsN?N.ViewMatrix:I.ViewMatrix;
+        public static nint Vida=>IsN?N.Vida:I.Vida;
+        public static nint MatrixPosition=>N.MatrixPosition;
+        public static nint PlayerAttributes=>IsN?N.PlayerAttributes:I.PlayerAttributes;
+        public static nint LocalPlayerAttributes=>N.LocalPlayerAttributes;
+        public static nint NoReload=>N.NoReload;
+        public static nint RunSpeedUpScale=>IsN?N.RunSpeedUpScale:I.RunSpeedUpScale;
+        public static nint GameTimer=>N.GameTimer;
+        public static nint FixedDeltaTime=>N.FixedDeltaTime;
+        public static nint Pool_Health=>N.Pool_Health;
+        public static nint CurrentObserver=>N.CurrentObserver;
+        public static nint ObserverPlayer=>N.ObserverPlayer;
+        public static nint FallingSpeedUpScale=>IsN?N.FallingSpeedUpScale:I.FallingSpeedUpScale;
+        public static nint FireInterval=>IsN?N.FireInterval:I.FireInterval;
+        public static nint MovementComponent=>N.MovementComponent;
+        public static nint MoveCompIsGrounded=>N.MoveCompIsGrounded;
+        public static nint MoveCompPosition=>0x20;
+        public static nint MoveCompVSpeed=>0x2C;
+        public static nint MoveCompPhysState=>0xC;
+        public static nint PhysStateFlyFlag=>0x8;
+        public static nint InSnowSlideWayDashing=>IsN?N.InSnowSlideWayDashing:I.InSnowSlideWayDashing;
+        public static nint LevelUp=>IsN?N.LevelUp:I.LevelUp;
+        public static nint Head=>IsN?N.Head:I.Head;
+        public static nint Spine=>IsN?N.Spine:I.Spine;
+        public static nint Hip=>IsN?N.Hip:I.Hip;
+        public static nint Root=>IsN?N.Root:I.Root;
+        public static nint LeftHand=>IsN?N.LeftHand:I.LeftHand;
+        public static nint RightHand=>IsN?N.RightHand:I.RightHand;
+        public static nint LeftElbow=>IsN?N.LeftElbow:I.LeftElbow;
+        public static nint RightElbow=>IsN?N.RightElbow:I.RightElbow;
+        public static nint LeftFoot=>IsN?N.LeftFoot:I.LeftFoot;
+        public static nint RightFoot=>IsN?N.RightFoot:I.RightFoot;
+    }
+}

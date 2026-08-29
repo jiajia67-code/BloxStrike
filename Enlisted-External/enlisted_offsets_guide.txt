@@ -1,0 +1,48 @@
+═══════════════════════════════════════════════════════════
+  Enlisted Offset 尋找指南 — 使用 Cheat Engine
+═══════════════════════════════════════════════════════════
+
+步驟 1: 開啟 Cheat Engine 並 Attach 到 Enlisted
+─────────────────────────────────────────────────
+1. 開啟 Cheat Engine
+2. 點左上角電腦圖示 → 選擇 "enlisted.exe"
+3. 勾選 "Enable All" (如果有的話)
+
+步驟 2: 找 Entity Manager
+─────────────────────────────────────────────────
+1. 在 Cheat Engine 中，使用 "Memory View"
+2. 按 Ctrl+A 或選 Memory View
+3. 選 Plugins → "Dissect Windows User-Mode Module" (如果有)
+4. 否則用字符串搜尋:
+   - 搜尋類型改為 "String"
+   - 輸入: ecs::EntityManager
+   - 掃描 "All" (0x00000000 to 0x7FFFFFFFFFFFFFFF)
+   - 找到後記下地址
+
+步驟 3: 找 View Matrix (globtm_psf)
+─────────────────────────────────────────────────
+1. 搜尋字符串: globtm_psf_0
+2. 找到後記下地址
+3. 回到 Cheat Engine 主視窗
+4. 在 Memory View 中去到那個地址
+5. 往上看附近是否有指標 (QWORD) 指向 float 數組
+6. 用 pointer scan 找出基址
+
+步驟 4: 找 Camera Position
+─────────────────────────────────────────────────
+1. 搜尋字符串: camera__look_at
+2. 記下地址
+3. 類似方法找到指標
+
+步驟 5: 貼上結果
+─────────────────────────────────────────────────
+找到的結果格式:
+
+RVA_GLOBTM_ROW0_PTR = 0x_______
+RVA_GLOBTM_ROW1_PTR = 0x_______
+RVA_GLOBTM_ROW2_PTR = 0x_______
+RVA_GLOBTM_ROW3_PTR = 0x_______
+RVA_CAMERA_POS_PTR  = 0x_______
+RVA_ENTITY_MANAGER  = 0x_______
+
+把這些數字貼給我！

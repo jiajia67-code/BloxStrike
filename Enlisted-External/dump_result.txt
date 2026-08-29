@@ -1,0 +1,7 @@
+Stack overflow.
+Repeated 24086 times:
+--------------------------------
+   at Enlisted_External.Tools.MemoryDumper.Log(System.String)
+--------------------------------
+   at Enlisted_External.Tools.MemoryDumper.Run()
+   at Enlisted_External.Program.Main(System.String[])
