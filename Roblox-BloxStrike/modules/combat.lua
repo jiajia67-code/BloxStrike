@@ -822,7 +822,7 @@ task.spawn(function()
                     -- Switch to knife
                     local currentTool = lplr.Character and lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
                     if not currentTool or not currentTool.Name:lower():find("knife") then
-                        BS.equipTool("knife") or BS.equipTool("bayonet")
+                        pcall(function() BS.equipTool("knife") end)
                         task.wait(0.1)
                     end
                     -- Attack
