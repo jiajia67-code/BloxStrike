@@ -348,5 +348,3 @@ end)
 
 print("[Events] BloxStrike Events module loaded")
 print("[Events] Tracking: Kill/Death/Streak/Round/Bomb | Press F3 for stats")
-
-)

@@ -808,6 +808,3 @@ BS.HUD = HUD
 print("[HUD] BloxStrike HUD v1.0 loaded")
 print("[HUD] Features: Performance Monitor, Feature Status, Combat HUD,")
 print("[HUD]   Notification Center, Health Crosshair, Velocity Display")
-
-)
-)

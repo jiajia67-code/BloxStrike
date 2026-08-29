@@ -562,7 +562,7 @@ local oldNamecall
 -- Setup silent aim hook once
 local function setupSilentAimHook()
     if oldNamecall then return end -- already hooked
-    if not (Compat andCompat.Features and Compat.Features.HookMetamethod) then return end
+    if not (Compat and Compat.Features and Compat.Features.HookMetamethod) then return end
     
     pcall(function()
         oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)

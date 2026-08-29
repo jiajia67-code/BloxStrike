@@ -128,6 +128,7 @@ local function getPlayerData(uid)
         }
     end
     return PlayerData[uid]
+end
 
 -- STATISTICAL UTILITIES  
 

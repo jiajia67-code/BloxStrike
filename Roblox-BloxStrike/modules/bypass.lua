@@ -1195,7 +1195,7 @@ function Bypass.hookNamecall()
                 end
             end
 
-            return oldNamecall(self, ...
+            return oldNamecall(self, ...)
         end) or oldNamecall
 
         print("[Bypass] __namecall hook installed")

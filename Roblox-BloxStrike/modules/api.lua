@@ -200,7 +200,7 @@ function api.getBombSite()
     local bombSites = workspace:FindFirstChild("BombSites") or workspace:FindFirstChild("Map")
     if bombSites then
         for _, site in pairs(bombSites:GetChildren()) do
-            local sitePos = site:GetPrimaryPartCFrame and site:GetPrimaryPartCFrame().Position
+            local sitePos = site.GetPrimaryPartCFrame and site:GetPrimaryPartCFrame().Position
             if sitePos and (pos - sitePos).Magnitude < 20 then
                 return site.Name
             end

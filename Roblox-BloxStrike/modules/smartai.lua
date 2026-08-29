@@ -355,18 +355,21 @@ local function assessLobbySkill()
     if avgDist < 25 then skillScore = skillScore + 10; indicators.AggressiveLobby = true end
     if avgDist > 60 then skillScore = skillScore - 5; indicators.PassiveLobby = true end
 
-    -- C. K/D      if AIState.SessionDeaths > AIState.SessionKills then
+    -- C. K/D
+    if AIState.SessionDeaths > AIState.SessionKills then
         skillScore = skillScore + 15; indicators.Losing = true
     elseif AIState.SessionKills > AIState.SessionDeaths * 2 then
         skillScore = skillScore - 10; indicators.Winning = true
     end
 
-    -- D.      local recentDeaths = #deathAnalysis.RecentDeaths
+    -- D.
+    local recentDeaths = #deathAnalysis.RecentDeaths
     if recentDeaths > 3 then
         skillScore = skillScore + 10; indicators.FrequentDeaths = true
     end
 
-    -- E.      local fastMovers = 0
+    -- E.
+    local fastMovers = 0
     for _, e in ipairs(enemies) do
         if e.HRP then
             local vel = e.HRP.AssemblyLinearVelocity.Magnitude
