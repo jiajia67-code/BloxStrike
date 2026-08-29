@@ -5,6 +5,8 @@
 
 if not BS.Win then warn("[ESP] BS.Win not available - ui.lua may have failed") return end
 local UIS = nil pcall(function() UIS = game:GetService("UserInputService") end)
+local RunService = nil pcall(function() RunService = game:GetService("RunService") end)
+if not RunService then warn("[ESP] RunService not available") return end
 
 -- Safe mouse position getter (prevents GetMouseLocation crash)
 local mousePos = Vector2.new(0, 0)

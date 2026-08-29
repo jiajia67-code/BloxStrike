@@ -412,7 +412,7 @@ local HttpService = game:GetService("HttpService")
 local lplr = Players.LocalPlayer
 local http_request = http_request local request = request
 
-local BS_PREAMBLE = "BS = _G.BS or {}; Flags = _G.Flags or {}; game = game; workspace = workspace; "
+local BS_PREAMBLE = "_G.BS = _G.BS or {}; BS = _G.BS; _G.Flags = _G.Flags or {}; Flags = _G.Flags; game = game; workspace = workspace; "
     .. "Instance = Instance; UDim2 = UDim2; UDim = UDim; Color3 = Color3; "
     .. "Vector3 = Vector3; Vector2 = Vector2; CFrame = CFrame; "
     .. "Enum = Enum; math = math; string = string; table = table; "

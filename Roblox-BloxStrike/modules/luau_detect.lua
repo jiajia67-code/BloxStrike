@@ -353,19 +353,7 @@ end
 -- ═══ PHASE 6: Print Diagnostics ═══
 
 local function printDiagnostics()
-    -- [optimized] print("[Luau Detector] Engine: " .. Luau.engine)
     print("[Luau Detector] Executor: " .. Luau.version)
-    -- [optimized] print("[Luau Detector] Capabilities:")
-    -- [optimized] print("  typeof=" .. tostring(Luau.canTypeof)
-        .. " continue=" .. tostring(Luau.canContinue)
-        .. " goto=" .. tostring(Luau.canGoto)
-        .. " task=" .. tostring(Luau.canTask))
-    -- [optimized] print("  buffer=" .. tostring(Luau.canBuffer)
-        .. " fenv=" .. tostring(Luau.canFenv)
-        .. " debug=" .. tostring(Luau.canDebug)
-        .. " drawing=" .. tostring(Luau.canDrawing))
-    -- [optimized] print("  http=" .. tostring(Luau.canHttp)
-        .. " bit=" .. tostring(Luau.canBit))
 end
 
 -- Run diagnostics

@@ -90,7 +90,7 @@ end
 BS.Perf = Perf
 
  -- Utility Functions
-function BS.alive and BS.alive()
+function BS.alive()
     local char = lplr.Character
     if not char then return false end
     local hum = char:FindFirstChildOfClass("Humanoid")
@@ -98,17 +98,17 @@ function BS.alive and BS.alive()
     return hum and hrp and hum.Health > 0
 end
 
-function BS.hrp and BS.hrp()
+function BS.hrp()
     local char = lplr.Character
     return char and char:FindFirstChild("HumanoidRootPart")
 end
 
-function BS.hum and BS.hum()
+function BS.hum()
     local char = lplr.Character
     return char and char:FindFirstChildOfClass("Humanoid")
 end
 
-function BS.char and BS.char()
+function BS.char()
     return lplr.Character
 end
 

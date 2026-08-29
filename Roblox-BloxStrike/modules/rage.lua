@@ -767,7 +767,9 @@ task.spawn(function()
                         myHrp.Velocity = Vector3.new(0, myHrp.Velocity.Y, 0)
                     end
                 end
-            end)
+            end
+        end
+    end
 end)
 
 -- EDGE ANTI-AIM Implementation

@@ -1653,8 +1653,7 @@ end
         local prevSettings = AIState.OptimalSettings or {}
         AIState.OptimalSettings = bestEntry.Settings or {}
         AIState.OptimalSettingsSource = contextBest and "Context" or "Global"
-        logDecision("Learning: " .. (contextBest and "Context" or "Global") .. " optimal found",
-            -- "Perf=" .. bestEntry.Performance .. " Context: Style=" .. currentStyle .. " Skill=" .. math.floor(currentSkill))
+        logDecision("Learning: " .. (contextBest and "Context" or "Global") .. " optimal found")
     end
 end
 
