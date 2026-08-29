@@ -28,10 +28,10 @@ local function safeDrawingNew(class)
     if Compat and Compat.DrawingNew then return Compat.DrawingNew(class) end
     local s, r = pcall(function() return Drawing.new(class) end)
     return s and r or nil
-end
-local function safeMouse1Click()
+endlocal function safeMouse1Click()
     if Compat and Compat.Mouse1Click then Compat.Mouse1Click() return end
     pcall(function() mouse1click() end)
+end
 
 -- GLOBAL RAGE STATE
 local RAGE = {

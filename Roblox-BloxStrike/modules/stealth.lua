@@ -7128,6 +7128,5 @@ page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetRepo
 page:Button({Name="Reset Stats"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
 print("[Stealth] Anti-detection v5.0 activated (8 new systems)")
-end
 
 Stealth.ActivateAllAntiDetection()
