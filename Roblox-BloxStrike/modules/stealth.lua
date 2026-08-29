@@ -1808,7 +1808,7 @@ end)
 -- SECTION 14: FINGERPRINT ROTATION
 -- Rotate player behavior fingerprint to avoid signature matching
 
-page:Label("  ")
+page:Label("Callstack & Debug")
 page:Toggle("Fingerprint Rotation", true, function(v) Flags.FPRotation = v end)
 page:Slider("Rotation Interval", 30, 300, 120, function(v) Flags.FPRotInterval = v end)
 page:Toggle("Name Fingerprint", true, function(v) Flags.FPName = v end)
@@ -1883,7 +1883,7 @@ end)
 -- SECTION 15: TRAFFIC PATTERN MASKING
 -- Hide network traffic patterns from AC analysis
 
-page:Label("  ")
+page:Label("Environment Hiding")
 page:Toggle("Traffic Masking", true, function(v) Flags.TrafficMask = v end)
 page:Toggle("Noise Injection", true, function(v) Flags.TrafficNoise = v end)
 page:Slider("Noise Level", 1, 10, 3, function(v) Flags.TrafficNoiseLvl = v end)
@@ -2091,7 +2091,7 @@ BS.MLState = mlState
 -- SECTION 17: STATISTICAL ANOMALY SMOOTHING
 -- Ensure our stats don't trigger statistical detection
 
-page:Label("  ")
+page:Label("Hook Masking")
 page:Toggle("Stat Smoothing", true, function(v) Flags.StatSmooth = v end)
 page:Toggle("KD Regulation", true, function(v) Flags.StatKDReg = v end)
 page:Slider("Target KD", 10, 40, 20, function(v) Flags.StatTargetKD = v end)
@@ -2195,7 +2195,7 @@ BS.StatState = statState
 -- SECTION 18: ANTI-REPLAY PROTECTION
 -- Prevent AC from replaying our actions to detect cheats
 
-page:Label("  ")
+page:Label("String Obfuscation")
 page:Toggle("Anti Replay", true, function(v) Flags.AntiReplay = v end)
 page:Toggle("Action Fuzzing", true, function(v) Flags.ActionFuzz = v end)
 page:Slider("Fuzz Amount", 1, 20, 5, function(v) Flags.ActionFuzzAmt = v end)
@@ -2245,7 +2245,7 @@ end
 -- SECTION 19: MEMORY SIGNATURE EVASION
 -- Evade memory signature scanning
 
-page:Label("  ")
+page:Label("Timing Randomization")
 page:Toggle("Memory Evasion", true, function(v) Flags.MemEvasion = v end)
 page:Toggle("String Encryption", true, function(v) Flags.MemStrEnc = v end)
 page:Toggle("Object Scrambling", true, function(v) Flags.MemObjScramble = v end)
@@ -2656,7 +2656,7 @@ end)
 -- SECTION 21: COMPREHENSIVE RISK MATRIX
 -- Unified risk calculation combining ALL detection vectors
 
-page:Label("  ")
+page:Label("Memory Protection")
 page:Toggle("Matrix Risk Calc", true, function(v) Flags.MatrixRisk = v end)
 page:Toggle("Auto Panic on Matrix", true, function(v) Flags.MatrixPanic = v end)
 page:Slider("Panic Threshold", 40, 90, 65, function(v) Flags.MatrixPanicThresh = v end)

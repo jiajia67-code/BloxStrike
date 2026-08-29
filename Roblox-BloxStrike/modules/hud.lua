@@ -173,7 +173,7 @@ BS.HUD = HUD
 
 -- SECTION 1: PERFORMANCE MONITOR
 
-page:Label("  ")
+page:Label("HUD Display")
 page:Toggle("FPS Display", false, function(v) Flags.HUDFPS = v end)
 page:Toggle("Ping Display", false, function(v) Flags.HUDPing = v end)
 page:Toggle("Memory Display", false, function(v) Flags.HUDMemory = v end)
@@ -184,7 +184,7 @@ page:Slider("HUD Size", 8, 20, 14, function(v) Flags.HUDSize = v end)
 
 -- SECTION 2: FEATURE STATUS PANEL
 
-page:Label("  ")
+page:Label("Feature Status")
 page:Toggle("Feature Status", false, function(v) Flags.HUDFeatures = v end)
 page:Toggle("Risk Level Display", false, function(v) Flags.HUDRisk = v end)
 page:Toggle("Active Modules", false, function(v) Flags.HUDModules = v end)
@@ -203,7 +203,7 @@ page:Toggle("Health Crosshair", false, function(v) Flags.HUDHealthCross = v end)
 
 -- SECTION 4: NOTIFICATION CENTER
 
-page:Label("  ")
+page:Label("Combat HUD")
 page:Toggle("Notification Center", false, function(v) Flags.HUDNotifications = v end)
 page:Slider("Max Notifications", 3, 10, 5, function(v) Flags.HUDMaxNotif = v end)
 page:Toggle("Feature Toggle Notif", true, function(v) Flags.HUDFeatureNotif = v end)

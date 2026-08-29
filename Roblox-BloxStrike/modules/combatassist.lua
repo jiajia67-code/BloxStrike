@@ -19,7 +19,7 @@ pcall(function() HttpService = game:GetService("HttpService") end)
 local lplr = Players.LocalPlayer
 
 if not BS.Win then warn("[Combat Assist] BS.Win not available - ui.lua may have failed") return end
-local page = BS.Win:Tab("自瞄")
+local page = BS.Win:Tab("雜項")
 if not page or not page.Toggle then warn("[CombatAssist] Failed to create tab!") return end
 
 local CA = {}
@@ -39,7 +39,7 @@ CA.SessionStats = {
 -- SECTION 1: CHAT ASSISTANT
 -- Auto-reply, taunts, callouts, vote manipulation
 
-page:Label("  ")
+page:Label("Chat Assistant")
 page:Toggle("Chat Assistant", false, function(v) Flags.ChatAssistant = v end)
 page:Toggle("Auto Reply", false, function(v) Flags.ChatAutoReply = v end)
 page:Toggle("Auto Taunt on Kill", false, function(v) Flags.ChatAutoTaunt = v end)
@@ -274,7 +274,7 @@ task.spawn(function() CA.startChatListener() end)
 -- SECTION 2: SPECTATOR DETECTION
 -- Detect who is watching you
 
-page:Label("  ")
+page:Label("Spectator Detection")
 page:Toggle("Spectator List", false, function(v) Flags.SpectatorList = v end)
 page:Toggle("Spectator Alert", false, function(v) Flags.SpectatorAlert = v end)
 page:Toggle("Spectator History", true, function(v) Flags.SpectatorHistory = v end)
@@ -377,7 +377,7 @@ CA.SpectatorState = specState
 -- SECTION 3: PLAYER RATING SYSTEM
 -- Rate and remember players across sessions
 
-page:Label("  ")
+page:Label("Player Rating")
 page:Toggle("Player Rating", true, function(v) Flags.PlayerRating = v end)
 page:Toggle("Auto Rate", true, function(v) Flags.AutoRate = v end)
 page:Slider("Threat Threshold", 50, 100, 70, function(v) Flags.ThreatThreshold = v end)
@@ -524,7 +524,7 @@ CA.RatingState = ratingState
 -- SECTION 4: MAP MEMORY
 -- Remember settings per map
 
-page:Label("  ")
+page:Label("Map Memory")
 page:Toggle("Map Memory", true, function(v) Flags.MapMemory = v end)
 page:Toggle("Auto Apply Settings", false, function(v) Flags.MapAutoApply = v end)
 page:Toggle("Record Performance", true, function(v) Flags.MapRecordPerf = v end)
@@ -674,7 +674,7 @@ CA.MapState = mapState
 -- SECTION 5: SESSION STATISTICS
 -- Track session performance
 
-page:Label("  ")
+page:Label("Session Stats")
 page:Toggle("Session Stats", true, function(v) Flags.SessionStats = v end)
 page:Button({Name="Show Session Stats", Color=Color3.fromRGB(200, 200, 100)}, function()
     CA.showSessionStats()

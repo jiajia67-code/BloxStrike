@@ -90,9 +90,9 @@ local MOD_CN = {
 
 local MODULE_ORDER = {
     'compat', 'core', 'ui', 'api',
-    'combat', 'combatassist',
+    'combat',
     'esp',
-    'hud', 'killeffects', 'utility',
+    'hud', 'killeffects', 'utility', 'combatassist',
     'world',
     'rage', 'pingadapt', 'smartai',
     'settings', 'stealth', 'cheatdetect',
