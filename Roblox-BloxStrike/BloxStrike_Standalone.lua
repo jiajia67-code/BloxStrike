@@ -283,7 +283,7 @@ local function logModule(name, ok, extra)
     local lbl = Instance.new("TextLabel")
     lbl.Size = UDim2.new(1, -5, 0, 14)
     lbl.BackgroundTransparency = 1
-    local icon = ok and "\u2713" or "\u2717"
+    local icon = ok and "+" or "x"
     local color = ok and Color3.fromRGB(80, 255, 150) or Color3.fromRGB(255, 80, 80)
     lbl.TextColor3 = color
     lbl.TextSize = 11
@@ -350,7 +350,7 @@ end)
 task.spawn(function()
     while not updateCheckDone do task.wait(0.1) end
     if latestVersion and isNewer(latestVersion, CURRENT_VERSION) then
-        Title.Text = "BLOXSTRIKE \u2192 " .. latestVersion
+        Title.Text = "BLOXSTRIKE -> " .. latestVersion
         ResultLabel.Text = "New version available!"
         ResultLabel.TextColor3 = Color3.fromRGB(255, 200, 50)
         pcall(function()
@@ -647,7 +647,7 @@ StatusLabel.Text = 'Done!'
 task.wait(0.3)
 
 local elapsed = math.floor((tick() - t0) * 1000)
-ResultLabel.Text = '\u2713 ' .. ok .. ' OK  \u2717 ' .. fail .. ' FAIL  \u23F1 ' .. elapsed .. 'ms (' .. dlTime .. 'ms dl)'
+ResultLabel.Text = '[OK] ' .. ok .. '  [FAIL] ' .. fail .. '  ' .. elapsed .. 'ms (' .. dlTime .. 'ms dl)'
 ResultLabel.TextColor3 = fail == 0 and Color3.fromRGB(0, 255, 150) or Color3.fromRGB(255, 200, 50)
 ResultLabel.TextSize = 13
 ResultLabel.Font = Enum.Font.GothamBold
@@ -656,7 +656,7 @@ logCount = logCount + 1
 local sumLbl = Instance.new("TextLabel")
 sumLbl.Size = UDim2.new(1, -5, 0, 16)
 sumLbl.BackgroundTransparency = 1
-sumLbl.Text = "  \u2713 " .. ok .. " loaded  \u2717 " .. fail .. " failed  \u23F1 " .. elapsed .. "ms"
+sumLbl.Text = "  [OK] " .. ok .. " loaded  [FAIL] " .. fail .. " failed  " .. elapsed .. "ms"
 sumLbl.TextColor3 = fail == 0 and Color3.fromRGB(80, 255, 150) or Color3.fromRGB(255, 200, 80)
 sumLbl.TextSize = 12
 sumLbl.Font = Enum.Font.GothamBold
