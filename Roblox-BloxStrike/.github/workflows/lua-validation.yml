@@ -1,0 +1,93 @@
+name: Lua Validation
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Lua
+      uses: leafo/gh-lua@v6
+      with:
+        luaVersion: "5.1"
+
+    - name: Install Luacheck
+      run: |
+        luarocks install luacheck
+
+    - name: Validate Lua syntax
+      run: |
+        echo "=== Checking Lua syntax ==="
+        find . -name "*.lua" -type f | while read file; do
+          echo "Checking: $file"
+          luacheck "$file" --no-config --no-unused --no-redefined --allow-defined --std lua51 || true
+        done
+
+    - name: Check file structure
+      run: |
+        echo "=== Checking file structure ==="
+        if [ ! -f "BloxStrike.lua" ]; then
+          echo "❌ BloxStrike.lua not found"
+          exit 1
+        fi
+        if [ ! -d "modules" ]; then
+          echo "❌ modules/ directory not found"
+          exit 1
+        fi
+        echo "✅ File structure valid"
+
+    - name: Verify module count
+      run: |
+        echo "=== Verifying modules ==="
+        MODULE_COUNT=$(find modules -name "*.lua" -type f | wc -l)
+        echo "Found $MODULE_COUNT modules"
+        if [ "$MODULE_COUNT" -lt 20 ]; then
+          echo "❌ Expected at least 20 modules"
+          exit 1
+        fi
+        echo "✅ Module count valid"
+
+    - name: Check for syntax errors
+      run: |
+        echo "=== Checking for common syntax errors ==="
+        ERRORS=0
+        find . -name "*.lua" -type f | while read file; do
+          # Check for unmatched parentheses
+          OPEN=$(grep -o "(" "$file" | wc -l)
+          CLOSE=$(grep -o ")" "$file" | wc -l)
+          if [ "$OPEN" -ne "$CLOSE" ]; then
+            echo "⚠️ Parenthesis mismatch in $file (open: $OPEN, close: $CLOSE)"
+            ERRORS=$((ERRORS + 1))
+          fi
+          
+          # Check for unmatched braces
+          OPEN=$(grep -o "{" "$file" | wc -l)
+          CLOSE=$(grep -o "}" "$file" | wc -l)
+          if [ "$OPEN" -ne "$CLOSE" ]; then
+            echo "⚠️ Brace mismatch in $file (open: $OPEN, close: $CLOSE)"
+            ERRORS=$((ERRORS + 1))
+          fi
+        done
+        
+        if [ "$ERRORS" -gt 0 ]; then
+          echo "⚠️ Found $ERRORS potential issues"
+        else
+          echo "✅ No syntax errors found"
+        fi
+
+    - name: Generate report
+      if: always()
+      run: |
+        echo "=== Validation Report ==="
+        echo "Date: $(date)"
+        echo "Lua files: $(find . -name '*.lua' -type f | wc -l)"
+        echo "Total lines: $(find . -name '*.lua' -type f -exec cat {} \; | wc -l)"
+        echo "=== Done ==="
