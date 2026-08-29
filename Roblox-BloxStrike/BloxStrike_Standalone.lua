@@ -616,6 +616,8 @@ print("[BloxStrike] Download complete: " .. summary)
 
 -- SEQUENTIAL EXECUTE
 local ok, fail = 0, 0
+local failedModules = {}
+
 for i, name in ipairs(MODULE_ORDER) do
     local progress = 50 + math.floor(i / total * 50)
     BarFill.Size = UDim2.new(progress / 100, 0, 1, 0)
@@ -624,24 +626,57 @@ for i, name in ipairs(MODULE_ORDER) do
     StatusLabel.Text = 'Load: ' .. (MOD_CN[name] or name) .. ' (' .. i .. '/' .. total .. ')'
 
     local code = downloaded[name]
-    if not code then
-        logModule(name, false, 'download failed')
-        fail = fail + 1
-    else
-        local execOk, execErr = pcall(function()
-            local fn, compileErr = loadstring(BS_PREAMBLE .. code)
-            if not fn then error('Compile: ' .. (compileErr or 'unknown')) end
-            fn()
-        end)
-        if execOk then
-            ok = ok + 1
-            logModule(name, true, nil)
-        else
+    local loaded = false
+
+    -- Try up to 2 times
+    for attempt = 1, 2 do
+        if loaded then break end
+        if attempt > 1 and code then
+            -- Retry: re-download
+            code = httpGet(BASE_URL .. name .. '.lua?t=' .. CACHE_BUSTER .. '&retry=' .. attempt)
+        end
+        if code then
+            local execOk, execErr = pcall(function()
+                local fn, compileErr = loadstring(BS_PREAMBLE .. code)
+                if not fn then error('Compile: ' .. (compileErr or 'unknown')) end
+                fn()
+            end)
+            if execOk then
+                loaded = true
+                ok = ok + 1
+                logModule(name, true, attempt > 1 and 'retry OK' or nil)
+            elseif attempt == 2 then
+                fail = fail + 1
+                failedModules[#failedModules + 1] = name
+                logModule(name, false, tostring(execErr):sub(1, 40))
+            end
+        elseif attempt == 2 then
             fail = fail + 1
-            logModule(name, false, tostring(execErr):sub(1, 40))
+            failedModules[#failedModules + 1] = name
+            logModule(name, false, 'download failed')
         end
     end
     if i % 5 == 0 then task.wait() end
+end
+
+-- Second pass: retry all failed modules with fresh downloads
+if #failedModules > 0 then
+    StatusLabel.Text = 'Retry: ' .. #failedModules .. ' failed modules...'
+    for _, name in ipairs(failedModules) do
+        local code = httpGet(BASE_URL .. name .. '.lua?t=' .. CACHE_BUSTER .. '&r=3')
+        if code then
+            local execOk, execErr = pcall(function()
+                local fn, compileErr = loadstring(BS_PREAMBLE .. code)
+                if not fn then error('Compile: ' .. (compileErr or 'unknown')) end
+                fn()
+            end)
+            if execOk then
+                ok = ok + 1
+                fail = fail - 1
+                logModule(name, true, 'retry OK')
+            end
+        end
+    end
 end
 
 -- Finalize

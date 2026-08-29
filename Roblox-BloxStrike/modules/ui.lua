@@ -57,15 +57,21 @@ end
 
 if not Rayfield then
     warn("[UI] CRITICAL: Could not load Rayfield!")
+    local stubPage = {
+        Toggle = function(self, n, d, c) pcall(function() Flags[n] = d end) end,
+        Slider = function(self, n, mn, mx, d, c) pcall(function() Flags[n] = d end) end,
+        Dropdown = function(self, c) pcall(function() if c and c.Options then Flags[c.Name or 'dropdown'] = c.Options[1] end end) end,
+        Button = function(self, c, cb) end,
+        Label = function(self, t) print('[BS] ' .. tostring(t)) end,
+        Separator = function(self) end,
+    }
     BS.Win = {
         Tab = function(self, name)
-            return {
-                Toggle = function() end, Slider = function() end,
-                Dropdown = function() end, Button = function() end,
-                Label = function() end, Separator = function() end,
-            }
+            print('[UI] Stub tab: ' .. name)
+            return setmetatable({}, {__index = stubPage})
         end
     }
+    BS.Notify = function(t, d) print('[BS] ' .. tostring(t) .. ': ' .. tostring(d)) end
     return
 end
 
