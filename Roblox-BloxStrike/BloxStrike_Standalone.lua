@@ -426,10 +426,12 @@ local BS_PREAMBLE = "BS = _G.BS or {}; Flags = _G.Flags or {}; game = game; work
     .. "collectgarbage = collectgarbage; newproxy = newproxy; "
     .. "utf8 = utf8; bit32 = bit32; "
 
--- PARALLEL DOWNLOAD
+-- PARALLEL DOWNLOAD with RETRY
 local total = #MODULE_ORDER
 local downloaded = {}
 local dlDone = 0
+local MAX_RETRY = 3
+local RETRY_DELAY = 0.5  -- seconds between retries
 
 -- Timestamp cache buster: different value every execution
 local CACHE_BUSTER = tostring(math.floor(tick() * 1000))
@@ -438,21 +440,61 @@ print("[BloxStrike] Cache buster: " .. CACHE_BUSTER)
 StatusLabel.Text = 'Parallel download ' .. total .. ' modules...'
 task.wait(0.1)
 
+-- Download function with retry
+local function downloadWithRetry(name, attempt)
+    attempt = attempt or 1
+    local url = BASE_URL .. name .. '.lua?t=' .. CACHE_BUSTER .. '&r=' .. attempt
+    local result = httpGet(url)
+    if result and #result > 50 then  -- Minimum 50 chars = valid Lua
+        return result
+    elseif attempt < MAX_RETRY then
+        task.wait(RETRY_DELAY * attempt)  -- Exponential backoff
+        return downloadWithRetry(name, attempt + 1)
+    else
+        return nil  -- All retries failed
+    end
+end
+
+-- First pass: parallel download all modules
 for _, name in ipairs(MODULE_ORDER) do
     task.spawn(function()
-        local result = httpGet(BASE_URL .. name .. '.lua?t=' .. CACHE_BUSTER)
+        local result = downloadWithRetry(name)
         downloaded[name] = result
         dlDone = dlDone + 1
         local pct = math.floor(dlDone / total * 50)
         BarFill.Size = UDim2.new(pct / 100, 0, 1, 0)
         BarGlow.Size = UDim2.new(pct / 100, 0, 1, 0)
         PctLabel.Text = pct .. '%'
-        StatusLabel.Text = 'Download: ' .. (MOD_CN[name] or name) .. ' (' .. dlDone .. '/' .. total .. ')'
+        local status = result and '✓' or '✗'
+        StatusLabel.Text = status .. ' Download: ' .. (MOD_CN[name] or name) .. ' (' .. dlDone .. '/' .. total .. ')'
     end)
 end
 
 while dlDone < total do
     task.wait(0.05)
+end
+
+-- Second pass: retry any failed downloads (sequential, faster retry)
+local retryFailed = {}
+for _, name in ipairs(MODULE_ORDER) do
+    if not downloaded[name] then
+        retryFailed[#retryFailed + 1] = name
+    end
+end
+
+if #retryFailed > 0 then
+    print("[BloxStrike] Retrying " .. #retryFailed .. " failed modules...")
+    StatusLabel.Text = 'Retry: ' .. #retryFailed .. ' modules...'
+    for _, name in ipairs(retryFailed) do
+        local result = downloadWithRetry(name)
+        downloaded[name] = result
+        if result then
+            logModule(name, true, 'retry OK')
+        else
+            logModule(name, false, 'all retries failed')
+        end
+        task.wait(0.1)
+    end
 end
 
 local dlTime = math.floor((tick() - t0) * 1000)
