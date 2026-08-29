@@ -600,7 +600,7 @@ task.spawn(function()
             if not cam or not cam.CFrame then
                 print("[ErrorHandler]  Camera invalid  recovering")
                 pcall(function()
-                    workspace.CurrentCamera = Instance.new("Camera", workspace)
+                    pcall(function() workspace.CurrentCamera = Instance.new("Camera", workspace) end)
                 end)
             end
 

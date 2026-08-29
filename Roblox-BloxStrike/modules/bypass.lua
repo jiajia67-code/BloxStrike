@@ -885,7 +885,7 @@ function Bypass.checkIntegrity()
         for _, issue in ipairs(issues) do
             if issue == "Camera NaN" then
                 pcall(function()
-                    workspace.CurrentCamera.CFrame = CFrame.new(0, 10, 0)
+                    pcall(function() workspace.CurrentCamera.CFrame = CFrame.new(0, 10, 0) end)
                 end)
             elseif issue:find("WalkSpeed") or issue:find("JumpPower") then
                 pcall(function()

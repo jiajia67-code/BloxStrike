@@ -41,7 +41,7 @@ local function updateWatermark()
         WatermarkObj.Size = 14
     end
     local parts = {"BloxStrike v3.0"}
-    if Flags.WMFPS then table.insert(parts, math.floor(1/workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait() and 60 or 60) .. " FPS") end
+    if Flags.WMFPS then table.insert(parts, math.floor(1/(workspace and workspace.CurrentCamera and workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait() and 60 or 60) .. " FPS") end
     if Flags.WMPing then
         pcall(function()
             local ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"].Value)
@@ -131,7 +131,7 @@ local function updateKillCounter()
         table.insert(parts, "Acc: " .. math.floor(SessionHits/SessionShots*100) .. "%")
     end
     KillCounterObj.Text = "  " .. table.concat(parts, " | ") .. "  "
-    KillCounterObj.Position = Vector2.new(10, workspace.CurrentCamera.ViewportSize.Y - 30)
+    KillCounterObj.Position = Vector2.new(10, (workspace and workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize or Vector2.new(1920,1080)).Y - 30)
     KillCounterObj.Color = Color3.new(1,1,0.5)
     KillCounterObj.Visible = #parts > 0
 end
@@ -675,7 +675,7 @@ local function updateWatermark()
         WatermarkObj.Size = 14
     end
     local parts = {"BloxStrike v3.0"}
-    if Flags.WMFPS then table.insert(parts, math.floor(1/workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait() and 60 or 60) .. " FPS") end
+    if Flags.WMFPS then table.insert(parts, math.floor(1/(workspace and workspace.CurrentCamera and workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait() and 60 or 60) .. " FPS") end
     if Flags.WMPing then
         pcall(function()
             local ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"].Value)
@@ -765,7 +765,7 @@ local function updateKillCounter()
         table.insert(parts, "Acc: " .. math.floor(SessionHits/SessionShots*100) .. "%")
     end
     KillCounterObj.Text = "  " .. table.concat(parts, " | ") .. "  "
-    KillCounterObj.Position = Vector2.new(10, workspace.CurrentCamera.ViewportSize.Y - 30)
+    KillCounterObj.Position = Vector2.new(10, (workspace and workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize or Vector2.new(1920,1080)).Y - 30)
     KillCounterObj.Color = Color3.new(1,1,0.5)
     KillCounterObj.Visible = #parts > 0
 end
@@ -808,3 +808,6 @@ BS.HUD = HUD
 print("[HUD] BloxStrike HUD v1.0 loaded")
 print("[HUD] Features: Performance Monitor, Feature Status, Combat HUD,")
 print("[HUD]   Notification Center, Health Crosshair, Velocity Display")
+
+)
+)

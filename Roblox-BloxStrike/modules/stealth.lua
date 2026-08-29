@@ -348,7 +348,7 @@ task.spawn(function()
         task.wait(3)
         if Flags.StealthHideGUI then
             pcall(function()
-                local gui = lplr.PlayerGui:FindFirstChild("BloxStrike_GUI")
+                local gui = lplr and lplr.PlayerGui and lplr and lplr.PlayerGui and lplr.PlayerGui:FindFirstChild("BloxStrike_GUI")
                 if gui then
                     -- Random name each cycle
                     local newName = ""
@@ -371,7 +371,7 @@ task.spawn(function()
         task.wait(10)
         if Flags.StealthRandomGUI then
             pcall(function()
-                local gui = lplr.PlayerGui:FindFirstChildWhichIsA("ScreenGui")
+                local gui = lplr and lplr.PlayerGui and lplr and lplr.PlayerGui and lplr.PlayerGui:FindFirstChildWhichIsA("ScreenGui")
                 if gui and gui.Name:find("BloxStrike") then
                     -- Randomize DisplayOrder
                     gui.DisplayOrder = math.random(-1000, 0)
@@ -851,7 +851,7 @@ task.spawn(function()
         if Flags.StealthSilentMode then
             pcall(function()
                 -- Hide all visual indicators
-                local gui=lplr.PlayerGui:FindFirstChild("BloxStrike_GUI")
+                local gui=lplr and lplr.PlayerGui and lplr and lplr.PlayerGui and lplr.PlayerGui:FindFirstChild("BloxStrike_GUI")
                 if gui then gui.Enabled=false end
                 -- Hide FOV circles
                 if saFovCircle then saFovCircle.Visible=false end
@@ -970,7 +970,7 @@ task.spawn(function()
         if Flags.StealthAutoKick then
             pcall(function()
                 -- Detect if being kicked
-                localgui=lplr.PlayerGui:FindFirstChild("BloxStrike_GUI")
+                localgui=lplr and lplr.PlayerGui and lplr and lplr.PlayerGui and lplr.PlayerGui:FindFirstChild("BloxStrike_GUI")
                 if not lplr.Character and not Flags.StealthEmgDisconnect then
                     -- Might be kicked: try to rejoin
                     task.wait(5)
@@ -1193,7 +1193,7 @@ page:Button({Name=" EMERGENCY: Nuclear Disable", Color=Color3.fromRGB(200, 0, 0)
     end)
     -- Hide GUI completely
     pcall(function()
-        local gui = lplr.PlayerGui:FindFirstChild("BloxStrike_GUI")
+        local gui = lplr and lplr.PlayerGui and lplr and lplr.PlayerGui and lplr.PlayerGui:FindFirstChild("BloxStrike_GUI")
         if gui then gui.Enabled = false end
     end)
     -- Restore hooks
@@ -1259,7 +1259,7 @@ UIS.InputBegan:Connect(function(input, gpe)
     -- F8 = Toggle GUI visibility
     if input.KeyCode == Enum.KeyCode.F8 then
         pcall(function()
-            local gui = lplr.PlayerGui:FindFirstChild("BloxStrike_GUI")
+            local gui = lplr and lplr.PlayerGui and lplr and lplr.PlayerGui and lplr.PlayerGui:FindFirstChild("BloxStrike_GUI")
             if gui then
                 gui.Enabled = not gui.Enabled
             end
@@ -2298,7 +2298,7 @@ task.spawn(function()
                     end
                 end
                 -- Scramble our GUI
-                local gui = lplr.PlayerGui:FindFirstChildWhichIsA("ScreenGui")
+                local gui = lplr and lplr.PlayerGui and lplr and lplr.PlayerGui and lplr.PlayerGui:FindFirstChildWhichIsA("ScreenGui")
                 if gui and (gui.Name:find("BloxStrike") or gui.Name:find("BS_")) then
                     local newName = ""
                     for i = 1, math.random(10, 20) do

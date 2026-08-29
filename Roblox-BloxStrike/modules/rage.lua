@@ -550,7 +550,7 @@ page:Button({Name="[HVH] Disable All", Color=Color3.fromRGB(60,60,60)}, function
     for k,_ in pairs(Flags) do Flags[k]=false end
     pcall(function()
         local h=hum(); if h then h.WalkSpeed=16; h.JumpPower=50; h.HipHeight=0 end
-        workspace.CurrentCamera.FieldOfView=70
+        if workspace and workspace.CurrentCamera then workspace.CurrentCamera.FieldOfView=70 end
     end)
     pcall(function() game:GetService("StarterGui"):SetCore("SendNotification",{Title="Off",Text="All HVH disabled",Duration=3}) end)
 end)

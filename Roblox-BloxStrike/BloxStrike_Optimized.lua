@@ -63,11 +63,15 @@ local lplr=Players and Players.LocalPlayer or nil
 local function alive()if not lplr then return false end;local c=lplr.Character;return c and c:FindFirstChild("HumanoidRootPart")and c:FindFirstChildOfClass("Humanoid")and c:FindFirstChildOfClass("Humanoid").Health>0 end
 local function hrp()if not lplr then return nil end;local c=lplr.Character;return c and c:FindFirstChild("HumanoidRootPart")end
 local function hum()if not lplr then return nil end;local c=lplr.Character;return c and c:FindFirstChildOfClass("Humanoid")end
+local function cam()return workspace and workspace.CurrentCamera or nil end
+local function backpack()return lplr and lplr.Backpack or nil end
+local function playerGui()return lplr and lplr.PlayerGui or nil end
 if BS and not BS.alive then BS.alive=alive end;if BS and not BS.hrp then BS.hrp=hrp end;if BS and not BS.hum then BS.hum=hum end
 if BS and not BS.LocalPlayer then BS.LocalPlayer=lplr end;if BS and not BS.Players then BS.Players=Players end
 if BS and not BS.RunService then BS.RunService=RunService end;if BS and not BS.UserInputService then BS.UserInputService=UserInputService end
 if BS and not BS.TweenService then BS.TweenService=TweenService end;if BS and not BS.Lighting then BS.Lighting=Lighting end
 if BS and not BS.Workspace then BS.Workspace=Workspace end;if BS and not BS.StarterGui then BS.StarterGui=StarterGui end
+if BS and not BS.Camera then BS.Camera=cam end;if BS and not BS.Backpack then BS.Backpack=backpack end;if BS and not BS.PlayerGui then BS.PlayerGui=playerGui end
 ]]
 
 -- ═══════════════════════════════════════════════════════════════
