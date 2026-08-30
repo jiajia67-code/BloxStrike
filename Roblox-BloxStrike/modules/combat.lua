@@ -173,6 +173,7 @@ task.spawn(function()
 
                 local bone = Flags.AimbotBone or "Head"
                 local sort = Flags.AimSort or "Crosshair"
+                if not myHrp then return end
                 local myPos = myHrp.Position
                 local candidates = {}
 
