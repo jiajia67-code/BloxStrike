@@ -177,7 +177,10 @@ task.spawn(function()
                 local candidates = {}
 
                 -- Find all valid targets
-                for _, e in pairs(BS.enemies and BS.enemies() or {}) do
+                local enemyList = {}
+                pcall(function() enemyList = BS.enemies and BS.enemies() or {} end)
+                for _, e in pairs(enemyList) do
+                    if not e or type(e) ~= 'table' then continue end
                     if not e.HRP or not e.Hum or e.Hum.Health <= 0 then continue end
                     if Flags.AimbotTeamCheck and lplr.Team and e.Player.Team == lplr.Team then continue end
                     if Flags.AimbotFriend and lplr:IsFriendsWith(e.Player.UserId) then continue end

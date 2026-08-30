@@ -804,13 +804,15 @@ task.spawn(function()
                     if Flags.EdgeAutoDesync then
                         local offset = Flags.EdgeDesyncOff or 30
                         Flags.AABodyYawO = offset
-                    
+                    end
                     -- Freestand
                     if Flags.EdgeFreestand then
                         if leftRay and not rightRay then
                             Flags.AAYaw = "Manual Left"
                         elseif rightRay and not leftRay then
                             Flags.AAYaw = "Manual Right"
+                        end
+                    end
                 end
             end)
         end

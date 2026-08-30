@@ -1831,7 +1831,7 @@ function AI.showStatus()
 
     pcall(function()
          StarterGui:SetCore("SendNotification", {
-            Title = "[AI] Full Config"
+            Title = "[AI] Full Config",
             Text = statusText,
             Duration = 10,
         })

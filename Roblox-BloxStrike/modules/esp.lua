@@ -19,6 +19,7 @@ end
 local E = nil
 pcall(function() E = BS.Win:Tab("透視") end)
 if not E or not E.Toggle then warn("[ESP] Failed to create tab!") return end
+print("[ESP] Tab created: " .. tostring(E ~= nil) .. " Toggle: " .. tostring(E and E.Toggle ~= nil))
 
 -- GUI SECTION  60+ Options
 
