@@ -505,14 +505,34 @@ local function httpGetFast(url)
     return nil
 end
 
--- Download with retry + validation
+-- Download with retry + validation + TIMEOUT
+local DL_TIMEOUT = 15  -- seconds per download attempt
+
 local function downloadModule(name, attempt)
     attempt = attempt or 1
     local url = BASE_URL .. name .. '.lua?t=' .. CACHE_BUSTER .. '&r=' .. attempt .. '&s=' .. tostring(math.floor(tick()))
     
     local startTime = tick()
-    local result = httpGetFast(url)
+    local result = nil
+    local done = false
+    
+    -- Run download with timeout
+    task.spawn(function()
+        result = httpGetFast(url)
+        done = true
+    end)
+    
+    local waitTime = 0
+    while not done and waitTime < DL_TIMEOUT do
+        task.wait(0.1)
+        waitTime = waitTime + 0.1
+    end
+    
     local elapsed = tick() - startTime
+    if not done then
+        warn('[BS] Timeout: ' .. name .. ' (' .. DL_TIMEOUT .. 's)')
+        return nil, elapsed
+    end
     
     -- Validation: must be non-nil, >100 chars, not an error page
     if result and #result > 100 and not result:find('<!DOCTYPE') and not result:find('404') then
@@ -636,21 +656,43 @@ for i, name in ipairs(MODULE_ORDER) do
             task.wait(0.1 * attempt)
         end
         if code then
-            local execOk, execErr = pcall(function()
-                local fn, compileErr = loadstring(BS_PREAMBLE .. code)
-                if not fn then error('Compile: ' .. (compileErr or 'unknown')) end
-                fn()
+            local EXEC_TIMEOUT = 10  -- seconds per module execution
+            local execOk, execErr = false, nil
+            local execDone = false
+            
+            -- Run module in coroutine with timeout
+            task.spawn(function()
+                local ok2, err2 = pcall(function()
+                    local fn, compileErr = loadstring(BS_PREAMBLE .. code)
+                    if not fn then error('Compile: ' .. (compileErr or 'unknown')) end
+                    fn()
+                end)
+                execOk = ok2
+                execErr = err2
+                execDone = true
             end)
+            
+            local execWait = 0
+            while not execDone and execWait < EXEC_TIMEOUT do
+                task.wait(0.1)
+                execWait = execWait + 0.1
+            end
+            
+            if not execDone then
+                execOk = false
+                execErr = 'Timeout (' .. EXEC_TIMEOUT .. 's)'
+            end
+            
             if execOk then
                 loaded = true
                 ok = ok + 1
                 logModule(name, true, attempt > 1 and 'retry OK' or nil)
             else
-                -- Extract line number from error message
                 local errStr = tostring(execErr)
                 local errLine = errStr:match(': (%d+):') or errStr:match('line (%d+)')
                 local errType = 'Runtime'
                 if errStr:find('Compile:') then errType = 'Compile'
+                elseif errStr:find('Timeout') then errType = 'Timeout'
                 elseif errStr:find('attempt to index') then errType = 'Index'
                 elseif errStr:find('attempt to call') then errType = 'Call'
                 elseif errStr:find('Expected') then errType = 'Syntax'
