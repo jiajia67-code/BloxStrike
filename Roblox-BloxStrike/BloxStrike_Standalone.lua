@@ -437,26 +437,11 @@ local total = #MODULE_ORDER
 local downloaded = {}
 local dlDone = 0
 local dlTotalBytes = 0
-local MAX_RETRY = 3
-local RETRY_DELAY = 0.3
-local CONCURRENT_LIMIT = 6  -- Max simultaneous downloads (GitHub CDN limit)
-local DOWNLOAD_TIMEOUT = 8  -- Seconds per request
+local MAX_RETRY = 2
 
--- Timestamp cache buster: different value every execution
+-- Timestamp cache buster
 local CACHE_BUSTER = tostring(math.floor(tick() * 1000))
-print("[BloxStrike] Download config: " .. CONCURRENT_LIMIT .. " concurrent, " .. MAX_RETRY .. " retries")
-
--- Concurrency semaphore
-local activeCount = 0
-local function acquireSlot()
-    while activeCount >= CONCURRENT_LIMIT do
-        task.wait(0.05)
-    end
-    activeCount = activeCount + 1
-end
-local function releaseSlot()
-    activeCount = activeCount - 1
-end
+print("[BloxStrike] Sequential download, " .. MAX_RETRY .. " retries max")
 
 -- HTTP download: try only known-good methods, skip hanging fallbacks
 local function httpGetFast(url)
@@ -510,55 +495,42 @@ local function formatSpeed(bytes, seconds)
     end
 end
 
--- ═══ PHASE 1: PARALLEL DOWNLOAD ═══
-StatusLabel.Text = 'Phase 1: Download ' .. total .. ' modules...'
+-- ═══ PHASE 1: SEQUENTIAL DOWNLOAD (prevents hanging) ═══
+StatusLabel.Text = 'Download ' .. total .. ' modules...'
 task.wait(0.05)
 
 local dlStartTime = tick()
 
 for _, name in ipairs(MODULE_ORDER) do
-    task.spawn(function()
-        acquireSlot()  -- Wait for available slot
-        
-        local code, elapsed = downloadModule(name)
-        downloaded[name] = code
-        dlDone = dlDone + 1
-        
-        -- Update progress
-        local pct = math.floor(dlDone / total * 50)
-        BarFill.Size = UDim2.new(pct / 100, 0, 1, 0)
-        BarGlow.Size = UDim2.new(pct / 100, 0, 1, 0)
-        PctLabel.Text = pct .. '%'
-        
-        local speed = formatSpeed(dlTotalBytes, tick() - dlStartTime)
-        local status = code and '✓' or '✗'
-        local sizeStr = code and string.format('%.1fKB', #code / 1024) or 'failed'
-        StatusLabel.Text = status .. ' ' .. (MOD_CN[name] or name) .. ' ' .. sizeStr .. ' (' .. dlDone .. '/' .. total .. ') ' .. speed
-        
-        releaseSlot()
-    end)
-end
-
-while dlDone < total do
-    task.wait(0.05)
+    local code, elapsed = downloadModule(name)
+    downloaded[name] = code
+    dlDone = dlDone + 1
+    
+    local pct = math.floor(dlDone / total * 50)
+    BarFill.Size = UDim2.new(pct / 100, 0, 1, 0)
+    BarGlow.Size = UDim2.new(pct / 100, 0, 1, 0)
+    PctLabel.Text = pct .. '%'
+    
+    local speed = formatSpeed(dlTotalBytes, tick() - dlStartTime)
+    local status = code and '✓' or '✗'
+    local sizeStr = code and string.format('%.1fKB', #code / 1024) or 'failed'
+    StatusLabel.Text = status .. ' ' .. (MOD_CN[name] or name) .. ' ' .. sizeStr .. ' (' .. dlDone .. '/' .. total .. ') ' .. speed
+    
+    task.wait()  -- yield to keep GUI responsive
 end
 
 local phase1Time = math.floor((tick() - dlStartTime) * 1000)
 
--- ═══ PHASE 2: RETRY FAILURES ═══
+-- Count failures (no retry - skip immediately to prevent hanging)
 local retryFailed = {}
 for _, name in ipairs(MODULE_ORDER) do
     if not downloaded[name] then
         retryFailed[#retryFailed + 1] = name
+        logModule(name, false, 'download failed, skipped')
     end
 end
-
 if #retryFailed > 0 then
-    print("[BloxStrike] Phase 2: " .. #retryFailed .. " modules failed, skipping...")
-    StatusLabel.Text = 'Skip ' .. #retryFailed .. ' failed modules'
-    for _, name in ipairs(retryFailed) do
-        logModule(name, false, 'skipped (download timeout)')
-    end
+    warn('[BS] ' .. #retryFailed .. ' modules failed: ' .. table.concat(retryFailed, ', '))
 end
 
 -- ═══ PHASE 3: VALIDATION ═══
