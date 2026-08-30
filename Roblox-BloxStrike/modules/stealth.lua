@@ -18,7 +18,9 @@ pcall(function() Stats = game:GetService("Stats") end)
 local lplr = Players.LocalPlayer
 
 if not BS.Win then warn("[Stealth] BS.Win not available - ui.lua may have failed") return end
-local page = BS.Win:Tab("關於")
+local page = nil
+pcall(function() page = BS.Win:Tab("關於") end)
+if not page then warn("[Stealth] Failed to create tab!") return end
 if not page or not page.Toggle then warn("[Stealth] Failed to create tab!") return end
 
 local Stealth = {}
@@ -544,7 +546,7 @@ end
 task.spawn(function()
     while true do
         task.wait(0.3)
-        if not BS.alive and BS.alive() then continue end
+        if not BS.alive or not BS.alive() then continue end
         local h = BS.hum and BS.hum()
         if not h then continue end
 
@@ -1721,7 +1723,7 @@ local ssvlState = {
 -- Velocity + Acceleration capping: keep within server-reasonable limits
 task.spawn(function()
     while true do task.wait(0.05)
-        if not Flags.SSVL or not BS.alive and BS.alive() then continue end
+        if not Flags.SSVL or not BS.alive or not BS.alive() then continue end
         local hrp = BS.hrp and BS.hrp()
         if not hrp then continue end
         local h = BS.hum and BS.hum()

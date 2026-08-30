@@ -205,7 +205,14 @@ BS.Win = {
         if tabCache[tabName] then
             return tabCache[tabName]
         end
-        local rayfieldTab = Window:CreateTab(tabName, nil)
+        local ok, rayfieldTab = pcall(function() return Window:CreateTab(tabName, nil) end)
+        if not ok or not rayfieldTab then
+            warn("[UI] Failed to create tab: " .. tostring(tabName))
+            -- Return a stub page so modules don't crash
+            local stub = setmetatable({}, {__index = function() return function() end end})
+            tabCache[tabName] = stub
+            return stub
+        end
         local page = wrapTab(rayfieldTab, tabName)
         tabCache[tabName] = page
         return page

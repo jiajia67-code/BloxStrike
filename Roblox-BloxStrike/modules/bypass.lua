@@ -515,7 +515,7 @@ end
 -- SECTION 11: TELEPORT DETECTION BYPASS
 
 function Bypass.trackPosition()
-    if not BS.alive and BS.alive() then return end
+    if not BS.alive or not BS.alive() then return end
     local hrp = BS.hrp and BS.hrp()
     if not hrp then return end
     local currentPos = hrp.Position
@@ -537,7 +537,7 @@ function Bypass.isTeleport(newPos)
 end
 
 function Bypass.smoothTeleport(targetPos, duration)
-    if not BS.alive and BS.alive() then return false end
+    if not BS.alive or not BS.alive() then return false end
     local hrp = BS.hrp and BS.hrp()
     if not hrp then return false end
     duration = duration or 0.3
@@ -582,7 +582,7 @@ end
 -- SECTION 13: BEHAVIORAL ANALYSIS BYPASS
 
 function Bypass.humanizeMovement()
-    if not BS.alive and BS.alive() then return end
+    if not BS.alive or not BS.alive() then return end
     local h = BS.hum and BS.hum()
     if not h then return end
     local baseSpeed = h.WalkSpeed
@@ -855,7 +855,7 @@ function Bypass.checkIntegrity()
         end
 
         -- 3. Check if character is healthy
-        if BS.alive and not BS.alive and BS.alive() then
+        if BS.alive and BS.alive() then
             table.insert(issues, "Character dead/missing")
         end
 

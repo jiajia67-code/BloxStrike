@@ -14,7 +14,9 @@ pcall(function() StarterGui = game:GetService("StarterGui") end)
 local lplr = Players.LocalPlayer
 
 if not BS.Win then warn("[Smart AI] BS.Win not available - ui.lua may have failed") return end
-local page = BS.Win:Tab("暴力")
+local page = nil
+pcall(function() page = BS.Win:Tab("暴力") end)
+if not page then warn("[SmartAI] Failed to create tab!") return end
 if not page or not page.Toggle then warn("[SmartAI] Failed to create tab!") return end
 
 local AI = {}

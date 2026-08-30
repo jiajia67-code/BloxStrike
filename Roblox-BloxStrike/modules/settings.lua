@@ -38,7 +38,9 @@ end
 
 -- SETTINGS GUI
 if not BS.Win then warn("[Settings] BS.Win not available - ui.lua may have failed") return end
-local page = BS.Win:Tab("關於")
+local page = nil
+pcall(function() page = BS.Win:Tab("關於") end)
+if not page then warn("[Settings] Failed to create tab!") return end
 if page and page.Toggle then
     page:Label(" Config Presets ")
     page:Button({Name="載入正常模式", Color=Color3.fromRGB(100,200,100)}, function() BS.Settings.LoadPreset("Legit") end)

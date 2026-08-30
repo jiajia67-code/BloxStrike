@@ -18,7 +18,8 @@ local lplr = Players.LocalPlayer
 --  TAB (Misc)
 
 if not BS.Win then warn("[Unknown] BS.Win not available - ui.lua may have failed") return end
-local M = BS.Win:Tab("雜項")
+local M = nil
+pcall(function() M = BS.Win:Tab("雜項") end)
 if not M or not M.Toggle then warn("[Misc] Failed to create tab!") return end
 
 -- 1. BHOP (Bunny Hop  Ultimate Enhanced)
@@ -581,8 +582,9 @@ end)
 
 -- UTILITY TAB
 
-local U = BS.Win:Tab("雜項")
-if not U or not U.Toggle then warn("[Utility] Failed to create tab!") return end
+local U = nil
+pcall(function() U = BS.Win:Tab("雜項") end)
+if not U then U = M end  -- fallback to same tab
 
  -- BOMB TIMER
 -- U:Label("  Bomb Timer ")

@@ -16,7 +16,8 @@ local function getMousePos()
     return mousePos
 end
 
-local E = BS.Win:Tab("透視")
+local E = nil
+pcall(function() E = BS.Win:Tab("透視") end)
 if not E or not E.Toggle then warn("[ESP] Failed to create tab!") return end
 
 -- GUI SECTION  60+ Options
@@ -1127,7 +1128,7 @@ local dispFrame = 0
 -- MAIN RENDER LOOP  Single RenderStepped, zero delay
 
 RunService.RenderStepped:Connect(function()
-    if not BS.alive and BS.alive() then return end
+    if not BS.alive or not BS.alive() then return end
 
     -- Ping Adapt: skip frames on high ping for performance
     local skipFrames = 1
@@ -1514,7 +1515,10 @@ function BS.UpdateHeadshotLines()
     end)
 end
 
--- GUI
+print("[ESP] BloxStrike ESP v3.0 loaded  "..(PMax.L + PMax.T + PMax.S + PMax.C).." pool objects ready")
+
+-- Bottom GUI elements (must be here for module crash protection)
+pcall(function()
 E:Label(" World ESP ")
 E:Toggle("容器透視", false, function(v) Flags.ContainerESP = v end)
 E:Slider("Container Range", 50, 500, 200, function(v) Flags.ContainerESPRange = v end)
@@ -1525,5 +1529,4 @@ E:Label(" Prediction ")
 E:Toggle("預測線", false, function(v) Flags.PredictionLine = v end)
 E:Slider("Predict Time", 10, 50, 30, function(v) Flags.PredictionTime = v / 100 end)
 E:Toggle("爆頭線", false, function(v) Flags.HeadshotLine = v end)
-
-print("[ESP] BloxStrike ESP v3.0 loaded  "..(PMax.L + PMax.T + PMax.S + PMax.C).." pool objects ready")
+end)
