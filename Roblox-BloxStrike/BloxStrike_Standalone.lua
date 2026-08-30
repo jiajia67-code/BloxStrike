@@ -12,7 +12,11 @@ _G.BS.Flags = Flags
 
 local CURRENT_VERSION = '3.5'
 local t0 = tick()
-local BASE_URL = "https://raw.githubusercontent.com/jiajia67-code/BloxStrike/main/Roblox-BloxStrike/modules/"
+local BASE_URLS = {
+    "https://cdn.jsdelivr.net/gh/jiajia67-code/BloxStrike@main/Roblox-BloxStrike/modules/",
+    "https://raw.githubusercontent.com/jiajia67-code/BloxStrike/main/Roblox-BloxStrike/modules/",
+}
+local BASE_URL = BASE_URLS[1]  -- jsDelivr primary (faster CDN)
 
 -- Universal HTTP
 local function httpGet(url)
@@ -52,7 +56,7 @@ local function httpGet(url)
 end
 
 -- Version check
-local VERSION_URL = "https://raw.githubusercontent.com/jiajia67-code/BloxStrike/main/Roblox-BloxStrike/version.json"
+local VERSION_URL = "https://cdn.jsdelivr.net/gh/jiajia67-code/BloxStrike@main/Roblox-BloxStrike/version.json"
 local latestVersion = nil
 local changelog = {}
 local updateCheckDone = false
@@ -496,29 +500,23 @@ local function httpGetFast(url)
         local ok, res = pcall(function() return request({Url=url, Method='GET'}) end)
         if ok and res and res.Body then return res.Body end
     end
-    -- Fallback: try any available method
-    if game.HttpGet then
-        local ok, body = pcall(function() return game:HttpGet(url, true) end)
-        if ok and body then return body end
-    end
     return nil
 end
 
--- Download with validation
+-- Download with CDN fallback: try jsDelivr first, then GitHub
 local function downloadModule(name, attempt)
     attempt = attempt or 1
-    local url = BASE_URL .. name .. '.lua?t=' .. CACHE_BUSTER .. '&r=' .. attempt
-    
-    local startTime = tick()
-    local result = httpGetFast(url)
-    local elapsed = tick() - startTime
-    
-    if result and #result > 100 and not result:find('<!DOCTYPE') and not result:find('404') then
-        dlTotalBytes = dlTotalBytes + #result
-        return result, elapsed
-    else
-        return nil, elapsed
+    for ci, baseUrl in ipairs(BASE_URLS) do
+        local url = baseUrl .. name .. '.lua?t=' .. CACHE_BUSTER .. '&r=' .. attempt
+        local startTime = tick()
+        local result = httpGetFast(url)
+        local elapsed = tick() - startTime
+        if result and #result > 100 and not result:find('<!DOCTYPE') and not result:find('404') then
+            dlTotalBytes = dlTotalBytes + #result
+            return result, elapsed
+        end
     end
+    return nil, 0
 end
 
 -- Speed formatter
