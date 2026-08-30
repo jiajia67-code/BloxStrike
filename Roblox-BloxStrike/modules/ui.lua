@@ -23,20 +23,13 @@ local loadAttempts = 0
 local maxAttempts = 3
 
 local rayfieldURLs = {
+    "https://cdn.jsdelivr.net/gh/shlexware/Rayfield@main/source",
+    "https://cdn.jsdelivr.net/gh/jensonhirst/Rayfield@main/source",
     "https://sirius.menu/rayfield",
-    "https://raw.githubusercontent.com/shlexware/Rayfield/main/source",
-    "https://raw.githubusercontent.com/jensonhirst/Rayfield/main/source",
 }
 
 local function fetchUrl(url)
-    if http_request then
-        local ok, res = pcall(function() return http_request({Url=url, Method='GET'}) end)
-        if ok and res and res.Body then return res.Body end
-    end
-    if request then
-        local ok, res = pcall(function() return request({Url=url, Method='GET'}) end)
-        if ok and res and res.Body then return res.Body end
-    end
+    -- Use game:HttpGet ONLY (most reliable, no blocking)
     local ok, res = pcall(function() return game:HttpGet(url, true) end)
     if ok and res and #res > 0 then return res end
     return nil
