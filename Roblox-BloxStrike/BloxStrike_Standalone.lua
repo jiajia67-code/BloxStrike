@@ -425,7 +425,7 @@ local total = #MODULE_ORDER
 local downloaded = {}
 local dlDone = 0
 local dlTotalBytes = 0
-local MAX_RETRY = 1  -- only 1 attempt per module to prevent hanging
+local MAX_RETRY = 2  -- retry once on failure
 
 -- Timestamp cache buster
 local CACHE_BUSTER = tostring(math.floor(tick() * 1000))
@@ -487,18 +487,20 @@ local function httpGetFast(url)
     return nil
 end
 
--- Download with CDN fallback: try jsDelivr first, then GitHub
-local function downloadModule(name, attempt)
-    attempt = attempt or 1
-    for ci, baseUrl in ipairs(BASE_URLS) do
-        local url = baseUrl .. name .. '.lua?t=' .. CACHE_BUSTER .. '&r=' .. attempt
-        local startTime = tick()
-        local result = httpGetFast(url)
-        local elapsed = tick() - startTime
-        if result and #result > 100 and not result:find('<!DOCTYPE') and not result:find('404') then
-            dlTotalBytes = dlTotalBytes + #result
-            return result, elapsed
+-- Download with CDN fallback + retry
+local function downloadModule(name)
+    for attempt = 1, MAX_RETRY do
+        for ci, baseUrl in ipairs(BASE_URLS) do
+            local url = baseUrl .. name .. '.lua?t=' .. CACHE_BUSTER .. '&r=' .. attempt
+            local startTime = tick()
+            local result = httpGetFast(url)
+            local elapsed = tick() - startTime
+            if result and #result > 100 and not result:find('<!DOCTYPE') and not result:find('404') then
+                dlTotalBytes = dlTotalBytes + #result
+                return result, elapsed
+            end
         end
+        if attempt < MAX_RETRY then task.wait(0.5) end
     end
     return nil, 0
 end
