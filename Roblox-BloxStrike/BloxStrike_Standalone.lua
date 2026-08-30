@@ -437,46 +437,71 @@ local total = #MODULE_ORDER
 local downloaded = {}
 local dlDone = 0
 local dlTotalBytes = 0
-local MAX_RETRY = 2
+local MAX_RETRY = 1  -- only 1 attempt per module to prevent hanging
 
 -- Timestamp cache buster
 local CACHE_BUSTER = tostring(math.floor(tick() * 1000))
-print("[BloxStrike] Sequential download, " .. MAX_RETRY .. " retries max")
+print("[BloxStrike] Sequential download (1 attempt per module)")
 
--- HTTP download with timeout (task.spawn + polling)
-local DL_TIMEOUT = 12  -- seconds before giving up on a download
+-- Detect available HTTP method (test once at startup)
+local httpMethod = nil
+local function detectHttp()
+    -- Test each method with a small request to find which one works
+    local testUrl = BASE_URL .. 'compat.lua?t=' .. CACHE_BUSTER
+    
+    -- Try game:HttpGet first (most reliable, built-in timeout)
+    if game.HttpGet then
+        local ok, body = pcall(function() return game:HttpGet(testUrl, true) end)
+        if ok and body and #body > 100 then
+            httpMethod = 'HttpGet'
+            print('[BS] Using game:HttpGet (most reliable)')
+            return
+        end
+    end
+    
+    -- Try http_request
+    if http_request then
+        local ok, res = pcall(function() return http_request({Url=testUrl, Method='GET'}) end)
+        if ok and res and res.Body and #res.Body > 100 then
+            httpMethod = 'http_request'
+            print('[BS] Using http_request')
+            return
+        end
+    end
+    
+    -- Try request
+    if request then
+        local ok, res = pcall(function() return request({Url=testUrl, Method='GET'}) end)
+        if ok and res and res.Body and #res.Body > 100 then
+            httpMethod = 'request'
+            print('[BS] Using request')
+            return
+        end
+    end
+    
+    httpMethod = 'HttpGet'  -- fallback
+    print('[BS] Using game:HttpGet (fallback)')
+end
+
+detectHttp()
 
 local function httpGetFast(url)
-    local result = nil
-    local done = false
-    
-    task.spawn(function()
-        local ok, res = pcall(function()
-            if http_request then
-                return http_request({Url = url, Method = 'GET'})
-            elseif request then
-                return request({Url = url, Method = 'GET'})
-            elseif game.HttpGet then
-                local b = game:HttpGet(url, true)
-                return {Body = b}
-            end
-        end)
-        if ok and res and res.Body then
-            result = res.Body
-        end
-        done = true
-    end)
-    
-    local t0 = tick()
-    while not done and (tick() - t0) < DL_TIMEOUT do
-        task.wait(0.1)
+    if httpMethod == 'HttpGet' and game.HttpGet then
+        local ok, body = pcall(function() return game:HttpGet(url, true) end)
+        if ok and body then return body end
+    elseif httpMethod == 'http_request' and http_request then
+        local ok, res = pcall(function() return http_request({Url=url, Method='GET'}) end)
+        if ok and res and res.Body then return res.Body end
+    elseif httpMethod == 'request' and request then
+        local ok, res = pcall(function() return request({Url=url, Method='GET'}) end)
+        if ok and res and res.Body then return res.Body end
     end
-    
-    if not done then
-        warn('[BS] HTTP timeout (' .. DL_TIMEOUT .. 's) for: ' .. url:match('/([^/]+)$'))
-        return nil
+    -- Fallback: try any available method
+    if game.HttpGet then
+        local ok, body = pcall(function() return game:HttpGet(url, true) end)
+        if ok and body then return body end
     end
-    return result
+    return nil
 end
 
 -- Download with validation
@@ -491,9 +516,6 @@ local function downloadModule(name, attempt)
     if result and #result > 100 and not result:find('<!DOCTYPE') and not result:find('404') then
         dlTotalBytes = dlTotalBytes + #result
         return result, elapsed
-    elseif attempt < MAX_RETRY then
-        task.wait(0.3)
-        return downloadModule(name, attempt + 1)
     else
         return nil, elapsed
     end
@@ -511,14 +533,28 @@ local function formatSpeed(bytes, seconds)
     end
 end
 
--- ═══ PHASE 1: SEQUENTIAL DOWNLOAD (prevents hanging) ═══
+-- ═══ PHASE 1: SEQUENTIAL DOWNLOAD ═══
 StatusLabel.Text = 'Download ' .. total .. ' modules...'
 task.wait(0.05)
 
 local dlStartTime = tick()
+local SKIP_AFTER = 5  -- skip module if download takes >5s
+local TOTAL_LIMIT = 90  -- total download time limit
 
 for _, name in ipairs(MODULE_ORDER) do
+    -- Check total time limit
+    if (tick() - dlStartTime) > TOTAL_LIMIT then
+        warn('[BS] Total download time exceeded ' .. TOTAL_LIMIT .. 's, skipping remaining')
+        break
+    end
+    
     local code, elapsed = downloadModule(name)
+    
+    -- Skip module if download was too slow (likely hanging)
+    if not code and elapsed and elapsed > SKIP_AFTER then
+        warn('[BS] Skipping ' .. name .. ' (took ' .. string.format('%.1f', elapsed) .. 's)')
+    end
+    
     downloaded[name] = code
     dlDone = dlDone + 1
     
