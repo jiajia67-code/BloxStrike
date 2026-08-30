@@ -1,8 +1,7 @@
--- BLOXSTRIKE UI - Enhanced Rayfield Based v3.0
--- Features: Rayfield, Profiles, Quick Panel, Keybinds, Theme, Mobile Support
+-- BLOXSTRIKE UI - LinoriaLib Based v4.0
+-- Features: LinoriaLib, Profiles, Quick Panel, Keybinds, Theme
 
 local Players = nil
-
 pcall(function() Players = game:GetService("Players") end)
 local UIS = nil
 pcall(function() UIS = game:GetService("UserInputService") end)
@@ -12,48 +11,41 @@ local StarterGui = nil
 pcall(function() StarterGui = game:GetService("StarterGui") end)
 local HttpService = nil
 pcall(function() HttpService = game:GetService("HttpService") end)
-local lplr = Players.LocalPlayer
+local lplr = Players and Players.LocalPlayer
 
 -- ═══════════════════════════════════════════════════════════════
--- RAYFIELD LOADING
+-- LINORIALIB LOADING
 -- ═══════════════════════════════════════════════════════════════
 
-local Rayfield = nil
-local loadAttempts = 0
-local maxAttempts = 3
-
-local rayfieldURLs = {
-    "https://cdn.jsdelivr.net/gh/shlexware/Rayfield@main/source",
-    "https://cdn.jsdelivr.net/gh/jensonhirst/Rayfield@main/source",
-    "https://sirius.menu/rayfield",
+local Library = nil
+local LINORIA_URLS = {
+    "https://cdn.jsdelivr.net/gh/violin-suzutsuki/LinoriaLib@main/Library.lua",
+    "https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/Library.lua",
 }
 
 local function fetchUrl(url)
-    -- Use game:HttpGet ONLY (most reliable, no blocking)
     local ok, res = pcall(function() return game:HttpGet(url, true) end)
     if ok and res and #res > 0 then return res end
     return nil
 end
 
 local rayfieldStart = tick()
-local RAYFIELD_TIMEOUT = 15  -- seconds
-while not Rayfield and loadAttempts < maxAttempts do
-    loadAttempts = loadAttempts + 1
-    for _, url in ipairs(rayfieldURLs) do
-        if (tick() - rayfieldStart) > RAYFIELD_TIMEOUT then break end
-        pcall(function()
-            local src = fetchUrl(url)
-            if src and #src > 0 then
-                Rayfield = loadstring(src)()
-            end
-        end)
-        if Rayfield then break end
-    end
-    if (tick() - rayfieldStart) > RAYFIELD_TIMEOUT then break end
+local LOAD_TIMEOUT = 15
+
+for _, url in ipairs(LINORIA_URLS) do
+    if (tick() - rayfieldStart) > LOAD_TIMEOUT then break end
+    pcall(function()
+        local src = fetchUrl(url)
+        if src and #src > 0 then
+            Library = loadstring(src)()
+        end
+    end)
+    if Library then break end
 end
 
-if not Rayfield then
-    warn("[UI] CRITICAL: Could not load Rayfield!")
+if not Library then
+    warn("[UI] CRITICAL: Could not load LinoriaLib!")
+    -- Stub fallback
     local stubPage = {
         Toggle = function(self, n, d, c) pcall(function() Flags[n] = d end) end,
         Slider = function(self, n, mn, mx, d, c) pcall(function() Flags[n] = d end) end,
@@ -64,7 +56,6 @@ if not Rayfield then
     }
     BS.Win = {
         Tab = function(self, name)
-            -- [optimized] print('[UI] Stub tab: ' .. name)
             return setmetatable({}, {__index = stubPage})
         end
     }
@@ -72,21 +63,25 @@ if not Rayfield then
     return
 end
 
-print("[UI] Rayfield loaded successfully")
+print("[UI] LinoriaLib loaded successfully")
+
+-- ═══════════════════════════════════════════════════════════════
+-- CREATE WINDOW
+-- ═══════════════════════════════════════════════════════════════
+
+local Window = Library:CreateWindow({
+    Title = "BloxStrike v4.0",
+    Center = true,
+    AutoShow = true,
+    TabPadding = 8,
+    MenuFadeTime = 0.2,
+})
 
 -- ═══════════════════════════════════════════════════════════════
 -- NOTIFICATION SYSTEM
 -- ═══════════════════════════════════════════════════════════════
 
 function BS.Notify(title, text, duration)
-    pcall(function()
-        Rayfield:Notify({
-            Title = title or "BloxStrike",
-            Content = text or "",
-            Duration = duration or 3,
-            Image = 4483362458,
-        })
-    end)
     pcall(function()
         StarterGui:SetCore("SendNotification", {
             Title = title or "BloxStrike", Text = text or "", Duration = duration or 3,
@@ -99,285 +94,73 @@ function BS.FeatureNotify(feature, enabled)
 end
 
 -- ═══════════════════════════════════════════════════════════════
--- THEME SYSTEM
+-- COMPATIBILITY WRAPPER (maps LinoriaLib to our BS.Win:Tab API)
 -- ═══════════════════════════════════════════════════════════════
 
-BS.Theme = {
-    Current = "Dark",
-    Themes = {
-        Dark = {Accent = Color3.fromRGB(88, 130, 255), BG = Color3.fromRGB(15, 15, 25)},
-        Red = {Accent = Color3.fromRGB(255, 50, 50), BG = Color3.fromRGB(25, 10, 10)},
-        Green = {Accent = Color3.fromRGB(50, 255, 100), BG = Color3.fromRGB(10, 25, 10)},
-        Purple = {Accent = Color3.fromRGB(150, 50, 255), BG = Color3.fromRGB(20, 10, 30)},
-        Gold = {Accent = Color3.fromRGB(255, 200, 50), BG = Color3.fromRGB(25, 20, 10)},
-    },
-    Set = function(self, themeName)
-        if self.Themes[themeName] then
-            self.Current = themeName
-            BS.Notify("Theme", "Changed to " .. themeName, 2)
-        end
-    end,
-}
+local tabCache = {}
 
--- ═══════════════════════════════════════════════════════════════
--- CREATE WINDOW
--- ═══════════════════════════════════════════════════════════════
-
-local Window = Rayfield:CreateWindow({
-    Name = "BloxStrike v3.0",
-    LoadingTitle = "BloxStrike v3.0",
-    LoadingSubtitle = "CS2-Style HVH Cheat",
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = "BloxStrike",
-        FileName = "Config"
-    },
-    Discord = {Enabled = false},
-    KeySystem = false,
-})
-
--- ═══════════════════════════════════════════════════════════════
--- COMPATIBILITY LAYER
--- ═══════════════════════════════════════════════════════════════
-
-local flagCounter = 0
-local function nextFlag()
-    flagCounter = flagCounter + 1
-    return "BS_" .. flagCounter
-end
-
-local allPages = {}
-
-local function wrapTab(rayfieldTab, tabName)
+local function wrapGroup(group)
     local page = {}
-    allPages[tabName] = page
     
     page.Toggle = function(self, name, default, callback)
-        local flag = nextFlag()
-        rayfieldTab:CreateToggle({
-            Name = name, CurrentValue = default or false, Flag = flag,
+        group:AddToggle(name, {
+            Text = name,
+            Default = default or false,
             Callback = function(value) pcall(function() if callback then callback(value) end end) end,
         })
     end
     
     page.Slider = function(self, name, min, max, default, callback)
-        local flag = nextFlag()
-        rayfieldTab:CreateSlider({
-            Name = name, Range = {min, max}, Increment = 1, CurrentValue = default or min, Flag = flag,
+        group:AddSlider(name, {
+            Text = name,
+            Default = default or min,
+            Min = min,
+            Max = max,
+            Rounding = 0,
             Callback = function(value) pcall(function() if callback then callback(value) end end) end,
         })
     end
     
     page.Dropdown = function(self, config)
-        local flag = nextFlag()
-        rayfieldTab:CreateDropdown({
-            Name = config.Name or "Dropdown", Options = config.Options or {},
-            CurrentOption = config.Default or config.Options[1] or "", Flag = flag,
+        group:AddDropdown(config.Name or "dropdown", {
+            Text = config.Name or "Dropdown",
+            Values = config.Options or {},
+            Default = config.Default or config.Options[1] or "",
             Callback = function(value) end,
         })
     end
     
     page.Button = function(self, config, callback)
-        rayfieldTab:CreateButton({
-            Name = config.Name or "Button",
-            Callback = function() pcall(function() if callback then callback() end end) end,
+        group:AddButton({
+            Text = config.Name or "Button",
+            Func = function() pcall(function() if callback then callback() end end) end,
         })
     end
     
     page.Label = function(self, text)
-        rayfieldTab:CreateLabel(text)
+        group:AddLabel(text)
     end
     
     page.Separator = function(self)
-        rayfieldTab:CreateSection("")
+        group:AddDivider()
     end
     
     return page
 end
-
-local tabCache = {}
 
 BS.Win = {
     Tab = function(self, tabName)
         if tabCache[tabName] then
             return tabCache[tabName]
         end
-        local ok, rayfieldTab = pcall(function() return Window:CreateTab(tabName, nil) end)
-        if not ok or not rayfieldTab then
-            warn("[UI] Failed to create tab: " .. tostring(tabName))
-            -- Return a stub page so modules don't crash
-            local stub = setmetatable({}, {__index = function() return function() end end})
-            tabCache[tabName] = stub
-            return stub
-        end
-        local page = wrapTab(rayfieldTab, tabName)
+        
+        local tab = Window:AddTab(tabName)
+        local group = tab:AddLeftGroupbox(tabName)
+        local page = wrapGroup(group)
         tabCache[tabName] = page
         return page
     end
 }
-
--- ═══════════════════════════════════════════════════════════════
--- CONFIG SYSTEM
--- ═══════════════════════════════════════════════════════════════
-
-BS.Config = {}
-
-function BS.Config.Save()
-    pcall(function()
-        local config = {}
-        for key, value in pairs(Flags) do
-            if type(value) ~= "table" and type(value) ~= "function" then
-                config[key] = value
-            end
-        end
-        local json = HttpService:JSONEncode(config)
-        if writefile then writefile("BloxStrike/Config.json", json) end
-        BS.Notify("Config", "Saved!", 2)
-    end)
-end
-
-function BS.Config.Load()
-    pcall(function()
-        if readfile and isfile and isfile("BloxStrike/Config.json") then
-            local config = HttpService:JSONDecode(readfile("BloxStrike/Config.json"))
-            for key, value in pairs(config) do Flags[key] = value end
-            BS.Notify("Config", "Loaded!", 2)
-            return true
-        end
-    end)
-    return false
-end
-
-function BS.Config.Reset()
-    for key, _ in pairs(Flags) do Flags[key] = false end
-    BS.Notify("Config", "Reset!", 2)
-end
-
-function BS.Config.Export()
-    pcall(function()
-        local config = {}
-        for key, value in pairs(Flags) do
-            if type(value) ~= "table" and type(value) ~= "function" then config[key] = value end
-        end
-        if setclipboard then setclipboard(HttpService:JSONEncode(config)) end
-        BS.Notify("Config", "Copied!", 2)
-    end)
-end
-
--- ═══════════════════════════════════════════════════════════════
--- PROFILE SYSTEM
--- ═══════════════════════════════════════════════════════════════
-
-BS.Profiles = {
-    Current = "預設",
-    Saved = {},
-    
-    Save = function(self, name)
-        self.Saved[name] = {}
-        for key, value in pairs(Flags) do
-            if type(value) ~= "table" and type(value) ~= "function" then
-                self.Saved[name][key] = value
-            end
-        end
-        self.Current = name
-        BS.Notify("Profile", "Saved: " .. name, 2)
-    end,
-    
-    Load = function(self, name)
-        if self.Saved[name] then
-            for key, value in pairs(self.Saved[name]) do
-                Flags[key] = value
-            end
-            self.Current = name
-            BS.Notify("Profile", "Loaded: " .. name, 2)
-            return true
-        end
-        return false
-    end,
-    
-    Delete = function(self, name)
-        self.Saved[name] = nil
-        BS.Notify("Profile", "Deleted: " .. name, 2)
-    end,
-    
-    List = function(self)
-        local names = {}
-        for name, _ in pairs(self.Saved) do
-            table.insert(names, name)
-        end
-        return names
-    end,
-}
-
--- ═══════════════════════════════════════════════════════════════
--- QUICK ACCESS PANEL (Bottom of screen)
--- ═══════════════════════════════════════════════════════════════
-
-local QuickPanel = {Visible = true}
-local QuickObjs = {}
-
-function QuickPanel.Update()
-    pcall(function()
-        local active = {}
-        if Flags.Aimbot then table.insert(active, {Text = "AIM", Color = Color3.new(1,0,0)}) end
-        if Flags.SilentAim then table.insert(active, {Text = "靜瞄", Color = Color3.new(1,0.5,0)}) end
-        if Flags.Ragebot then table.insert(active, {Text = "RAGE", Color = Color3.new(1,0,0)}) end
-        if Flags.ESP_Box or Flags.ESP_Name then table.insert(active, {Text = "透視", Color = Color3.new(0,1,0)}) end
-        if Flags.AA then table.insert(active, {Text = "反瞄", Color = Color3.new(0,0.5,1)}) end
-        if Flags.Bhop then table.insert(active, {Text = "BHOP", Color = Color3.new(1,1,0)}) end
-        if Flags.FOVChanger then table.insert(active, {Text = "FOV", Color = Color3.new(0.5,0,1)}) end
-        if Flags.NightMode then table.insert(active, {Text = "NIGHT", Color = Color3.new(0.3,0.3,1)}) end
-        if Flags.RemoveScope then table.insert(active, {Text = "NO SCOPE", Color = Color3.new(1,0.5,0)}) end
-        
-        local x = workspace.CurrentCamera.ViewportSize.X
-        local y = workspace.CurrentCamera.ViewportSize.Y
-        
-        for i = 1, math.max(#active, #QuickObjs) do
-            if not QuickObjs[i] then
-                QuickObjs[i] = Drawing.new("Text")
-                QuickObjs[i].Center = true
-                QuickObjs[i].Outline = true
-                QuickObjs[i].OutlineColor = Color3.new(0,0,0)
-                QuickObjs[i].Font = 2
-                QuickObjs[i].Size = 12
-            end
-            if i <= #active then
-                QuickObjs[i].Text = " " .. active[i].Text .. " "
-                QuickObjs[i].Color = active[i].Color
-                QuickObjs[i].Position = Vector2.new(x/2 - (#active * 30) + (i-1) * 60, y - 25)
-                QuickObjs[i].Visible = QuickPanel.Visible
-            else
-                QuickObjs[i].Visible = false
-            end
-        end
-    end)
-end
-
--- ═══════════════════════════════════════════════════════════════
--- WATERMARK
--- ═══════════════════════════════════════════════════════════════
-
-local WatermarkObj = nil
-local function updateWatermark()
-    pcall(function()
-        if not WatermarkObj then
-            WatermarkObj = Drawing.new("Text")
-            WatermarkObj.Center = false
-            WatermarkObj.Outline = true
-            WatermarkObj.OutlineColor = Color3.new(0,0,0)
-            WatermarkObj.Font = 2
-            WatermarkObj.Size = 14
-        end
-        local fps = math.floor(1/workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait() and 60 or 60)
-        local ping = 0
-        pcall(function() ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"].Value) end)
-        local players = #Players:GetPlayers()
-        WatermarkObj.Text = "  BloxStrike v3.0 | " .. fps .. " FPS | " .. ping .. " ms | " .. players .. " P | " .. os.date("%H:%M:%S") .. "  "
-        WatermarkObj.Position = Vector2.new(10, 10)
-        WatermarkObj.Color = Color3.new(1,1,1)
-        WatermarkObj.Visible = true
-    end)
-end
 
 -- ═══════════════════════════════════════════════════════════════
 -- KEYBIND SYSTEM
@@ -391,50 +174,10 @@ end
 
 UIS.InputBegan:Connect(function(input, gpe)
     if gpe then return end
-    
-    if input.KeyCode == Enum.KeyCode.Insert then
-        pcall(function() Rayfield:ToggleVisibility() end)
-        return
-    end
-    
     if keybindCallbacks[input.KeyCode] then
         pcall(function() keybindCallbacks[input.KeyCode]() end)
     end
 end)
-
--- ═══════════════════════════════════════════════════════════════
--- PRESET PROFILES
--- ═══════════════════════════════════════════════════════════════
-
-BS.Profiles.Saved["Legit"] = {
-    Aimbot = true, SilentAim = false, Ragebot = false, AA = false, FL = false,
-    ESP_Box = true, ESP_Name = true, ESP_Health = true, ESP_Dist = true,
-    Bhop = false, FOVChanger = true, FOVValue = 80,
-}
-
-BS.Profiles.Saved["Rage"] = {
-    Aimbot = false, SilentAim = true, Ragebot = true, RageFOV = 360, RageHC = 100,
-    RageAF = true, RageDT = true, RageWall = true, RageRes = true,
-    AA = true, AAPitch = "Jitter", AAYaw = "Spin", AASpd = 18,
-    FL = true, FLChoke = 10, FLStyle = "自適應",
-    ESP_Box = true, ESP_Name = true, ESP_Health = true, ESP_Dist = true,
-}
-
-BS.Profiles.Saved["HvH"] = {
-    Aimbot = false, SilentAim = true, Ragebot = true, RageFOV = 360, RageHC = 100,
-    RageAF = true, RageDT = true, RageWall = true, RageRes = true, RageKnife = true,
-    AA = true, AAPitch = "Jitter", AAYaw = "Spin", AASpd = 20,
-    AAFakeDuck = true, AADesync = true, AABodyYaw = true,
-    FL = true, FLChoke = 12, FLStyle = "Break Lag",
-    ESP_Box = true, ESP_Name = true, ESP_Health = true,
-}
-
-BS.Profiles.Saved["SemiRage"] = {
-    Aimbot = true, SilentAim = true, Ragebot = true, RageFOV = 180, RageHC = 85,
-    AA = true, AAPitch = "Emotion", AAYaw = "LBY Break", AASpd = 12,
-    FL = true, FLChoke = 8, FLStyle = "自適應",
-    ESP_Box = true, ESP_Name = true, ESP_Health = true, ESP_Dist = true,
-}
 
 -- ═══════════════════════════════════════════════════════════════
 -- QUICK KEYBINDS
@@ -467,33 +210,35 @@ BS.BindKey(Enum.KeyCode.N, function()
     BS.FeatureNotify("夜視模式", Flags.NightMode)
 end)
 
-BS.BindKey(Enum.KeyCode.M, function()
-    Flags.RemoveScope = not Flags.RemoveScope
-    BS.FeatureNotify("Remove Scope", Flags.RemoveScope)
-end)
-
 -- ═══════════════════════════════════════════════════════════════
--- MAIN UPDATE LOOP
+-- WATERMARK
 -- ═══════════════════════════════════════════════════════════════
 
+local WatermarkObj = nil
 task.spawn(function()
     while true do
-        task.wait(0.5)
+        task.wait(1)
         pcall(function()
-            updateWatermark()
-            QuickPanel.Update()
+            if not WatermarkObj then
+                WatermarkObj = Drawing.new("Text")
+                WatermarkObj.Center = false
+                WatermarkObj.Outline = true
+                WatermarkObj.Font = 2
+                WatermarkObj.Size = 14
+            end
+            local ping = 0
+            pcall(function() ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"].Value) end)
+            local players = #Players:GetPlayers()
+            WatermarkObj.Text = "  BloxStrike v4.0 | " .. ping .. " ms | " .. players .. " P | " .. os.date("%H:%M:%S") .. "  "
+            WatermarkObj.Position = Vector2.new(10, 10)
+            WatermarkObj.Color = Color3.new(1,1,1)
+            WatermarkObj.Visible = true
         end)
     end
-end)
-
--- Auto-save on disconnect
-lplr.CharacterRemoving:Connect(function()
-    pcall(function() BS.Config.Save() end)
 end)
 
 -- ═══════════════════════════════════════════════════════════════
 -- LOADING COMPLETE
 -- ═══════════════════════════════════════════════════════════════
 
-print("[UI] BloxStrike UI v3.0 loaded (Rayfield)")
--- [optimized] print("[UI] INSERT: Menu | X: ESP | Z: Bhop | C: AA | V: SA | N: Night | M: NoScope")
+print("[UI] BloxStrike UI v4.0 loaded (LinoriaLib)")
