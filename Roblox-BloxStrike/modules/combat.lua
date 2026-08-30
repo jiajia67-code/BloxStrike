@@ -155,11 +155,13 @@ end
 task.spawn(function()
     while task.wait() do
         if Flags.Aimbot and alive() then
-            pcall(function()
+            local ok, err = pcall(function()
                 local cam = workspace.CurrentCamera
-                local mouse = UIS:GetMouseLocation()
+                if not cam then return end
+                local mouseOk, mouse = pcall(function() return UIS:GetMouseLocation() end)
+                if not mouseOk or not mouse then return end
                 local myHrp = hrp()
-                if not cam or not myHrp then return end
+                if not myHrp then return end
 
                 -- Keybind check
                 if not isAimKeyDown() then
