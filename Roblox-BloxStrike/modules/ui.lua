@@ -35,9 +35,12 @@ local function fetchUrl(url)
     return nil
 end
 
+local rayfieldStart = tick()
+local RAYFIELD_TIMEOUT = 15  -- seconds
 while not Rayfield and loadAttempts < maxAttempts do
     loadAttempts = loadAttempts + 1
     for _, url in ipairs(rayfieldURLs) do
+        if (tick() - rayfieldStart) > RAYFIELD_TIMEOUT then break end
         pcall(function()
             local src = fetchUrl(url)
             if src and #src > 0 then
@@ -46,6 +49,7 @@ while not Rayfield and loadAttempts < maxAttempts do
         end)
         if Rayfield then break end
     end
+    if (tick() - rayfieldStart) > RAYFIELD_TIMEOUT then break end
 end
 
 if not Rayfield then

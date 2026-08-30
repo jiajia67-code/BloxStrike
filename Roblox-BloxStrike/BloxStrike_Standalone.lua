@@ -281,6 +281,15 @@ local LogLayout = Instance.new("UIListLayout", LogFrame)
 LogLayout.SortOrder = Enum.SortOrder.LayoutOrder
 LogLayout.Padding = UDim.new(0, 1)
 
+local MOD_CN = {
+    ['api']='API',['bypass']='反檢測',['cheatdetect']='作弊偵測',['combat']='戰鬥系統',
+    ['combatassist']='戰鬥輔助',['compat']='兼容層',['core']='核心',['errorhandler']='錯誤處理',
+    ['esp']='透視系統',['events']='事件系統',['hud']='HUD顯示',['killeffects']='擊殺特效',
+    ['luau_compat']='Luau兼容',['luau_detect']='Luau偵測',['pingadapt']='延遲適應',
+    ['rage']='暴力系統',['settings']='設定',['smartai']='智能AI',['stealth']='隱身系統',
+    ['ui']='介面',['utility']='工具',['viewmodel']='視角模型',['webhook']='Webhook',['world']='世界',
+}
+
 local logCount = 0
 local function logModule(name, ok, extra)
     logCount = logCount + 1
@@ -368,32 +377,7 @@ task.spawn(function()
 end)
 
 -- Module CN names
-local MOD_CN = {
-    ['api'] = 'API',
-    ['bypass'] = '反檢測',
-    ['cheatdetect'] = '作弊偵測',
-    ['combat'] = '戰鬥系統',
-    ['combatassist'] = '戰鬥輔助',
-    ['compat'] = '兼容層',
-    ['core'] = '核心',
-    ['errorhandler'] = '錯誤處理',
-    ['esp'] = '透視系統',
-    ['events'] = '事件系統',
-    ['hud'] = 'HUD顯示',
-    ['killeffects'] = '擊殺特效',
-    ['luau_compat'] = 'Luau兼容',
-    ['luau_detect'] = 'Luau偵測',
-    ['pingadapt'] = '延遲適應',
-    ['rage'] = '暴力系統',
-    ['settings'] = '設定',
-    ['smartai'] = '智能AI',
-    ['stealth'] = '隱身系統',
-    ['ui'] = '介面',
-    ['utility'] = '工具',
-    ['viewmodel'] = '視角模型',
-    ['webhook'] = 'Webhook',
-    ['world'] = '世界',
-}
+
 
 -- Module load order (defines tab order)
 local MODULE_ORDER = {
