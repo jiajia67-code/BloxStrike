@@ -458,83 +458,35 @@ local function releaseSlot()
     activeCount = activeCount - 1
 end
 
--- Optimized HTTP with timeout simulation
+-- HTTP download: try only known-good methods, skip hanging fallbacks
 local function httpGetFast(url)
-    local result = nil
-    local startTime = tick()
-    
-    -- Try fastest method first (http_request is fastest on Potassium)
+    -- http_request (fastest on Potassium/Fluxus)
     if http_request then
-        local ok, res = pcall(function()
-            return http_request({Url = url, Method = 'GET'})
-        end)
-        if ok and res and res.Body then
-            result = res.Body
-            return result
-        end
+        local ok, res = pcall(function() return http_request({Url = url, Method = 'GET'}) end)
+        if ok and res and res.Body then return res.Body end
     end
-    
+    -- request (widely supported)
     if request then
-        local ok, res = pcall(function()
-            return request({Url = url, Method = 'GET'})
-        end)
-        if ok and res and res.Body then
-            return res.Body
-        end
+        local ok, res = pcall(function() return request({Url = url, Method = 'GET'}) end)
+        if ok and res and res.Body then return res.Body end
     end
-    
-    if syn and syn.request then
-        local ok, res = pcall(function()
-            return syn.request({Url = url, Method = 'GET'})
-        end)
-        if ok and res and res.Body then
-            return res.Body
-        end
-    end
-    
-    -- Fallbacks (slower)
-    if game.HttpGetAsync then
-        local ok, body = pcall(function() return game:HttpGetAsync(url) end)
-        if ok and body then return body end
-    end
+    -- game:HttpGet (slowest but universal)
     if game.HttpGet then
         local ok, body = pcall(function() return game:HttpGet(url, true) end)
         if ok and body then return body end
     end
-    
     return nil
 end
 
--- Download with retry + validation + TIMEOUT
-local DL_TIMEOUT = 15  -- seconds per download attempt
-
+-- Download with validation
 local function downloadModule(name, attempt)
     attempt = attempt or 1
-    local url = BASE_URL .. name .. '.lua?t=' .. CACHE_BUSTER .. '&r=' .. attempt .. '&s=' .. tostring(math.floor(tick()))
+    local url = BASE_URL .. name .. '.lua?t=' .. CACHE_BUSTER .. '&r=' .. attempt
     
     local startTime = tick()
-    local result = nil
-    local done = false
-    
-    -- Run download with timeout
-    task.spawn(function()
-        result = httpGetFast(url)
-        done = true
-    end)
-    
-    local waitTime = 0
-    while not done and waitTime < DL_TIMEOUT do
-        task.wait(0.1)
-        waitTime = waitTime + 0.1
-    end
-    
+    local result = httpGetFast(url)
     local elapsed = tick() - startTime
-    if not done then
-        warn('[BS] Timeout: ' .. name .. ' (' .. DL_TIMEOUT .. 's)')
-        return nil, elapsed
-    end
     
-    -- Validation: must be non-nil, >100 chars, not an error page
     if result and #result > 100 and not result:find('<!DOCTYPE') and not result:find('404') then
         dlTotalBytes = dlTotalBytes + #result
         return result, elapsed
@@ -602,18 +554,10 @@ for _, name in ipairs(MODULE_ORDER) do
 end
 
 if #retryFailed > 0 then
-    print("[BloxStrike] Phase 2: Retrying " .. #retryFailed .. " failed modules...")
-    StatusLabel.Text = 'Phase 2: Retry ' .. #retryFailed .. ' modules...'
-    
+    print("[BloxStrike] Phase 2: " .. #retryFailed .. " modules failed, skipping...")
+    StatusLabel.Text = 'Skip ' .. #retryFailed .. ' failed modules'
     for _, name in ipairs(retryFailed) do
-        local code, elapsed = downloadModule(name)
-        downloaded[name] = code
-        if code then
-            logModule(name, true, string.format('retry OK %.1fKB', #code / 1024))
-        else
-            logModule(name, false, 'all retries failed')
-        end
-        task.wait(0.1)
+        logModule(name, false, 'skipped (download timeout)')
     end
 end
 
@@ -656,33 +600,11 @@ for i, name in ipairs(MODULE_ORDER) do
             task.wait(0.1 * attempt)
         end
         if code then
-            local EXEC_TIMEOUT = 10  -- seconds per module execution
-            local execOk, execErr = false, nil
-            local execDone = false
-            
-            -- Run module in coroutine with timeout
-            task.spawn(function()
-                local ok2, err2 = pcall(function()
-                    local fn, compileErr = loadstring(BS_PREAMBLE .. code)
-                    if not fn then error('Compile: ' .. (compileErr or 'unknown')) end
-                    fn()
-                end)
-                execOk = ok2
-                execErr = err2
-                execDone = true
+            local execOk, execErr = pcall(function()
+                local fn, compileErr = loadstring(BS_PREAMBLE .. code)
+                if not fn then error('Compile: ' .. (compileErr or 'unknown')) end
+                fn()
             end)
-            
-            local execWait = 0
-            while not execDone and execWait < EXEC_TIMEOUT do
-                task.wait(0.1)
-                execWait = execWait + 0.1
-            end
-            
-            if not execDone then
-                execOk = false
-                execErr = 'Timeout (' .. EXEC_TIMEOUT .. 's)'
-            end
-            
             if execOk then
                 loaded = true
                 ok = ok + 1
@@ -717,25 +639,7 @@ for i, name in ipairs(MODULE_ORDER) do
     if i % 5 == 0 then task.wait() end
 end
 
--- Second pass: retry all failed modules with fresh downloads
-if #failedModules > 0 then
-    StatusLabel.Text = 'Retry: ' .. #failedModules .. ' failed modules...'
-    for _, name in ipairs(failedModules) do
-        local code = httpGet(BASE_URL .. name .. '.lua?t=' .. CACHE_BUSTER .. '&r=3')
-        if code then
-            local execOk, execErr = pcall(function()
-                local fn, compileErr = loadstring(BS_PREAMBLE .. code)
-                if not fn then error('Compile: ' .. (compileErr or 'unknown')) end
-                fn()
-            end)
-            if execOk then
-                ok = ok + 1
-                fail = fail - 1
-                logModule(name, true, 'retry OK')
-            end
-        end
-    end
-end
+-- No second pass: failed modules are skipped to prevent hanging
 
 -- Finalize
 BarFill.Size = UDim2.new(1, 0, 1, 0)
