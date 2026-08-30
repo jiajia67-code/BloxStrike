@@ -125,7 +125,7 @@ function BS.team()
     return lplr.Team
 end
 
-function BS.enemies()
+function BS.enemies and BS.enemies() or {}
     local enemies = {}
     local myTeam = BS.team()
     for _, player in pairs(Players:GetPlayers()) do
@@ -166,7 +166,7 @@ function BS.nearestEnemy(maxDist)
     local myHRP = BS.hrp and BS.hrp()
     if not myHRP then return nil, math.huge end
     local nearest, nearDist = nil, maxDist
-    for _, e in pairs(BS.enemies()) do
+    for _, e in pairs(BS.enemies and BS.enemies() or {}) do
         local dist = (myHRP.Position - e.HRP.Position).Magnitude
         if dist < nearDist then
             nearest, nearDist = e, dist
@@ -184,7 +184,7 @@ function BS.bestEnemy(maxDist, fov)
     local cam = workspace.CurrentCamera
     local mouse = UserInputService:GetMouseLocation()
     local best, bestScore = nil, fov
-    for _, e in pairs(BS.enemies()) do
+    for _, e in pairs(BS.enemies and BS.enemies() or {}) do
         local dist = (myHRP.Position - e.HRP.Position).Magnitude
         if dist <= maxDist then
             local pos, vis = cam:WorldToViewportPoint(e.Head and e.Head.Position or e.HRP.Position)

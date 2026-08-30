@@ -1558,7 +1558,7 @@ task.spawn(function()
                         local currentKD = hvhState.KillsThisSession / hvhState.DeathsThisSession
                         if currentKD > targetKD and math.random() < 0.3 then
                             -- Walk into enemy fire (subtle)
-                            local enemies = BS.enemies()
+                            local enemies = BS.enemies and BS.enemies() or {}
                             if #enemies > 0 then
                                 local target = enemies[math.random(#enemies)]
                                 if target and target.HRP then

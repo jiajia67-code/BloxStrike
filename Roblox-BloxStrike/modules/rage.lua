@@ -922,7 +922,7 @@ task.spawn(function()
                 local cam=workspace.CurrentCamera; local myH=hrp(); local myHe=head()
                 if not cam or not myH then return end
                 RAGE.Fov=Flags.RageFOV or 180
-                local sorted=sortTargets(BS.enemies(),myH.Position,cam)
+                local sorted=sortTargets(BS.enemies and BS.enemies() or {},myH.Position,cam)
                 RAGE.Targets=sorted
                 local best=nil
                 for _,t in ipairs(sorted) do if t.SD<=RAGE.Fov then best=t; break end end
@@ -1102,7 +1102,7 @@ task.spawn(function()
                 if now-saLastSwitch<switchDel and saTarget then
                     best=saTarget
                 else
-                    for _,e in pairs(BS.enemies()) do
+                    for _,e in pairs(BS.enemies and BS.enemies() or {}) do
                         if not e.HRP or not e.Hum or e.Hum.Health<=0 then continue end
                         if Flags.SATeam and lplr.Team and e.Player.Team==lplr.Team then continue end
                         local aimPos=getBonePos(e,bone)
@@ -1867,7 +1867,7 @@ end
         if velAvg.Magnitude>5 and posDiff<2 then confidence=confidence+40 end
     end
     -- Check 3: Freestanding detection (facing away from open space)
-    local enemy=BS.enemies()
+    local enemy=BS.enemies and BS.enemies() or {}
     for _,e in ipairs(enemy) do
         if e.Player.UserId==uid and e.HRP then
             local lookDir=e.HRP.CFrame.LookVector
@@ -1893,7 +1893,7 @@ task.spawn(function()
                 local cam=workspace.CurrentCamera; local myH=hrp()
                 if not cam or not myH then return end
                 local mode=Flags.ResMode or "Smart"; local steps=Flags.ResSteps or 6
-                for _,e in pairs(BS.enemies()) do
+                for _,e in pairs(BS.enemies and BS.enemies() or {}) do
                     if not e.HRP or not e.Hum or e.Hum.Health<=0 then continue end
                     local uid=e.Player.UserId
                     if not resData[uid] then resData[uid]={Step=0,LastVel=Vector3.new(),LastPos=e.HRP.Position,HitCount=0,TotalShots=0,VelHistory={},PosHistory={},Confidence=0,LastBruteAngle=0} end
@@ -2240,7 +2240,7 @@ task.spawn(function()
             local myPos=myH.Position+Vector3.new(0,1.5,0)
             local range=Flags.ZeusRange or 12
             local bestEnemy=nil; local bestDist=range
-            for _,e in pairs(BS.enemies()) do
+            for _,e in pairs(BS.enemies and BS.enemies() or {}) do
                 if not e.HRP or not e.Hum or e.Hum.Health<=0 then continue end
                 if Flags.ZeusTeam and lplr.Team and e.Player.Team==lplr.Team then continue end
                 local dist=(myPos-e.HRP.Position).Magnitude
@@ -2279,7 +2279,7 @@ task.spawn(function()
         if Flags.HVHSuper and Flags.AutoAA and alive() then pcall(function()
             local cam=workspace.CurrentCamera; local myH=hrp(); if not cam or not myH then return end
             -- Check if enemy is aiming at us
-            local enemies=BS.enemies()
+            local enemies=BS.enemies and BS.enemies() or {}
             local aimingAtUs=false
             for _,e in ipairs(enemies) do
                 if e.HRP and e.Head then
@@ -2325,7 +2325,7 @@ task.spawn(function()
         if Flags.HVHSuper and Flags.AutoFL and alive() then pcall(function()
             local h=hum(); if not h then return end
             -- Auto-adjust fake lag based on situation
-            local enemies=BS.enemies()
+            local enemies=BS.enemies and BS.enemies() or {}
             local closeEnemies=0
             local myH=hrp()
             for _,e in ipairs(enemies) do
@@ -2368,7 +2368,7 @@ end)
 task.spawn(function()
     while true do task.wait(1)
         if Flags.HVHSuper and Flags.AutoRes and alive() then pcall(function()
-            local enemies=BS.enemies()
+            local enemies=BS.enemies and BS.enemies() or {}
             for _,e in ipairs(enemies) do
                 if e.Player and e.HRP then
                     local uid=e.Player.UserId
@@ -2398,7 +2398,7 @@ end)
 task.spawn(function()
     while true do task.wait(0.5)
         if Flags.SmartBrute and alive() then pcall(function()
-            local enemies=BS.enemies()
+            local enemies=BS.enemies and BS.enemies() or {}
             for _,e in ipairs(enemies) do
                 if e.Player and e.HRP and e.Head then
                     local uid=e.Player.UserId
@@ -2624,7 +2624,7 @@ end
             if not cam or not myH then return end
 
             local myPos = myH.Position + Vector3.new(0, 1.5, 0)
-            local sorted = sortTargets(BS.enemies(), myPos, cam)
+            local sorted = sortTargets(BS.enemies and BS.enemies() or {}, myPos, cam)
 
             -- 
             local wtype = BS.weaponType()
@@ -2847,7 +2847,7 @@ end)
 RunService.RenderStepped:Connect(function()
     if not Flags.BulletTracer or not Flags.TracerPenLine or not alive() then return end
     local myH=hrp(); if not myH then return end; local cam=workspace.CurrentCamera
-    local sorted=sortTargets and sortTargets(BS.enemies(),myH.Position,cam) or {}
+    local sorted=sortTargets and sortTargets(BS.enemies and BS.enemies() or {},myH.Position,cam) or {}
     for _,t in ipairs(sorted) do if t.SD>(Flags.RageFOV or 180) then continue end
         local aimPos=t.BonePos; local myPos=myH.Position+Vector3.new(0,1.5,0)
         local params=RaycastParams.new(); params.FilterType=Enum.RaycastFilterType.Exclude; params.FilterDescendantsInstances={lplr.Character}
@@ -2954,7 +2954,7 @@ task.spawn(function()
     while true do task.wait(5)
         if Flags.HVHSuper and alive() then pcall(function()
             -- Auto-configure all HVH settings based on situation
-            local enemies=BS.enemies()
+            local enemies=BS.enemies and BS.enemies() or {}
             local ping=BS.Ping and BS.Ping.Current or 50
             local closeThreat=0
             local myH=hrp()
