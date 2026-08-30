@@ -443,24 +443,40 @@ local MAX_RETRY = 2
 local CACHE_BUSTER = tostring(math.floor(tick() * 1000))
 print("[BloxStrike] Sequential download, " .. MAX_RETRY .. " retries max")
 
--- HTTP download: try only known-good methods, skip hanging fallbacks
+-- HTTP download with timeout (task.spawn + polling)
+local DL_TIMEOUT = 12  -- seconds before giving up on a download
+
 local function httpGetFast(url)
-    -- http_request (fastest on Potassium/Fluxus)
-    if http_request then
-        local ok, res = pcall(function() return http_request({Url = url, Method = 'GET'}) end)
-        if ok and res and res.Body then return res.Body end
+    local result = nil
+    local done = false
+    
+    task.spawn(function()
+        local ok, res = pcall(function()
+            if http_request then
+                return http_request({Url = url, Method = 'GET'})
+            elseif request then
+                return request({Url = url, Method = 'GET'})
+            elseif game.HttpGet then
+                local b = game:HttpGet(url, true)
+                return {Body = b}
+            end
+        end)
+        if ok and res and res.Body then
+            result = res.Body
+        end
+        done = true
+    end)
+    
+    local t0 = tick()
+    while not done and (tick() - t0) < DL_TIMEOUT do
+        task.wait(0.1)
     end
-    -- request (widely supported)
-    if request then
-        local ok, res = pcall(function() return request({Url = url, Method = 'GET'}) end)
-        if ok and res and res.Body then return res.Body end
+    
+    if not done then
+        warn('[BS] HTTP timeout (' .. DL_TIMEOUT .. 's) for: ' .. url:match('/([^/]+)$'))
+        return nil
     end
-    -- game:HttpGet (slowest but universal)
-    if game.HttpGet then
-        local ok, body = pcall(function() return game:HttpGet(url, true) end)
-        if ok and body then return body end
-    end
-    return nil
+    return result
 end
 
 -- Download with validation
@@ -476,7 +492,7 @@ local function downloadModule(name, attempt)
         dlTotalBytes = dlTotalBytes + #result
         return result, elapsed
     elseif attempt < MAX_RETRY then
-        task.wait(RETRY_DELAY * attempt)
+        task.wait(0.3)
         return downloadModule(name, attempt + 1)
     else
         return nil, elapsed
