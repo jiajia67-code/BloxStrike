@@ -72,6 +72,9 @@ class LuaAnalyzer:
         self._check_print_flood()
         self._check_long_lines()
         self._check_todo()
+        self._check_block_balance()
+        self._check_table_commas()
+        self._check_nil_index()
         return self.issues
     
     # --- 1. Unicode escapes ---
@@ -179,7 +182,6 @@ class LuaAnalyzer:
         for i, line in enumerate(self.lines, 1):
             s = line.strip()
             if s.startswith('--'): continue
-            # Trailing comma before }
             if re.search(r',\s*\}', s):
                 self.add(i, "INFO", "Style", "Trailing comma in table (allowed but style)")
     
@@ -325,8 +327,93 @@ class LuaAnalyzer:
                 if 'TODO' in s or 'FIXME' in s or 'HACK' in s or 'XXX' in s:
                     self.add(i, "INFO", "TODO", s.strip('- '))
 
-# ═══════════════════════════════════════════════════════════
-# Auto Fixer v2.0
+    # --- 24. Block balance (catches missing 'end') ---
+    def _check_block_balance(self):
+        """Count function/if/for/while/do vs end. Only reports very high-confidence imbalances."""
+        depth = 0
+        for i, line in enumerate(self.lines, 1):
+            s = line.strip()
+            if s.startswith('--'): continue
+            clean = re.sub(r'"(?:[^"\\]|\\.)*"', '""', s)
+            clean = re.sub(r"'(?:[^'\\]|\\.)*'", "''", clean)
+            clean = re.sub(r'--.*$', '', clean)
+            opens = 0
+            for kw in ['function', 'if', 'for', 'while']:
+                opens += len(re.findall(r'\b' + kw + r'\b', clean))
+            opens += len(re.findall(r'\bdo\b', clean))
+            closes = len(re.findall(r'\bend\b', clean))
+            depth += opens - closes
+        # Only report very high-confidence (>=5) since Lua patterns create noise
+        if depth >= 5:
+            self.add(1, "WARN", "BlockBalance",
+                     f"{depth} unclosed block(s) - likely missing 'end'",
+                     False, "Check if/for/while/function blocks for missing 'end'")
+        elif depth <= -5:
+            self.add(len(self.lines), "WARN", "BlockBalance",
+                     f"{abs(depth)} extra 'end' statement(s)",
+                     False, "Remove extra 'end'")
+
+    # --- 25. Table comma detector ---
+    def _check_table_commas(self):
+        """Detect missing commas in known crash-prone table patterns (SetCore, CreateWindow, etc)."""
+        CRITICAL_TABLES = {'SetCore', 'CreateWindow', 'CreateTab', 'CreateToggle',
+                           'CreateSlider', 'CreateDropdown', 'CreateButton', 'CreateLabel',
+                           'Notify', 'JSONEncode'}
+        in_table = 0
+        last_key_line = 0
+        last_key_name = ''
+        in_critical = False
+        for i, line in enumerate(self.lines, 1):
+            s = line.strip()
+            if s.startswith('--'): continue
+            # Check if this line starts a critical table
+            for func in CRITICAL_TABLES:
+                if (func + '(') in s or (func + '({') in s:
+                    in_critical = True
+            clean = re.sub(r'"(?:[^"\\]|\\.)*"', '""', s)
+            clean = re.sub(r"'(?:[^'\\]|\\.)*'", "''", clean)
+            for ch in clean:
+                if ch == '{': in_table += 1
+                elif ch == '}':
+                    in_table = max(0, in_table - 1)
+                    if in_table == 0: in_critical = False
+            if in_table > 0 and in_critical:
+                m = re.match(r"^(\w+)\s*=", s)
+                if m and not s.endswith(',') and not s.endswith('{') and not s.endswith('('):
+                    if last_key_line > 0 and (i - last_key_line) <= 3:
+                        self.add(last_key_line, "WARN", "TableComma",
+                                 f"Missing comma before '{m.group(1)}' in table",
+                                 False, "Add ',' at end of previous line")
+                    last_key_line = i
+                    last_key_name = m.group(1)
+                elif not m:
+                    last_key_line = 0
+            else:
+                last_key_line = 0
+
+    # --- 26. Nil index detector (catches accessing .X on nil) ---
+    def _check_nil_index(self):
+        """Detect patterns like: local x = nil; x.Property (runtime crash)"""
+        nil_vars = set()
+        for i, line in enumerate(self.lines, 1):
+            s = line.strip()
+            if s.startswith('--'): continue
+            # Track variables set to nil or potentially nil
+            m = re.match(r'local\s+(\w+)\s*=\s*nil', s)
+            if m:
+                nil_vars.add(m.group(1))
+            # Track :GetService calls that might fail
+            m = re.match(r'local\s+(\w+)\s*=.*pcall', s)
+            if m:
+                nil_vars.add(m.group(1))
+            # Check for property access on potentially nil variables
+            for var in list(nil_vars):
+                pattern = r'\b' + re.escape(var) + r'\s*\.\s*\w+'
+                if re.search(pattern, s) and f'if {var}' not in s and f'if not {var}' not in s:
+                    self.add(i, "WARN", "NilIndex",
+                             f"'{var}' may be nil here (set at line of definition)",
+                             True, f"Add: if {var} then")
+                    nil_vars.discard(var)  # Only warn once per variable
 # ═══════════════════════════════════════════════════════════
 class AutoFixer:
     @staticmethod

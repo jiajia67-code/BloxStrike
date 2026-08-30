@@ -1,4 +1,4 @@
---[[BloxStrike v3.5 - Timestamp cache buster]]
+--[[BloxStrike v4.0 - Error Prevention System]]
 
 if game.PlaceId ~= 114234929420007 then
     warn('[BloxStrike] Wrong game!')
@@ -183,7 +183,7 @@ local VerBadge = Instance.new("TextLabel")
 VerBadge.Size = UDim2.new(0, 60, 0, 20)
 VerBadge.Position = UDim2.new(1, -75, 0, 18)
 VerBadge.BackgroundColor3 = Color3.fromRGB(40, 60, 100)
-VerBadge.Text = "v3.5"
+VerBadge.Text = "v4.0"
 VerBadge.TextColor3 = Color3.fromRGB(150, 180, 255)
 VerBadge.TextSize = 11
 VerBadge.Font = Enum.Font.Code
@@ -628,12 +628,12 @@ for i, name in ipairs(MODULE_ORDER) do
     local code = downloaded[name]
     local loaded = false
 
-    -- Try up to 2 times
-    for attempt = 1, 2 do
+    -- Try up to 3 times with improved error extraction
+    for attempt = 1, 3 do
         if loaded then break end
         if attempt > 1 and code then
-            -- Retry: re-download
             code = httpGet(BASE_URL .. name .. '.lua?t=' .. CACHE_BUSTER .. '&retry=' .. attempt)
+            task.wait(0.1 * attempt)
         end
         if code then
             local execOk, execErr = pcall(function()
@@ -645,12 +645,28 @@ for i, name in ipairs(MODULE_ORDER) do
                 loaded = true
                 ok = ok + 1
                 logModule(name, true, attempt > 1 and 'retry OK' or nil)
-            elseif attempt == 2 then
-                fail = fail + 1
-                failedModules[#failedModules + 1] = name
-                logModule(name, false, tostring(execErr):sub(1, 40))
+            else
+                -- Extract line number from error message
+                local errStr = tostring(execErr)
+                local errLine = errStr:match(': (%d+):') or errStr:match('line (%d+)')
+                local errType = 'Runtime'
+                if errStr:find('Compile:') then errType = 'Compile'
+                elseif errStr:find('attempt to index') then errType = 'Index'
+                elseif errStr:find('attempt to call') then errType = 'Call'
+                elseif errStr:find('Expected') then errType = 'Syntax'
+                end
+                local detail = errType
+                if errLine then detail = detail .. ' L' .. errLine end
+                detail = detail .. ': ' .. errStr:sub(1, 30)
+                if attempt == 3 then
+                    fail = fail + 1
+                    failedModules[#failedModules + 1] = name
+                    logModule(name, false, detail)
+                else
+                    logModule(name, false, detail .. ' (retry ' .. attempt .. ')')
+                end
             end
-        elseif attempt == 2 then
+        elseif attempt == 3 then
             fail = fail + 1
             failedModules[#failedModules + 1] = name
             logModule(name, false, 'download failed')
@@ -727,4 +743,4 @@ task.spawn(function()
     pcall(function() GUI:Destroy() end)
 end)
 
-print("[BloxStrike] v3.5 loaded (" .. ok .. "/" .. total .. " modules, " .. elapsed .. "ms)")
+print("[BloxStrike] v4.0 loaded (" .. ok .. "/" .. total .. " modules, " .. elapsed .. "ms)")
