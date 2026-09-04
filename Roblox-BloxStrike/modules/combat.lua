@@ -227,6 +227,13 @@ BS.FireWeapon = fireWeapon
 BS.FireBurst = fireBurst
 BS.GetWeaponFireRate = getWeaponFireRate
 
+-- 0. WALLBANG (子彈穿牆)
+
+page:Label(" Wallbang ")
+page:Toggle("子彈穿牆", false, function(v) Flags.Wallbang = v end)
+page:Slider("穿牆深度", 1, 10, 3, function(v) Flags.WallbangPen = v end)
+page:Separator()
+
 -- 1. AIMBOT (Enhanced v2.0  30+ options)
 
 page:Label(" Aimbot ")
@@ -395,8 +402,8 @@ task.spawn(function()
                     end
                     if not aimPos then continue end
 
-                    if Flags.AimbotVis and not BS.hasLineOfSight(myPos, aimPos) then continue end
-                    if Flags.AimbotWall and e.Head and not BS.hasLineOfSight(myPos, e.Head.Position) then continue end
+                    if Flags.AimbotVis and not Flags.Wallbang and not BS.hasLineOfSight(myPos, aimPos) then continue end
+                    if Flags.AimbotWall and not Flags.Wallbang and e.Head and not BS.hasLineOfSight(myPos, e.Head.Position) then continue end
 
                     local pos, vis = cam:WorldToViewportPoint(aimPos)
                     if not vis then continue end
@@ -697,7 +704,7 @@ task.spawn(function()
                         -- Body only
                         if Flags.TBBodyOnly and mouseTarget ~= e.HRP then continue end
                         -- Wall check
-                        if Flags.TBWallCheck and e.Head and not BS.hasLineOfSight(myHrp.Position, e.Head.Position) then continue end
+                        if Flags.TBWallCheck and not Flags.Wallbang and e.Head and not BS.hasLineOfSight(myHrp.Position, e.Head.Position) then continue end
                         -- FOV check
                         if Flags.TBFovCheck then
                             local pos, vis = cam:WorldToViewportPoint(e.HRP.Position)
@@ -797,7 +804,7 @@ task.spawn(function()
                         and (e.Head and e.Head.Position or e.HRP.Position + Vector3.new(0, 1.5, 0))
                         or e.HRP.Position
 
-                    if Flags.SAWall and not BS.hasLineOfSight(myHrp.Position, aimPos) then
+                    if Flags.SAWall and not Flags.Wallbang and not BS.hasLineOfSight(myHrp.Position, aimPos) then
                         continue
                     end
 
@@ -983,7 +990,7 @@ task.spawn(function()
                 local best, bestDist = nil, Flags.AAFov or 60
                 for _, e in pairs(BS.enemies and BS.enemies() or {}) do
                     local aimPos = e.Head and e.Head.Position or e.HRP.Position + Vector3.new(0, 1.5, 0)
-                    if Flags.AAWall and not BS.hasLineOfSight(myHrp.Position, aimPos) then
+                    if Flags.AAWall and not Flags.Wallbang and not BS.hasLineOfSight(myHrp.Position, aimPos) then
                         continue
                     end
                     local pos, vis = cam:WorldToViewportPoint(aimPos)

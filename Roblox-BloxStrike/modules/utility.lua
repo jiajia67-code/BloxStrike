@@ -480,29 +480,7 @@ task.spawn(function()
     end
 end)
 
--- 2. NOCLIP
-
-M:Separator()
-M:Label("  NoClip ")
-M:Toggle("穿牆", false, function(v) Flags.NoClip = v end)
-M:Toggle("持續穿牆", true, function(v) Flags.NoClipAlways = v end)
-M:Separator()
-
--- NoClip Logic: disable CanCollide on character parts
-RunService.Heartbeat:Connect(function()
-    if not Flags.NoClip or not BS.alive or not BS.alive() then return end
-    pcall(function()
-        local char = lplr.Character
-        if not char then return end
-        for _, part in pairs(char:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = false
-            end
-        end
-    end)
-end)
-
--- 3. MISC FEATURES (in  tab)
+-- 2. MISC FEATURES (in  tab)
 
 M:Separator()
 -- M:Label("  Misc Features ")
