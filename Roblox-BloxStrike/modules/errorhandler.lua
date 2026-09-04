@@ -18,7 +18,7 @@ local ErrorLog = {
     FixCount = 0,
     CrashCount = 0,
     RecoverCount = 0,
-    -- StartTime = tick(),
+    StartTime = tick(),
     LastError = nil,
     ModuleStatus = {},
     ErrorPatterns = {},     -- learned patterns
@@ -356,7 +356,7 @@ function learnErrorPattern(errMsg, context)
         if not ErrorLog.ErrorPatterns[key] then
             ErrorLog.ErrorPatterns[key] = {
                 Count = 0,
-                -- FirstSeen = tick(),
+                FirstSeen = tick(),
                 LastSeen = 0,
                 Context = context,
                 -- Pattern = errMsg:sub(1, 100),
@@ -380,7 +380,7 @@ function BS.trackConnection(name, connection)
     Connections[id] = {
         Name = name or "unknown",
         Connection = connection,
-        -- Created = tick(),
+        Created = tick(),
     }
     -- Auto-disconnect leaked connections after 10 minutes
     task.delay(600, function()

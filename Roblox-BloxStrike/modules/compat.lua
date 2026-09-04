@@ -43,6 +43,7 @@ Compat.IsEmulator = false
 Compat.IsLandscape = true
 -- Compat.ScreenSize = Vector2.new(1920, 1080)
 Compat.Scale = 1
+Compat.ScreenSize = Vector2.new(1920, 1080)
 
 pcall(function()
     -- Detect mobile

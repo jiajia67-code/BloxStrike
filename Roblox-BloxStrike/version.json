@@ -1,15 +1,13 @@
 {
-    "version": "3.5",
-    "date": "2026-08-29",
+    "version": "4.6",
+    "date": "2026-09-04",
     "changelog": [
-        "v3.5: Timestamp cache buster - fresh downloads every time",
-        "v3.5: Error handler completely silent - zero console spam",
-        "v3.5: All 21 modules load cleanly",
-        "v3.4: Fixed http_request for Potassium executor",
-        "v3.4: Universal HTTP detection (7 methods)",
-        "v3.3: Parallel HttpGet loading (5-10x faster)",
-        "v3.2: Auto version check with update notification",
-        "v3.1: HTTP module loader (zero string escaping)",
-        "v3.1: Smooth HSL RGB loading animation"
+        "v4.6: rage.lua v5.0 full rewrite — Silent Aim, Fake Lag, Resolver, Rage Bot all implemented",
+        "v4.6: webhook.lua fixes — avatar URL restored, flush timer enabled, kill streak titles enabled",
+        "v4.6: pingadapt.lua — cleaned all TODO stubs, added jitter pause detection",
+        "v4.6: events.lua — fixed death event reconnection bug (SetAttribute), merged Stats with stealth.lua",
+        "v4.6: events.lua — added full Stats utility functions (RecordKill, GetKD, GetReport, etc.)",
+        "v4.6: hud.lua — added Discord Webhook settings panel with all event toggles",
+        "v4.6: luau_compat.lua and luau_detect.lua verified complete (no changes needed)"
     ]
 }

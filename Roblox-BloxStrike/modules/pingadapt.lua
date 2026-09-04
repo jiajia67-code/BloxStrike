@@ -68,20 +68,20 @@ task.spawn(function()
             local pingVal = 0
             pcall(function() pingVal = stats.Network.ServerStatsItem["Data Ping"].Value end)
 
-            -- PingState.Current = math.floor(pingVal)
+            PingState.Current = math.floor(pingVal)
 
             -- History (last 60 readings)
             table.insert(PingState.History, pingVal)
             if #PingState.History > 60 then table.remove(PingState.History, 1) end
 
             -- Min/Max
-            -- PingState.Min = math.min(PingState.Min, pingVal)
-            -- PingState.Max = math.max(PingState.Max, pingVal)
+            PingState.Min = math.min(PingState.Min, pingVal)
+            PingState.Max = math.max(PingState.Max, pingVal)
 
             -- Average
             local sum = 0
             for _, v in ipairs(PingState.History) do sum = sum + v end
-            -- PingState.Average = math.floor(sum / #PingState.History)
+            PingState.Average = math.floor(sum / #PingState.History)
 
             -- Jitter (variance between consecutive readings)
             if #PingState.History >= 2 then
@@ -92,17 +92,17 @@ task.spawn(function()
                 if #PingState.JitterHistory > 30 then table.remove(PingState.JitterHistory, 1) end
                 local jSum = 0
                 for _, v in ipairs(PingState.JitterHistory) do jSum = jSum + v end
-                -- PingState.Jitter = math.floor(jSum / #PingState.JitterHistory)
+                PingState.Jitter = math.floor(jSum / #PingState.JitterHistory)
             end
 
             -- Spike detection
             if pingVal > PingState.Average * 2 and pingVal > 100 then
-                -- PingState.LastSpike = tick()
+                PingState.LastSpike = tick()
                 PingState.SpikeCount = PingState.SpikeCount + 1
             end
 
             -- Classification
-            -- PingState.Tier, PingState.Quality, PingState.QualityScore = classifyPing(PingState.Average)
+            PingState.Tier, PingState.Quality, PingState.QualityScore = classifyPing(PingState.Average)
 
             -- Adapt multiplier: higher ping = lower multiplier = more conservative
             local mode = Flags.PingAdaptMode or "Balanced"
@@ -127,7 +127,7 @@ task.spawn(function()
                 baseMult = baseMult * 0.6
             end
 
-            -- PingState.AdaptMultiplier = math.clamp(baseMult, 0.1, 1.0)
+            PingState.AdaptMultiplier = math.clamp(baseMult, 0.1, 1.0)
 
             -- Auto panic on extreme lag
             if Flags.PingPanic and PingState.Current > (Flags.PingPanicThreshold or 350) then
@@ -149,7 +149,7 @@ end)
 function PA.getAdaptSmooth(baseSmooth)
     if not Flags.PingAdapt then return baseSmooth end
     local m = PingState.AdaptMultiplier
-    -- ?ping     -- TODO
+    -- Higher ping = lower multiplier for more smoothing
     return math.clamp(baseSmooth / m, 1, 100)
 end
 
@@ -159,8 +159,8 @@ end
 function PA.getAdaptFOV(baseFOV)
     if not Flags.PingAdapt then return baseFOV end
     local m = PingState.AdaptMultiplier
-    -- ?ping  FOV    -- TODO
-    return math.clamp(baseFOV / m, 10, 360)
+    -- Higher ping = wider FOV to compensate for lag
+    return math.clamp(baseFOV * (1 + (1 - m) * 0.3), 10, 360)
 end
 
 --- ping 
@@ -168,7 +168,8 @@ end
 ---@return number adaptedPred
 function PA.getAdaptPrediction(basePred)
     if not Flags.PingAdapt then return basePred end
-    -- TODO
+    -- Higher ping = more prediction needed
+    local pingBonus = PingState.Current / 1000
     return math.clamp(basePred + pingBonus * 50, 0, 100)
 end
 
@@ -177,8 +178,9 @@ end
 function PA.getAdaptDelay(baseDelay)
     if not Flags.PingAdapt then return baseDelay end
     local m = PingState.AdaptMultiplier
-    -- TODO
-    return math.clamp(baseDelay / m, 1, 2000)
+    -- Higher ping = longer delay between actions
+    local pingAdd = PingState.Current * 0.05
+    return math.clamp(baseDelay / m + pingAdd, 1, 2000)
 end
 
 --- ping 
@@ -188,7 +190,7 @@ end
 function PA.getAdaptTriggerDelay(baseMin, baseMax)
     if not Flags.PingAdapt then return baseMin + math.random() * (baseMax - baseMin) end
     local m = PingState.AdaptMultiplier
-    -- TODO
+    -- Use ping-based delay addition
     local pingAdd = PingState.Current * 0.1
     local minD = baseMin / m + pingAdd * 0.5
     local maxD = baseMax / m + pingAdd
@@ -200,7 +202,8 @@ end
 function PA.getAdaptUpdateRate(baseInterval)
     if not Flags.PingAdapt then return baseInterval end
     local m = PingState.AdaptMultiplier
-    -- TODO
+    -- Higher ping = slower update rate to reduce bandwidth
+    return math.clamp(baseInterval / m, 0.01, 2.0)
 end
 
 --- ping 
@@ -209,8 +212,9 @@ end
 function PA.getAdaptSwitchDelay(baseDelay)
     if not Flags.PingAdapt then return baseDelay end
     local m = PingState.AdaptMultiplier
-    -- TODO
-    return math.clamp(baseDelay / m, 10, 2000)
+    -- Higher ping = longer target switch delay
+    local pingAdd = PingState.Current * 0.1
+    return math.clamp(baseDelay / m + pingAdd, 10, 2000)
 end
 
 --- ping  lag compensation tick ---@return number lagTicks
@@ -226,7 +230,7 @@ end
 function PA.getAdaptSpeed(baseSpeed)
     if not Flags.PingAdapt then return baseSpeed end
     local m = PingState.AdaptMultiplier
-    -- TODO
+    -- Higher ping = slightly reduced speed to avoid desync
     return baseSpeed * math.clamp(m + 0.2, 0.5, 1.2)
 end
 
@@ -244,7 +248,8 @@ end
 ---@return number adaptedAccuracy
 function PA.getAdaptResolverAccuracy(baseAccuracy)
     if not Flags.PingAdapt then return baseAccuracy end
-    -- TODO
+    local m = PingState.AdaptMultiplier
+    -- Higher ping = lower resolver accuracy confidence
     return math.clamp(baseAccuracy * m, 20, 100)
 end
 
@@ -263,7 +268,7 @@ end
 function PA.getAdaptBurstCount(baseCount)
     if not Flags.PingAdapt then return baseCount end
     local m = PingState.AdaptMultiplier
-    -- TODO
+    -- Scale burst count with multiplier
     return math.clamp(math.floor(baseCount * m), 1, 10)
 end
 
@@ -273,9 +278,10 @@ end
 function PA.getAdaptFakeLag(baseChoke)
     if not Flags.PingAdapt then return baseChoke end
     local ping = PingState.Current
-    -- TODO
+    -- Higher ping = fewer fake lag chokes to avoid desync
     if ping > 150 then return math.max(1, baseChoke - 3) end
     if ping > 100 then return math.max(2, baseChoke - 1) end
+    if ping < 30 then return math.min(16, baseChoke + 2) end
     return baseChoke
 end
 
@@ -285,7 +291,8 @@ end
 function PA.getAdaptAAJitter(baseJitter)
     if not Flags.PingAdapt then return baseJitter end
     local m = PingState.AdaptMultiplier
-    -- TODO
+    -- Higher ping = less jitter to reduce server desync
+    return math.clamp(baseJitter * m, 1, 90)
 end
 
 --- ping  bhop 
@@ -294,7 +301,9 @@ end
 function PA.getAdaptBhopInterval(baseInterval)
     if not Flags.PingAdapt then return baseInterval end
     local ping = PingState.Current
-    -- TODO
+    -- Higher ping = longer bhop interval to avoid missed jumps
+    local pingAdd = ping / 1000 * 0.5
+    return math.clamp(baseInterval + pingAdd, 0.05, 0.5)
 end
 
 --- ping  silent aim ?
@@ -303,7 +312,8 @@ end
 function PA.getAdaptSilentRange(baseRange)
     if not Flags.PingAdapt then return baseRange end
     local m = PingState.AdaptMultiplier
-    -- TODO
+    -- Higher ping = wider silent aim range to compensate for lag
+    return math.clamp(baseRange * (1 + (1 - m) * 0.4), 10, 360)
 end
 
 --- ping  triggerbot chance
@@ -312,7 +322,7 @@ end
 function PA.getAdaptTriggerChance(baseChance)
     if not Flags.PingAdapt then return baseChance end
     local m = PingState.AdaptMultiplier
-    -- TODO
+    -- Scale trigger chance with multiplier
     return math.clamp(baseChance * m, 10, 100)
 end
 
@@ -328,18 +338,19 @@ end
 ---@return boolean shouldPause
 function PA.shouldPause()
     if not Flags.PingAdapt then return false end
-    -- spike  100ms
+    -- Spike detection: pause if recent spike > 100ms
     if tick() - PingState.LastSpike < 0.1 then return true end
-    -- TODO
+    -- High jitter detection: pause if jitter > 50ms
+    if (PingState.Jitter or 0) > 50 then return true end
     return false
 end
-
---- ping ---@param baseDelay number
+---@param baseDelay number
 ---@return number adaptedDelay
 function PA.getAdaptHumanDelay(baseDelay)
     if not Flags.PingAdapt then return baseDelay end
     local m = PingState.AdaptMultiplier
-    -- TODO
+    -- Higher ping = slightly longer human delay to look more natural
+    return math.clamp(baseDelay / m + PingState.Current * 0.02, 0, 500)
 end
 
 -- -- SECTION 3: PING-ADAPTED AIMBOT  ping 

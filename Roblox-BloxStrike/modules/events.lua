@@ -15,6 +15,9 @@ local Stats = {
     Kills = 0,
     Deaths = 0,
     Headshots = 0,
+    Shots = 0,
+    Hits = 0,
+    Damage = 0,
     KillStreak = 0,
     BestStreak = 0,
     RoundWins = 0,
@@ -22,10 +25,62 @@ local Stats = {
     BombsPlanted = 0,
     BombsDefused = 0,
     Money = 0,
-    -- StartTime = tick(),
+    StartTime = tick(),
 }
 
+ -- Merge with stealth.lua Stats if it exists, otherwise create fresh
+if BS.Stats then
+    -- stealth.lua already defined Stats with utility methods
+    Stats = BS.Stats
+    -- Ensure tracking fields exist
+    Stats.RoundWins = Stats.RoundWins or 0
+    Stats.RoundLosses = Stats.RoundLosses or 0
+    Stats.BombsPlanted = Stats.BombsPlanted or 0
+    Stats.BombsDefused = Stats.BombsDefused or 0
+    Stats.Money = Stats.Money or 0
+else
+    Stats.StartTime = tick()
+end
 BS.Stats = Stats
+
+ -- Add utility methods if stealth.lua didn't define them
+if not Stats.RecordKill then
+    Stats.RecordKill = function(self, headshot)
+        self.Kills = self.Kills + 1
+        if headshot then self.Headshots = self.Headshots + 1 end
+    end
+    Stats.RecordDeath = function(self)
+        self.Deaths = self.Deaths + 1
+    end
+    Stats.RecordShot = function(self, hit)
+        self.Shots = self.Shots + 1
+        if hit then self.Hits = self.Hits + 1 end
+    end
+    Stats.RecordDamage = function(self, dmg)
+        self.Damage = self.Damage + dmg
+    end
+    Stats.GetKD = function(self)
+        if self.Deaths == 0 then return self.Kills end
+        return math.floor(self.Kills / self.Deaths * 10) / 10
+    end
+    Stats.GetHSPercent = function(self)
+        if self.Kills == 0 then return 0 end
+        return math.floor(self.Headshots / self.Kills * 100)
+    end
+    Stats.GetAccuracy = function(self)
+        if self.Shots == 0 then return 0 end
+        return math.floor(self.Hits / self.Shots * 100)
+    end
+    Stats.GetPlayTime = function(self)
+        return math.floor(tick() - self.StartTime)
+    end
+    Stats.GetReport = function(self)
+        return string.format("K:%d D:%d KD:%.1f HS:%d%% ACC:%d%% DMG:%d Time:%dm",
+            self.Kills, self.Deaths, self:GetKD(),
+            self:GetHSPercent(), self:GetAccuracy(),
+            self.Damage, math.floor(self:GetPlayTime() / 60))
+    end
+end
 
 -- KILL TRACKING
 
@@ -109,7 +164,7 @@ task.spawn(function()
                 if hum then
                     -- Connect to Died event (only once per character)
                     if not hum:GetAttribute("BS_DeathConnected") then
-                        -- hum:SetAttribute("BS_DeathConnected", true)
+                        hum:SetAttribute("BS_DeathConnected", true)
                         hum.Died:Connect(function()
                             Stats.Deaths = Stats.Deaths + 1
                             Stats.KillStreak = 0 -- Reset streak on death

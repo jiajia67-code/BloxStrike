@@ -4,9 +4,11 @@
 -- 60+ Options, Object Pool, Cached Functions, Single Loop
 
 if not BS.Win then warn("[ESP] BS.Win not available - ui.lua may have failed") return end
+local Players = nil pcall(function() Players = game:GetService("Players") end)
 local UIS = nil pcall(function() UIS = game:GetService("UserInputService") end)
 local RunService = nil pcall(function() RunService = game:GetService("RunService") end)
 if not RunService then warn("[ESP] RunService not available") return end
+local lplr = Players and Players.LocalPlayer
 
 -- Safe mouse position getter (prevents GetMouseLocation crash)
 local mousePos = Vector2.new(0, 0)
@@ -295,99 +297,6 @@ task.spawn(function()
 end)
 
 
-
--- SKELETON ESP Implementation
-local function drawSkeleton(player, hrp, color)
-    if not Flags.ESP_Skeleton then return end
-    pcall(function()
-        local cam = workspace.CurrentCamera
-        local char = player.Character
-        if not char then return end
-        
-        local bones = {
-            {"頭部", "Torso"},
-            {"Torso", "Left Arm"},
-            {"Torso", "Right Arm"},
-            {"Torso", "Left Leg"},
-            {"Torso", "Right Leg"},
-        }
-        
-        for _, bone in pairs(bones) do
-            local part1 = char:FindFirstChild(bone[1])
-            local part2 = char:FindFirstChild(bone[2])
-            if part1 and part2 then
-                local sp1, vis1 = cam:WorldToViewportPoint(part1.Position)
-                local sp2, vis2 = cam:WorldToViewportPoint(part2.Position)
-                if vis1 and vis2 then
-                    local line = poolLine()
-                    line.From = Vector2.new(sp1.X, sp1.Y)
-                    line.To = Vector2.new(sp2.X, sp2.Y)
-                    line.Color = color
-                    line.Thickness = 1
-                    line.Visible = true
-                end
-            end
-        end
-    end)
-end
-
--- SNAPLINES Implementation
-local function drawSnapline(player, hrp, color)
-    if not Flags.ESP_Snaplines then return end
-    pcall(function()
-        local cam = workspace.CurrentCamera
-        local sp, vis = cam:WorldToViewportPoint(hrp.Position)
-        if vis then
-            local line = poolLine()
-            line.From = Vector2.new(cam.ViewportSize.X/2, cam.ViewportSize.Y)
-            line.To = Vector2.new(sp.X, sp.Y)
-            line.Color = color
-            line.Thickness = 1
-            line.Visible = true
-        end
-    end)
-end
-
--- HEAD DOT Implementation
-local function drawHeadDot(player, hrp, color)
-    if not Flags.ESP_HeadDot then return end
-    pcall(function()
-        local head = player.Character and player and player.Character:FindFirstChild("Head")
-        if not head then return end
-        local cam = workspace.CurrentCamera
-        local sp, vis = cam:WorldToViewportPoint(head.Position + Vector3.new(0, 0.5, 0))
-        if vis then
-            local circle = poolCircle()
-            circle.Position = Vector2.new(sp.X, sp.Y)
-            circle.Radius = 4
-            circle.Color = color
-            circle.Filled = true
-            circle.Visible = true
-        end
-    end)
-end
-
--- BARREL ESP Implementation
-local function drawBarrel(player, hrp, color)
-    if not Flags.ESP_Barrel then return end
-    pcall(function()
-        local head = player.Character and player and player.Character:FindFirstChild("Head")
-        if not head then return end
-        local cam = workspace.CurrentCamera
-        local sp1, vis1 = cam:WorldToViewportPoint(hrp.Position)
-        local sp2, vis2 = cam:WorldToViewportPoint(hrp.Position + head.CFrame.LookVector * 3)
-        if vis1 and vis2 then
-            local line = poolLine()
-            line.From = Vector2.new(sp1.X, sp1.Y)
-            line.To = Vector2.new(sp2.X, sp2.Y)
-            line.Color = Color3.new(1, 0, 0)
-            line.Thickness = 2
-            line.Visible = true
-        end
-    end)
-end
-
-
 -- OBJECT POOL  Zero GC pressure
 
 local LinePool, TextPool, SquarePool, CirclePool = {}, {}, {}, {}
@@ -540,10 +449,10 @@ local function draw3DBox(hrp, color, thick)
     local cf = hrp.CFrame
     local size = v3(1.5, 3, 1.5)
     local corners3D = {
-        -- cf * v3(-size.X,-size.Y,-size.Z), cf * v3(size.X,-size.Y,-size.Z),
-        -- cf * v3(size.X,-size.Y,size.Z), cf * v3(-size.X,-size.Y,size.Z),
-        -- cf * v3(-size.X,size.Y,-size.Z), cf * v3(size.X,size.Y,-size.Z),
-        -- cf * v3(size.X,size.Y,size.Z), cf * v3(-size.X,size.Y,size.Z),
+        cf * v3(-size.X,-size.Y,-size.Z), cf * v3(size.X,-size.Y,-size.Z),
+        cf * v3(size.X,-size.Y,size.Z), cf * v3(-size.X,-size.Y,size.Z),
+        cf * v3(-size.X,size.Y,-size.Z), cf * v3(size.X,size.Y,-size.Z),
+        cf * v3(size.X,size.Y,size.Z), cf * v3(-size.X,size.Y,size.Z),
     }
     local corners2D, visAll = {}, true
     for i, c3 in ipairs(corners3D) do
@@ -1008,6 +917,8 @@ end
 
  -- Radar ESP
 local radarGui = nil
+local radarDots = {}  -- Reuse dots instead of creating new ones each frame
+local radarFrame = nil
 local function updateRadar()
     if not Flags.ESP_Radar then
         if radarGui then radarGui.Enabled = false end; return
@@ -1018,19 +929,27 @@ local function updateRadar()
 
     if not radarGui then
         radarGui = Instance.new("ScreenGui"); radarGui.Name="BS_Radar"; radarGui.IgnoreGuiInset=true; radarGui.DisplayOrder=9998; radarGui.Parent=lplr.PlayerGui
+        -- Background
+        radarFrame = Instance.new("Frame"); radarFrame.Name="BG"; radarFrame.Size=UDim2.new(0,rSize,0,rSize); radarFrame.Position=UDim2.new(0,rX,0,rY); radarFrame.BackgroundColor3=RGB(0,0,0); radarFrame.BackgroundTransparency=0.3; radarFrame.BorderSizePixel=1; radarFrame.BorderColor3=RGB(100,100,100); radarFrame.Parent=radarGui
+        Instance.new("UICorner",radarFrame).CornerRadius=UDim.new(0,4)
+        -- Crosshair lines
+        local ch1=Instance.new("Frame",radarFrame); ch1.Name="CH1"; ch1.Size=UDim2.new(1,0,0,1); ch1.Position=UDim2.new(0,0,0.5,0); ch1.BackgroundColor3=RGB(80,80,80); ch1.BorderSizePixel=0
+        local ch2=Instance.new("Frame",radarFrame); ch2.Name="CH2"; ch2.Size=UDim2.new(0,1,1,0); ch2.Position=UDim2.new(0.5,0,0,0); ch2.BackgroundColor3=RGB(80,80,80); ch2.BorderSizePixel=0
     end
     radarGui.Enabled = true
-    -- radarGui:ClearAllChildren()
 
-    -- Background
-    local bg = Instance.new("Frame"); bg.Size=UDim2.new(0,rSize,0,rSize); bg.Position=UDim2.new(0,rX,0,rY); bg.BackgroundColor3=RGB(0,0,0); bg.BackgroundTransparency=0.3; bg.BorderSizePixel=1; bg.BorderColor3=RGB(100,100,100); bg.Parent=radarGui
-    Instance.new("UICorner",bg).CornerRadius=UDim.new(0,4)
-    -- Crosshair
-    local ch1=Instance.new("Frame"); ch1.Size=UDim2.new(1,0,0,1); ch1.Position=UDim2.new(0,0,0.5,0); ch1.BackgroundColor3=RGB(80,80,80); ch1.BorderSizePixel=0; ch1.Parent=bg
-    local ch2=Instance.new("Frame"); ch2.Size=UDim2.new(0,1,1,0); ch2.Position=UDim2.new(0.5,0,0,0); ch2.BackgroundColor3=RGB(80,80,80); ch2.BorderSizePixel=0; ch2.Parent=bg
+    -- Position the radar frame
+    radarFrame.Position = UDim2.new(0, rX, 0, rY)
+    radarFrame.Size = UDim2.new(0, rSize, 0, rSize)
+
+    -- Hide all existing dots first
+    for _, dot in ipairs(radarDots) do
+        if dot then dot.Visible = false end
+    end
 
     local myPos = BS.hrp and BS.hrp() and BS.hrp and BS.hrp().Position or V3_ZERO
     local myTeam = BS.team()
+    local dotIdx = 0
     for _, player in ipairs(Players:GetPlayers()) do
         if player == lplr then continue end
         local char = player.Character; if not char then continue end
@@ -1042,9 +961,18 @@ local function updateRadar()
         if rx < 0 or rx > rSize or ry < 0 or ry > rSize then continue end
         local dotColor = C_RED
         if Flags.ESP_TeamCheck and myTeam and player.Team == myTeam then dotColor = C_BLUE end
-        local dot=Instance.new("Frame"); dot.Size=UDim2.new(0,5,0,5); dot.Position=UDim2.new(0,rx-2.5,0,ry-2.5); dot.BackgroundColor3=dotColor; dot.BorderSizePixel=0; dot.Parent=bg
-        Instance.new("UICorner",dot).CornerRadius=UDim.new(0,5)
-        -- ::continue::
+
+        -- Reuse or create dot
+        dotIdx = dotIdx + 1
+        if not radarDots[dotIdx] then
+            local dot = Instance.new("Frame"); dot.Size=UDim2.new(0,5,0,5); dot.BackgroundColor3=dotColor; dot.BorderSizePixel=0; dot.Parent=radarFrame
+            Instance.new("UICorner",dot).CornerRadius=UDim.new(0,5)
+            radarDots[dotIdx] = dot
+        end
+        local dot = radarDots[dotIdx]
+        dot.Position = UDim2.new(0, rx-2.5, 0, ry-2.5)
+        dot.BackgroundColor3 = dotColor
+        dot.Visible = true
     end
 end
 
@@ -1125,6 +1053,401 @@ local function updateFPS()
 end
 
 local dispFrame = 0
+
+-- ═══════════════════════════════════════════════════════════════
+-- KILL FEED ESP
+-- Shows recent kills in a feed on the top-right of the screen
+-- ═══════════════════════════════════════════════════════════════
+local KillFeed = {
+    Entries = {},       -- {killer, victim, weapon, headshot, time}
+    MaxEntries = 6,
+    Duration = 5,       -- seconds to show each entry
+    Gui = nil,
+}
+BS.KillFeed = KillFeed
+
+function KillFeed:AddEntry(killerName, victimName, weapon, headshot)
+    table.insert(self.Entries, {
+        Killer = killerName or "???",
+        Victim = victimName or "???",
+        Weapon = weapon or "",
+        Headshot = headshot or false,
+        Time = tick(),
+    })
+    -- Trim old entries
+    while #self.Entries > self.MaxEntries do
+        table.remove(self.Entries, 1)
+    end
+end
+
+-- Listen for enemy health reaching 0
+local prevEnemyHealth = {}
+task.spawn(function()
+    while true do
+        task.wait(0.3)
+        pcall(function()
+            for _, player in pairs(Players:GetPlayers()) do
+                if player ~= lplr and player.Character then
+                    local hum = player.Character:FindFirstChildOfClass("Humanoid")
+                    if hum then
+                        local prevHP = prevEnemyHealth[player.UserId]
+                        if prevHP and prevHP > 0 and hum.Health <= 0 then
+                            -- Player died - check if we killed them
+                            local killerName = player.DisplayName
+                            local weaponName = ""
+                            pcall(function()
+                                local tool = lplr.Character and lplr.Character:FindFirstChildWhichIsA("Tool")
+                                weaponName = tool and tool.Name or ""
+                            end)
+                            self:AddEntry(lplr.DisplayName, killerName, weaponName, false)
+                        end
+                        prevEnemyHealth[player.UserId] = hum.Health
+                    end
+                end
+            end
+        end)
+    end
+end)
+
+function KillFeed:Update()
+    if not Flags.ESP_KillFeed then
+        if self.Gui then self.Gui.Enabled = false end
+        return
+    end
+
+    -- Create GUI if needed
+    if not self.Gui then
+        self.Gui = Instance.new("ScreenGui")
+        self.Gui.Name = "BS_KillFeed"
+        self.Gui.IgnoreGuiInset = true
+        self.Gui.DisplayOrder = 9998
+        self.Gui.Parent = lplr.PlayerGui
+
+        local frame = Instance.new("Frame", self.Gui)
+        frame.Name = "Frame"
+        frame.Size = UDim2.new(0, 320, 0, self.MaxEntries * 24)
+        frame.Position = UDim2.new(1, -330, 0, 50)
+        frame.BackgroundTransparency = 1
+        frame.BorderSizePixel = 0
+    end
+
+    self.Gui.Enabled = true
+    local frame = self.Gui:FindFirstChild("Frame")
+    if not frame then return end
+
+    -- Remove old entries
+    local now = tick()
+    for i = #self.Entries, 1, -1 do
+        if now - self.Entries[i].Time > self.Duration then
+            table.remove(self.Entries, 1)
+        end
+    end
+
+    -- Clear old labels
+    for _, child in ipairs(frame:GetChildren()) do
+        if child:IsA("TextLabel") then child:Destroy() end
+    end
+
+    -- Draw entries (newest at bottom)
+    for i, entry in ipairs(self.Entries) do
+        local age = now - entry.Time
+        local alpha = math.clamp(1 - (age / self.Duration), 0, 1)
+        if alpha <= 0 then continue end
+
+        local label = Instance.new("TextLabel", frame)
+        label.Size = UDim2.new(1, -4, 0, 20)
+        label.Position = UDim2.new(0, 2, 0, (i - 1) * 24)
+        label.BackgroundTransparency = 1
+        label.TextColor3 = Color3.new(1, 1, 1)
+        label.TextTransparency = 1 - alpha
+        label.TextSize = 12
+        label.Font = Enum.Font.GothamBold
+        label.TextXAlignment = Enum.TextXAlignment.Right
+
+        -- Format: "Killer [weapon] Victim"
+        local weaponIcon = entry.Headshot and " " or " "
+        label.Text = string.format("%s %s%s %s", entry.Killer, weaponIcon, entry.Weapon, entry.Victim)
+
+        -- Color: killer green, victim red
+        label.TextColor3 = Color3.fromRGB(200, 255, 200)
+    end
+end
+
+-- ═══════════════════════════════════════════════════════════════
+-- DAMAGE NUMBERS ESP
+-- Floating damage text that rises and fades
+-- ═══════════════════════════════════════════════════════════════
+local DamageNumbers = {
+    Objects = {},
+    Gui = nil,
+}
+BS.DamageNumbers = DamageNumbers
+
+function DamageNumbers:AddNumber(worldPos, damage, isHeadshot)
+    table.insert(self.Objects, {
+        WorldPos = worldPos,
+        Damage = damage,
+        Headshot = isHeadshot or false,
+        StartTime = tick(),
+        Duration = 1.0,
+        RiseSpeed = 30,
+    })
+end
+
+function DamageNumbers:Update()
+    if not Flags.ESP_DmgNumbers then
+        if self.Gui then self.Gui.Enabled = false end
+        return
+    end
+
+    if not self.Gui then
+        self.Gui = Instance.new("ScreenGui")
+        self.Gui.Name = "BS_DmgNum"
+        self.Gui.IgnoreGuiInset = true
+        self.Gui.DisplayOrder = 9997
+        self.Gui.Parent = lplr.PlayerGui
+    end
+    self.Gui.Enabled = true
+
+    -- Clean old numbers
+    local now = tick()
+    for i = #self.Objects, 1, -1 do
+        if now - self.Objects[i].StartTime > self.Objects[i].Duration then
+            table.remove(self.Objects, i)
+        end
+    end
+
+    -- Clear old labels
+    for _, child in ipairs(self.Gui:GetChildren()) do
+        if child:IsA("TextLabel") then child:Destroy() end
+    end
+
+    -- Render each damage number
+    local cam = workspace.CurrentCamera
+    for _, obj in ipairs(self.Objects) do
+        local age = now - obj.StartTime
+        local alpha = math.clamp(1 - (age / obj.Duration), 0, 1)
+        if alpha <= 0 then continue end
+
+        local riseOffset = Vector3.new(0, obj.RiseSpeed * age, 0)
+        local pos, vis = cam:WorldToViewportPoint(obj.WorldPos + riseOffset)
+        if not vis then continue end
+
+        local label = Instance.new("TextLabel", self.Gui)
+        label.Size = UDim2.new(0, 60, 0, 18)
+        label.Position = UDim2.new(0, pos.X - 30, 0, pos.Y - 9)
+        label.BackgroundTransparency = 1
+        label.TextTransparency = 1 - alpha
+        label.TextSize = obj.Headshot and 16 or 13
+        label.Font = Enum.Font.GothamBold
+        label.TextXAlignment = Enum.TextXAlignment.Center
+
+        local dmgText = tostring(math.floor(obj.Damage))
+        if obj.Headshot then
+            dmgText = dmgText .. " HS"
+            label.TextColor3 = Color3.fromRGB(255, 50, 50)
+        elseif obj.Damage >= 80 then
+            label.TextColor3 = Color3.fromRGB(255, 100, 0)
+        elseif obj.Damage >= 40 then
+            label.TextColor3 = Color3.fromRGB(255, 255, 0)
+        else
+            label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        end
+        label.Text = dmgText
+    end
+end
+
+-- ═══════════════════════════════════════════════════════════════
+-- HIT MARKER ESP
+-- Draws a crosshair marker at the center of the screen on hit
+-- ═══════════════════════════════════════════════════════════════
+local HitMarker = {
+    Active = false,
+    HitTime = 0,
+    Duration = 0.15,
+    Scale = 8,
+    Objects = {},
+}
+BS.HitMarker = HitMarker
+
+function HitMarker:Trigger()
+    self.Active = true
+    self.HitTime = tick()
+end
+
+function HitMarker:Update()
+    if not Flags.ESP_HitMarker then
+        for _, obj in ipairs(self.Objects) do obj.Visible = false end
+        return
+    end
+
+    local now = tick()
+    if self.Active and (now - self.HitTime) > self.Duration then
+        self.Active = false
+    end
+
+    local cam = workspace.CurrentCamera
+    if not cam then return end
+    local cx = cam.ViewportSize.X * 0.5
+    local cy = cam.ViewportSize.Y * 0.5
+
+    if not self.Active then
+        for _, obj in ipairs(self.Objects) do obj.Visible = false end
+        return
+    end
+
+    local age = now - self.HitTime
+    local alpha = math.clamp(1 - (age / self.Duration), 0, 1)
+    local scale = self.Scale + age * 20  -- expand outward
+
+    -- Ensure we have 4 lines
+    while #self.Objects < 4 do
+        local line = poolLine()
+        table.insert(self.Objects, line)
+    end
+
+    local gap = 3
+    local len = scale
+    local color = Color3.new(1, 1, 1)
+    local thick = 2
+
+    -- Top-left line
+    self.Objects[1].From = v2(cx - gap, cy - gap)
+    self.Objects[1].To = v2(cx - gap - len, cy - gap - len)
+    self.Objects[1].Color = color
+    self.Objects[1].Thickness = thick
+    self.Objects[1].Transparency = alpha
+    self.Objects[1].Visible = true
+
+    -- Top-right line
+    self.Objects[2].From = v2(cx + gap, cy - gap)
+    self.Objects[2].To = v2(cx + gap + len, cy - gap - len)
+    self.Objects[2].Color = color
+    self.Objects[2].Thickness = thick
+    self.Objects[2].Transparency = alpha
+    self.Objects[2].Visible = true
+
+    -- Bottom-left line
+    self.Objects[3].From = v2(cx - gap, cy + gap)
+    self.Objects[3].To = v2(cx - gap - len, cy + gap + len)
+    self.Objects[3].Color = color
+    self.Objects[3].Thickness = thick
+    self.Objects[3].Transparency = alpha
+    self.Objects[3].Visible = true
+
+    -- Bottom-right line
+    self.Objects[4].From = v2(cx + gap, cy + gap)
+    self.Objects[4].To = v2(cx + gap + len, cy + gap + len)
+    self.Objects[4].Color = color
+    self.Objects[4].Thickness = thick
+    self.Objects[4].Transparency = alpha
+    self.Objects[4].Visible = true
+end
+
+-- Listen for hit detection via tool activation
+UIS.InputBegan:Connect(function(input, gpe)
+    if gpe then return end
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if Flags.ESP_HitMarker then
+            -- Check if crosshair is on an enemy
+            pcall(function()
+                local cam = workspace.CurrentCamera
+                local mousePos = UIS:GetMouseLocation()
+                local ray = cam:ViewportPointToRay(mousePos.X, mousePos.Y)
+                local rayParams = RaycastParams.new()
+                rayParams.FilterType = Enum.RaycastFilterType.Exclude
+                rayParams.FilterDescendantsInstances = {lplr.Character}
+                local result = workspace:Raycast(ray.Origin, ray.Direction * 500, rayParams)
+                if result and result.Instance then
+                    -- Check if hit an enemy
+                    for _, player in pairs(Players:GetPlayers()) do
+                        if player ~= lplr and player.Character then
+                            if result.Instance:IsDescendantOf(player.Character) then
+                                HitMarker:Trigger()
+                                break
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+-- ═══════════════════════════════════════════════════════════════
+-- KILL EFFECTS (screen flash on kill)
+-- ═══════════════════════════════════════════════════════════════
+local KillEffect = {
+    Active = false,
+    HitTime = 0,
+    Duration = 0.1,
+    Gui = nil,
+}
+BS.KillEffect = KillEffect
+
+function KillEffect:Trigger()
+    if not Flags.ESP_KillFeed then return end
+    self.Active = true
+    self.HitTime = tick()
+end
+
+function KillEffect:Update()
+    if not self.Active then
+        if self.Gui then self.Gui.Enabled = false end
+        return
+    end
+
+    local now = tick()
+    if (now - self.HitTime) > self.Duration then
+        self.Active = false
+        if self.Gui then self.Gui.Enabled = false end
+        return
+    end
+
+    if not self.Gui then
+        self.Gui = Instance.new("ScreenGui")
+        self.Gui.Name = "BS_KillFx"
+        self.Gui.IgnoreGuiInset = true
+        self.Gui.DisplayOrder = 9996
+        self.Gui.Parent = lplr.PlayerGui
+        local flash = Instance.new("Frame", self.Gui)
+        flash.Size = UDim2.new(1, 0, 1, 0)
+        flash.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        flash.BackgroundTransparency = 0.8
+        flash.BorderSizePixel = 0
+    end
+
+    self.Gui.Enabled = true
+    local flash = self.Gui:FindFirstChildOfClass("Frame")
+    if flash then
+        local alpha = 0.8 + (now - self.HitTime) / self.Duration * 0.2  -- fade from 0.8 to 1.0
+        flash.BackgroundTransparency = math.clamp(alpha, 0.8, 1.0)
+    end
+end
+
+-- Wire up hit/kill detection to damage numbers and hit marker
+BS.FireHitCallback = function(damage, isHeadshot, hitPos)
+    if Flags.ESP_DmgNumbers and hitPos then
+        DamageNumbers:AddNumber(hitPos, damage, isHeadshot)
+    end
+    if Flags.ESP_HitMarker then
+        HitMarker:Trigger()
+    end
+end
+
+-- Connect to kill events from events module
+if BS.Stats then
+    local origKills = BS.Stats.Kills or 0
+task.spawn(function()
+    while true do
+        task.wait(0.5)
+        if BS.Stats and BS.Stats.Kills > origKills then
+            KillEffect:Trigger()
+            origKills = BS.Stats.Kills
+        end
+    end
+end)
+end
 
 -- MAIN RENDER LOOP  Single RenderStepped, zero delay
 
@@ -1241,6 +1564,14 @@ RunService.RenderStepped:Connect(function()
 
     drawCrosshair()
     updateFOVCircle()
+
+    -- New ESP features
+    pcall(function()
+        if KillFeed.Update then KillFeed:Update() end
+        if DamageNumbers.Update then DamageNumbers:Update() end
+        if HitMarker.Update then HitMarker:Update() end
+        if KillEffect.Update then KillEffect:Update() end
+    end)
 
     hideUnused()
 end)

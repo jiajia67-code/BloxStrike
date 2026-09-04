@@ -70,7 +70,7 @@ print("[UI] LinoriaLib loaded successfully")
 -- ═══════════════════════════════════════════════════════════════
 
 local Window = Library:CreateWindow({
-    Title = "BloxStrike v4.0",
+    Title = "BloxStrike v4.1",
     Center = true,
     AutoShow = true,
     TabPadding = 8,
@@ -241,4 +241,4 @@ end)
 -- LOADING COMPLETE
 -- ═══════════════════════════════════════════════════════════════
 
-print("[UI] BloxStrike UI v4.0 loaded (LinoriaLib)")
+print("[UI] BloxStrike UI v4.1 loaded (LinoriaLib)")

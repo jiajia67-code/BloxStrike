@@ -87,6 +87,7 @@ end
 function api.isAlive()
     local c = lplr.Character
     return c and c:FindFirstChild("HumanoidRootPart") and c:FindFirstChildOfClass("Humanoid")
+        and c:FindFirstChildOfClass("Humanoid").Health > 0
 end
 
 function api.getHealth()
@@ -168,12 +169,6 @@ end
 function api.getMoney()
     local state = api.getGameState()
     return state.money or state.Money or state.cash or state.Cash or 0
-end
-
-function api.isAlive()
-    local c = lplr.Character
-    return c and c:FindFirstChild("HumanoidRootPart") and c:FindFirstChildOfClass("Humanoid")
-        and c:FindFirstChildOfClass("Humanoid").Health > 0
 end
 
 -- BOMB / C4
@@ -273,7 +268,7 @@ function api.throwGrenade(grenadeName)
         if tool:IsA("Tool") and tool.Name:lower():find(grenadeName:lower()) then
             tool.Parent = char
             task.wait(0.1)
-            -- tool:Activate()
+            tool:Activate()
             return true
         end
     end
@@ -285,7 +280,7 @@ end
 function api.fireRemote(namespace, remote, params)
     if Client then
         pcall(function()
-            -- Client:GetNamespace(namespace):Get(remote):SendToServer(params or {})
+            Client:GetNamespace(namespace):Get(remote):SendToServer(params or {})
         end)
     end
 end

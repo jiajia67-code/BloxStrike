@@ -48,6 +48,185 @@ local function safeMouse1Click()
     pcall(function() mouse1click() end)
 end
 
+-- ====================================================================
+-- FIRE SIMULATION SYSTEM
+-- Handles actual weapon firing via tool:Activate() + fallback methods
+-- ====================================================================
+
+local FireState = {
+    LastFireTime = 0,
+    IsFiring = false,
+    FireQueue = 0,
+    ShotsFired = 0,
+    BurstRemaining = 0,
+}
+BS.FireState = FireState
+
+-- Weapon fire rate data (seconds between shots)
+local WEAPON_FIRE_RATE = {
+    -- Rifles
+    ak = 0.1, m4 = 0.09, m4a1 = 0.09, galil = 0.09, famas = 0.09,
+    aug = 0.09, sg = 0.09, aug = 0.09, scar = 0.09,
+    -- SMGs
+    mp9 = 0.07, mac = 0.075, ump = 0.09, mp5 = 0.08,
+    p90 = 0.068, bizon = 0.08, mp7 = 0.08,
+    -- Pistols
+    glock = 0.15, usp = 0.17, p250 = 0.15, deagle = 0.45,
+    five = 0.15, tec = 0.13, cz = 0.09, dual = 0.12,
+    rev = 0.58, p2000 = 0.17,
+    -- Snipers
+    awp = 1.46, scout = 1.25, auto = 0.15, g3sg = 0.15, ssg = 1.25,
+    -- Shotguns
+    nova = 0.88, xm = 0.75, mag7 = 0.85, sawed = 0.85,
+    -- Heavy
+    negev = 0.065, m249 = 0.08,
+    -- Melee
+    knife = 0.4, bayonet = 0.4, default = 0.4,
+}
+
+-- Get fire rate for current weapon
+local function getWeaponFireRate()
+    local tool = BS.tool and BS.tool()
+    if not tool then return 0.1 end
+    local name = tool.Name:lower()
+    for key, rate in pairs(WEAPON_FIRE_RATE) do
+        if name:find(key) then return rate end
+    end
+    -- Fallback: detect by weapon type
+    local wtype = BS.weaponType and BS.weaponType() or "other"
+    if wtype == "sniper" then return 1.3
+    elseif wtype == "shotgun" then return 0.8
+    elseif wtype == "smg" then return 0.08
+    elseif wtype == "rifle" then return 0.09
+    elseif wtype == "pistol" then return 0.15
+    else return 0.1 end
+end
+
+-- Core fire function: tries multiple methods for maximum compatibility
+local function fireWeapon()
+    local now = tick()
+    local fireRate = getWeaponFireRate()
+
+    -- Rate limiting: don't fire faster than weapon allows
+    if now - FireState.LastFireTime < fireRate then
+        return false
+    end
+
+    -- Don't fire if already firing (prevent stacking)
+    if FireState.IsFiring then return false end
+    FireState.IsFiring = true
+    FireState.LastFireTime = now
+
+    local success = false
+
+    -- Method 1: tool:Activate() — standard Roblox tool firing
+    pcall(function()
+        local tool = lplr.Character and lplr.Character:FindFirstChildWhichIsA("Tool")
+        if tool then
+            -- Check if tool has a RemoteEvent for firing
+            local fireRemote = tool:FindFirstChild("FireRemote")
+                or tool:FindFirstChild("RemoteEvent")
+                or tool:FindFirstChild("Fire")
+                or tool:FindFirstChild("Shoot")
+                or tool:FindFirstChild("GunFire")
+
+            if fireRemote then
+                -- Direct remote fire (most reliable)
+                local targetPos = nil
+                pcall(function()
+                    local cam = workspace.CurrentCamera
+                    local mousePos = UIS:GetMouseLocation()
+                    local ray = cam:ViewportPointToRay(mousePos.X, mousePos.Y)
+                    targetPos = ray.Origin + ray.Direction * 1000
+                end)
+
+                if fireRemote:IsA("RemoteEvent") then
+                    if targetPos then
+                        fireRemote:FireServer(targetPos)
+                    else
+                        fireRemote:FireServer()
+                    end
+                    success = true
+                elseif fireRemote:IsA("RemoteFunction") then
+                    if targetPos then
+                        fireRemote:InvokeServer(targetPos)
+                    else
+                        fireRemote:InvokeServer()
+                    end
+                    success = true
+                end
+            end
+
+            -- Method 1b: tool:Activate() as fallback
+            if not success then
+                tool:Activate()
+                success = true
+            end
+        end
+    end)
+
+    -- Method 2: mouse1click() — executor-level mouse simulation
+    if not success then
+        pcall(function()
+            safeMouse1Click()
+            success = true
+        end)
+    end
+
+    -- Method 3: firesignal / fireclickdetector for specific tool types
+    if not success then
+        pcall(function()
+            local tool = lplr.Character and lplr.Character:FindFirstChildWhichIsA("Tool")
+            if tool then
+                local handle = tool:FindFirstChild("Handle")
+                if handle then
+                    -- Try to find and fire any clickable parts
+                    local clickDetector = handle:FindFirstChildWhichIsA("ClickDetector")
+                    if clickDetector and fireclickdetector then
+                        fireclickdetector(clickDetector)
+                        success = true
+                    end
+                end
+            end
+        end)
+    end
+
+    -- Track shots
+    FireState.ShotsFired = FireState.ShotsFired + 1
+    if BS.HUD and BS.HUD.trackShot then
+        BS.HUD.trackShot()
+    end
+
+    -- Reset firing state after a tick
+    task.delay(0.01, function()
+        FireState.IsFiring = false
+    end)
+
+    return success
+end
+
+-- Burst fire helper
+local function fireBurst(count, burstDelay)
+    count = count or 3
+    burstDelay = burstDelay or 0.03
+    FireState.BurstRemaining = count
+
+    task.spawn(function()
+        for i = 1, count do
+            if FireState.BurstRemaining <= 0 then break end
+            fireWeapon()
+            FireState.BurstRemaining = FireState.BurstRemaining - 1
+            if i < count then task.wait(burstDelay) end
+        end
+        FireState.BurstRemaining = 0
+    end)
+end
+
+-- Expose fire API
+BS.FireWeapon = fireWeapon
+BS.FireBurst = fireBurst
+BS.GetWeaponFireRate = getWeaponFireRate
+
 -- 1. AIMBOT (Enhanced v2.0  30+ options)
 
 page:Label(" Aimbot ")
@@ -68,7 +247,7 @@ page:Toggle("自瞄延遲補償", false, function(v) Flags.AimLagComp = v end)
 page:Slider("自瞄延遲刻度", 1, 16, 8, function(v) Flags.AimLagTicks = v end)
 page:Label(" Aimbot Advanced ")
 page:Toggle("自瞄按鍵綁定", false, function(v) Flags.AimKeybind = v end)
-page:Dropdown({Name="自瞄按鍵", Flag="AimKey", Options={"左Alt","左Ctrl","滑鼠4","滑鼠5","Shift"}, Default="Left Alt"})
+page:Dropdown({Name="自瞄按鍵", Flag="AimKey", Options={"左Alt","左Ctrl","滑鼠4","滑鼠5","Shift"}, Default="左Alt"})
 page:Toggle("自瞄鎖定", false, function(v) Flags.AimLock = v end)
 page:Slider("Aim Lock Duration", 100, 3000, 500, function(v) Flags.AimLockDur = v end)
 page:Toggle("自瞄人性化", false, function(v) Flags.AimHumanize = v end)
@@ -111,11 +290,11 @@ local aimFlickTime = 0
 
  -- Aimbot Key Map
 local AimKeyMap = {
-    -- ["Left Alt"] = Enum.KeyCode.LeftAlt,
-    -- ["Left Ctrl"] = Enum.KeyCode.LeftControl,
-    -- ["Mouse4"] = Enum.UserInputType.MouseButton4,
-    -- ["Mouse5"] = Enum.UserInputType.MouseButton5,
-    -- ["Shift"] = Enum.KeyCode.LeftShift,
+    ["左Alt"] = Enum.KeyCode.LeftAlt,
+    ["左Ctrl"] = Enum.KeyCode.LeftControl,
+    ["滑鼠4"] = Enum.UserInputType.MouseButton4,
+    ["滑鼠5"] = Enum.UserInputType.MouseButton5,
+    ["Shift"] = Enum.KeyCode.LeftShift,
 }
 
 local function isAimKeyDown()
@@ -284,9 +463,9 @@ task.spawn(function()
                     if Flags.AimHumanize then
                         local dev = (Flags.AimHDev or 10) / 100
                         targetPos = targetPos + Vector3.new(
-                            -- (math.random() - 0.5) * dev,
-                            -- (math.random() - 0.5) * dev,
-                            -- (math.random() - 0.5) * dev
+                            (math.random() - 0.5) * dev,
+                            (math.random() - 0.5) * dev,
+                            (math.random() - 0.5) * dev
                         )
                     end
                     -- Apply aim
@@ -462,10 +641,10 @@ local tbBurstShots = 0
 local tbLastBurst = 0
 
 local TBKeyMap = {
-    -- ["Left Ctrl"] = Enum.KeyCode.LeftControl,
-    -- ["Mouse4"] = Enum.UserInputType.MouseButton4,
-    -- ["Mouse5"] = Enum.UserInputType.MouseButton5,
-    -- ["V"] = Enum.KeyCode.V,
+    ["左Ctrl"] = Enum.KeyCode.LeftControl,
+    ["滑鼠4"] = Enum.UserInputType.MouseButton4,
+    ["滑鼠5"] = Enum.UserInputType.MouseButton5,
+    ["V"] = Enum.KeyCode.V,
 }
 
 task.spawn(function()
@@ -539,10 +718,16 @@ task.spawn(function()
                         local delay = minD + math.random() * (maxD - minD)
                         task.wait(delay)
 
-                        -- Fire
+                        -- Fire using the new fire simulation system
                         local tool = lplr.Character and lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
                         if tool and not tool.Name:lower():find("knife") then
-                            -- tool:Activate()
+                            if Flags.TBBurst then
+                                -- Burst fire mode
+                                fireBurst(Flags.TBBurstCount or 3, (Flags.TBBurstDelay or 30) / 1000)
+                            else
+                                -- Single shot
+                                fireWeapon()
+                            end
                             tbBurstShots = tbBurstShots + 1
                             tbLastBurst = tick()
                         end
@@ -716,12 +901,20 @@ end)
 page:Toggle("自動射擊", false, function(v) Flags.AutoFire = v end)
 
 task.spawn(function()
-    while task.wait() do
-        if Flags.AutoFire and alive() then
+    while true do
+        task.wait()
+        if Flags.AutoFire and BS.alive and BS.alive() then
             pcall(function()
-                local tool = lplr.Character and lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
-                if tool and tool.Name:lower():find("knife") == nil then
-                    -- tool:Activate()
+                local tool = lplr.Character and lplr.Character:FindFirstChildWhichIsA("Tool")
+                if tool and not tool.Name:lower():find("knife") then
+                    -- Only fire when mouse1 is held down
+                    local mouse1Held = false
+                    pcall(function()
+                        mouse1Held = UIS:IsMouseButtonPressed(Enum.UserInputType.MouseButton1)
+                    end)
+                    if mouse1Held then
+                        fireWeapon()
+                    end
                 end
             end)
         end

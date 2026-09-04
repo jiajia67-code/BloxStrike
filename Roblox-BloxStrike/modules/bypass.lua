@@ -663,50 +663,23 @@ BS.Bypass = Bypass
 -- Hide all traces of script injection from AC
 
 -- Hide injection artifacts
+-- 注射偽裝系統已停用：每 20 秒隱藏 BS_ GUI 會導致遊戲 UI 消失
+-- 保留 workspace 物件清理（只清理非 GUI 的 3D 物件）
 task.spawn(function()
-    while true do task.wait(20)
+    while true do task.wait(60)
         pcall(function()
-            -- 1. Hide all Drawing objects from workspace scans
+            -- Only clean orphaned 3D objects from workspace (NOT GUIs)
             pcall(function()
                 for _, obj in pairs(workspace:GetDescendants()) do
                     if obj:IsA("BasePart") and (
-                        obj.Name:find("BS_") or obj.Name:find("BloxStrike") or
-                        obj.Transparency == 1 and not obj.Anchored and obj.Size.Magnitude < 5
+                        obj.Name:find("BS_Traj") or obj.Name:find("BS_Cham")
                     ) then
                         pcall(function() obj:Destroy() end)
                     end
                 end
             end)
 
-            -- 2. Hide ScreenGuis from CoreGui detection
-            pcall(function()
-                local cg = nil
-                pcall(function() cg = game:GetService("CoreGui") end)
-                if cg then
-                    for _, gui in pairs(cg:GetChildren()) do
-                        if gui:IsA("ScreenGui") and (
-                            gui.Name:find("BloxStrike") or gui.Name:find("BS_")
-                        ) then
-                            -- gui:Destroy()
-                        end
-                    end
-                end
-            end)
-
-            -- 3. Remove BS_ objects from PlayerGui
-            pcall(function()
-                for _, gui in pairs(lplr.PlayerGui:GetChildren()) do
-                    if gui:IsA("ScreenGui") and (
-                        gui.Name:find("BloxStrike") or gui.Name:find("BS_")
-                    ) then
-                        gui.Enabled = false
-                        gui.DisplayOrder = -9999
-                        gui.IgnoreGuiInset = true
-                    end
-                end
-            end)
-
-            -- 4. Force GC
+            -- Force GC
             collectgarbage("collect")
         end)
     end
@@ -1096,17 +1069,21 @@ task.spawn(function()
 
             -- 3. Memory pattern check
             local gcCount = collectgarbage("count")
-            if gcCount > 500 then -- Abnormally high memory usage might indicate monitoring
+            if gcCount > 2000 then -- Only flag extreme memory usage (2GB+)
                 sandboxState.DetectionCount = sandboxState.DetectionCount + 1
             end
 
-            -- If too many detections, enter silent mode
-            if sandboxState.DetectionCount > 3 then
-                -- Hide everything
+            -- Only hide BS_ GUIs if detection count is very high (>25)
+            -- Lower thresholds caused false positives on slow machines
+            if sandboxState.DetectionCount > 25 then
                 pcall(function()
-                    local gui = lplr.PlayerGui:FindFirstChildWhichIsA("ScreenGui")
-                    if gui then gui.Enabled = false end
+                    for _, gui in pairs(lplr.PlayerGui:GetChildren()) do
+                        if gui:IsA("ScreenGui") and gui.Name and (gui.Name:find("BS_") or gui.Name:find("BloxStrike")) then
+                            gui.Enabled = false
+                        end
+                    end
                 end)
+                sandboxState.DetectionCount = 10
             end
         end)
     end

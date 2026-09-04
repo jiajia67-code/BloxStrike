@@ -339,7 +339,7 @@ local function doVignette(color, duration)
                 right.ImageTransparency = trans + 0.1
                 RunService.RenderStepped:Wait()
             end
-            -- vignetteGui:ClearAllChildren()
+            pcall(function() top:Destroy(); bot:Destroy(); left:Destroy(); right:Destroy() end)
         end)
     end)
 end
@@ -372,7 +372,7 @@ local function doScreenFlash(color, transparency, duration)
                 flash.BackgroundTransparency = (transparency or 0.4) + pct * (1 - (transparency or 0.4))
                 RunService.RenderStepped:Wait()
             end
-            -- flash:Destroy()
+            pcall(function() flash:Destroy() end)
         end)
     end)
 end
@@ -390,8 +390,8 @@ local function doScreenShake(intensity, duration)
         conn = RunService.RenderStepped:Connect(function()
             local elapsed = tick() - startTime
             if elapsed > duration then
-                -- conn:Disconnect()
-                -- return
+                conn:Disconnect()
+                return
             end
             local fade = 1 - (elapsed / duration)
             local sx = (math.random() - 0.5) * intensity * fade
@@ -446,8 +446,7 @@ local function doChromaticAberration(intensity, duration)
                 blueLayer.BackgroundTransparency = alpha
                 RunService.RenderStepped:Wait()
             end
-            -- redLayer:Destroy()
-            -- blueLayer:Destroy()
+            pcall(function() redLayer:Destroy(); blueLayer:Destroy() end)
         end)
     end)
 end
@@ -526,7 +525,7 @@ local function doDamageIndicator(angle, color)
                 indicator.Position = UDim2.new(0.5, 0, 0.5 - pct * 0.05, 0)
                 RunService.RenderStepped:Wait()
             end
-            -- indicator:Destroy()
+            pcall(function() indicator:Destroy() end)
         end)
     end)
 end
@@ -577,14 +576,14 @@ local function doBloodEffect(count)
                     vy = vy + gravity * dt
 
                     particle.Position = UDim2.new(
-                        -- startX + vx * elapsed / vpSize.X,
-                        -- 0,
-                        -- startY + vy * elapsed / vpSize.Y,
-                        -- 0
+                        startX + vx * elapsed / vpSize.X,
+                        0,
+                        startY + vy * elapsed / vpSize.Y,
+                        0
                     )
                     particle.BackgroundTransparency = elapsed / 0.7
                 end
-                -- particle:Destroy()
+                pcall(function() particle:Destroy() end)
             end)
         end
     end)
@@ -629,7 +628,7 @@ local function doKillRing(color)
                 circle.Thickness = 3 * (1 - pct)
                 RunService.RenderStepped:Wait()
             end
-            -- ring:Destroy()
+            pcall(function() ring:Destroy() end)
         end)
     end)
 end
@@ -717,7 +716,7 @@ local function doGlitchLines(count, duration)
 
             task.spawn(function()
                 task.wait(duration or 0.15)
-                -- line:Destroy()
+                pcall(function() line:Destroy() end)
             end)
         end
     end)
@@ -726,23 +725,23 @@ end
 -- STREAK TEXT
 
 local streakNames = {
-    -- [2] = "DOUBLE KILL",
-    -- [3] = "TRIPLE KILL",
-    -- [4] = "QUAD KILL",
-    -- [5] = "PENTA KILL!",
-    -- [7] = "UNSTOPPABLE!",
-    -- [10] = "RAMPAGE!!",
-    -- [15] = "GODLIKE!!!",
+    [2] = "DOUBLE KILL",
+    [3] = "TRIPLE KILL",
+    [4] = "QUAD KILL",
+    [5] = "PENTA KILL!",
+    [7] = "UNSTOPPABLE!",
+    [10] = "RAMPAGE!!",
+    [15] = "GODLIKE!!!",
 }
 
 local streakColors = {
-    -- [2] = Color3.fromRGB(255, 255, 0),
-    -- [3] = Color3.fromRGB(255, 150, 0),
-    -- [4] = Color3.fromRGB(255, 50, 0),
-    -- [5] = Color3.fromRGB(255, 0, 0),
-    -- [7] = Color3.fromRGB(200, 0, 255),
-    -- [10] = Color3.fromRGB(255, 0, 150),
-    -- [15] = Color3.fromRGB(255, 255, 255),
+    [2] = Color3.fromRGB(255, 255, 0),
+    [3] = Color3.fromRGB(255, 150, 0),
+    [4] = Color3.fromRGB(255, 50, 0),
+    [5] = Color3.fromRGB(255, 0, 0),
+    [7] = Color3.fromRGB(200, 0, 255),
+    [10] = Color3.fromRGB(255, 0, 150),
+    [15] = Color3.fromRGB(255, 255, 255),
 }
 
 local function showStreakText(text, color, streak)
@@ -784,7 +783,7 @@ local function showStreakText(text, color, streak)
                 end
                 RunService.RenderStepped:Wait()
             end
-            -- label:Destroy()
+            pcall(function() label:Destroy() end)
         end)
     end)
 end
@@ -808,7 +807,7 @@ local function addKillFeedEntry(killer, victim, weapon, isHeadshot)
             Victim = victim or "",
             Weapon = weapon or "?",
             Headshot = isHeadshot or false,
-            -- Time = tick(),
+            Time = tick(),
         })
         if #KillFeed > KillFeedMax then table.remove(KillFeed) end
         rebuildKillFeed()
@@ -1013,7 +1012,7 @@ task.spawn(function()
             if char then
                 local hum = char:FindFirstChildOfClass("Humanoid")
                 if hum and not hum:GetAttribute("BS_KillSndConn") then
-                    -- hum:SetAttribute("BS_KillSndConn", true)
+                    hum:SetAttribute("BS_KillSndConn", true)
                     hum.Died:Connect(onDeath)
                 end
             end

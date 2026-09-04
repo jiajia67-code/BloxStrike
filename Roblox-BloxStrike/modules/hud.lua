@@ -223,6 +223,30 @@ page:Toggle("顯示玩家", false, function(v) Flags.WMPlayers = v end)
 page:Toggle("顯示時間", false, function(v) Flags.WMTime = v end)
 page:Separator()
 
+-- SECTION 5B: DISCORD WEBHOOK
+
+page:Label(" Discord Webhook ")
+page:Toggle("啟用 Webhook", false, function(v) Flags.WebhookEnabled = v
+    if BS.Webhook then BS.Webhook.Enabled = v end
+end)
+page:Button({Name="設定 URL", Color=Color3.fromRGB(88, 101, 242)}, function()
+    pcall(function()
+        -- Prompt for webhook URL via notification
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Discord Webhook",
+            Text = "請在控制台輸入: BS.Webhook.URL = \"你的Webhook URL\"",
+            Duration = 8,
+        })
+    end)
+end)
+page:Toggle("擊殺通知", false, function(v) Flags.WebhookOnKill = v end)
+page:Toggle("死亡通知", false, function(v) Flags.WebhookOnDeath = v end)
+page:Toggle("連殺通知", false, function(v) Flags.WebhookOnKillStreak = v end)
+page:Toggle("回合通知", false, function(v) Flags.WebhookOnRoundEnd = v end)
+page:Toggle("炸彈通知", false, function(v) Flags.WebhookOnBomb = v end)
+page:Toggle("載入通知", false, function(v) Flags.WebhookOnLoad = v end)
+page:Separator()
+
 -- SECTION 6: SPECTATOR LIST
 
 page:Label(" Spectator List ")
@@ -659,154 +683,6 @@ function HUD.cleanup()
 end
 
  -- Expose
-
--- Watermark Implementation
-local WatermarkObj = nil
-local function updateWatermark()
-    if not Flags.Watermark then
-        if WatermarkObj then WatermarkObj.Visible = false end
-        return
-    end
-    if not WatermarkObj then
-        pcall(function() WatermarkObj = Drawing.new("Text") end)
-        if not WatermarkObj then return end
-        WatermarkObj.Center = false
-        WatermarkObj.Outline = true
-        WatermarkObj.OutlineColor = Color3.new(0,0,0)
-        WatermarkObj.Font = 2
-        WatermarkObj.Size = 14
-    end
-    local parts = {"BloxStrike v3.0"}
-    if Flags.WMFPS then pcall(function() table.insert(parts, "60 FPS") end) end
-    if Flags.WMPing then
-        pcall(function()
-            local ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"].Value)
-            table.insert(parts, ping .. " ms")
-        end)
-    end
-    if Flags.WMServer then table.insert(parts, game:GetService("Workspace").Name) end
-    if Flags.WMPlayers then table.insert(parts, #game:GetService("Players"):GetPlayers() .. " players") end
-    if Flags.WMTime then table.insert(parts, os.date("%H:%M:%S")) end
-    WatermarkObj.Text = "  " .. table.concat(parts, " | ") .. "  "
-    WatermarkObj.Position = Vector2.new(10, 10)
-    WatermarkObj.Color = Color3.new(1,1,1)
-    WatermarkObj.Visible = true
-end
-
--- Spectator List Implementation
-local SpectatorObjs = {}
-local function updateSpectators()
-    if not Flags.SpectatorList then
-        for _, obj in pairs(SpectatorObjs) do pcall(function() obj.Visible = false end) end
-        SpectatorObjs = {}
-        return
-    end
-    local myChar = lplr.Character
-    if not myChar then return end
-    local myHead = myChar:FindFirstChild("Head")
-    if not myHead then return end
-    local specs = {}
-    for _, p in pairs(Players:GetPlayers()) do
-        if p ~= lplr and p.Character then
-            local cam = p and p.Character:FindFirstChildOfClass("Camera")
-            if cam and cam.CameraSubject == myHead then
-                table.insert(specs, p.Name)
-            end
-        end
-    end
-    for i = 1, math.max(#specs, #SpectatorObjs) do
-        if not SpectatorObjs[i] then
-            pcall(function() SpectatorObjs[i] = Drawing.new("Text") end)
-        end
-        if SpectatorObjs[i] then
-            if i <= #specs then
-                SpectatorObjs[i].Text = specs[i]
-                SpectatorObjs[i].Position = Vector2.new(10, 30 + (i-1) * 18)
-                SpectatorObjs[i].Color = Color3.new(1,1,1)
-                SpectatorObjs[i].Size = 13
-                SpectatorObjs[i].Outline = true
-                SpectatorObjs[i].Visible = true
-            else
-                SpectatorObjs[i].Visible = false
-            end
-        end
-    end
-end
-
--- Kill Counter Implementation
-local SessionKills = 0
-local SessionDeaths = 0
-local SessionHeadshots = 0
-local SessionShots = 0
-local SessionHits = 0
-local KillCounterObj = nil
-
-local function updateKillCounter()
-    if not Flags.KillCounter then
-        if KillCounterObj then KillCounterObj.Visible = false end
-        return
-    end
-    if not KillCounterObj then
-        pcall(function() KillCounterObj = Drawing.new("Text") end)
-        if not KillCounterObj then return end
-        KillCounterObj.Center = false
-        KillCounterObj.Outline = true
-        KillCounterObj.OutlineColor = Color3.new(0,0,0)
-        KillCounterObj.Font = 2
-        KillCounterObj.Size = 13
-    end
-    local parts = {}
-    if Flags.KDShow then
-        local kd = SessionDeaths > 0 and string.format("%.1f", SessionKills/SessionDeaths) or tostring(SessionKills)
-        table.insert(parts, "K/D: " .. SessionKills .. "/" .. SessionDeaths .. " (" .. kd .. ")")
-    end
-    if Flags.HSShow and SessionKills > 0 then
-        table.insert(parts, "HS: " .. math.floor(SessionHeadshots/SessionKills*100) .. "%")
-    end
-    if Flags.AccShow and SessionShots > 0 then
-        table.insert(parts, "Acc: " .. math.floor(SessionHits/SessionShots*100) .. "%")
-    end
-    KillCounterObj.Text = "  " .. table.concat(parts, " | ") .. "  "
-    KillCounterObj.Position = Vector2.new(10, (workspace and workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize or Vector2.new(1920,1080)).Y - 30)
-    KillCounterObj.Color = Color3.new(1,1,0.5)
-    KillCounterObj.Visible = #parts > 0
-end
-
--- Listen for kills/deaths
-lplr.CharacterAdded:Connect(function()
-    task.delay(0.5, function()
-        local hum = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Humanoid")
-        if hum then
-            hum.Died:Connect(function()
-                SessionDeaths = SessionDeaths + 1
-            end)
-        end
-    end)
-end)
-
--- HUD update loop
-task.spawn(function()
-    while true do
-        task.wait(0.2)
-        pcall(function()
-            updateWatermark()
-            updateSpectators()
-            updateKillCounter()
-        end)
-    end
-end)
-
--- Expose kill tracking
-HUD.trackKill = function(wasHeadshot)
-    SessionKills = SessionKills + 1
-    if wasHeadshot then SessionHeadshots = SessionHeadshots + 1 end
-end
-HUD.trackShot = function() SessionShots = SessionShots + 1 end
-HUD.trackHit = function() SessionHits = SessionHits + 1 end
-
-
 BS.HUD = HUD
 
 print("[HUD] BloxStrike HUD v1.0 loaded")
--- [optimized] print("[HUD] Features: Performance Monitor, Feature Status, Combat HUD,")
--- [optimized] print("[HUD]   Notification Center, Health Crosshair, Velocity Display")

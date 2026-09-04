@@ -46,7 +46,7 @@ end
  -- Get Roblox Thumbnail URL
 function Webhook.getAvatarURL(userId)
     return "https://www.roblox.com/headshot-thumbnail/image?userId="
-        -- .. tostring(userId) .. "&width=420&height=420&format=png"
+        .. tostring(userId) .. "&width=420&height=420&format=png"
 end
 
  -- Send Raw Webhook
@@ -166,7 +166,7 @@ end
 task.spawn(function()
     while true do
         task.wait(Webhook.QueueInterval)
-        -- Webhook.flush()
+        pcall(function() Webhook.flush() end)
     end
 end)
 
@@ -229,11 +229,11 @@ end
 ---@param streak number
 function Webhook.onKillStreak(streak)
     local titles = {
-        -- [3] = " Triple Kill!",
-        -- [4] = " Quadra Kill!",
-        -- [5] = " PENTA KILL!",
-        -- [7] = " UNSTOPPABLE!",
-        -- [10] = " GODLIKE!",
+        [3] = " Triple Kill!",
+        [4] = " Quadra Kill!",
+        [5] = " PENTA KILL!",
+        [7] = " UNSTOPPABLE!",
+        [10] = " GODLIKE!",
     }
     local title = titles[streak] or (" " .. streak .. " Kill Streak!")
 

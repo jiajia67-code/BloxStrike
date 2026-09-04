@@ -125,7 +125,7 @@ function BS.team()
     return lplr.Team
 end
 
-function BS.enemies and BS.enemies() or {}
+function BS.enemies()
     local enemies = {}
     local myTeam = BS.team()
     for _, player in pairs(Players:GetPlayers()) do

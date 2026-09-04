@@ -1,4 +1,4 @@
---[[BloxStrike v4.0 - Error Prevention System]]
+--[[BloxStrike v4.1 - Comprehensive Bug Fix + AI Enhancement Release]]
 
 if game.PlaceId ~= 114234929420007 then
     warn('[BloxStrike] Wrong game!')
@@ -10,7 +10,7 @@ _G.BS = _G.BS or {}
 _G.Flags = Flags
 _G.BS.Flags = Flags
 
-local CURRENT_VERSION = '3.5'
+local CURRENT_VERSION = '4.1'
 local t0 = tick()
 local BASE_URLS = {
     "https://cdn.jsdelivr.net/gh/jiajia67-code/BloxStrike@main/Roblox-BloxStrike/modules/",
@@ -187,7 +187,7 @@ local VerBadge = Instance.new("TextLabel")
 VerBadge.Size = UDim2.new(0, 60, 0, 20)
 VerBadge.Position = UDim2.new(1, -75, 0, 18)
 VerBadge.BackgroundColor3 = Color3.fromRGB(40, 60, 100)
-VerBadge.Text = "v4.0"
+VerBadge.Text = "v4.1"
 VerBadge.TextColor3 = Color3.fromRGB(150, 180, 255)
 VerBadge.TextSize = 11
 VerBadge.Font = Enum.Font.Code
@@ -697,4 +697,4 @@ task.spawn(function()
     pcall(function() GUI:Destroy() end)
 end)
 
-print("[BloxStrike] v4.0 loaded (" .. ok .. "/" .. total .. " modules, " .. elapsed .. "ms)")
+print("[BloxStrike] v4.1 loaded (" .. ok .. "/" .. total .. " modules, " .. elapsed .. "ms)")
