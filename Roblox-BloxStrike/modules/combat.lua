@@ -232,7 +232,116 @@ BS.GetWeaponFireRate = getWeaponFireRate
 page:Label(" Wallbang ")
 page:Toggle("子彈穿牆", false, function(v) Flags.Wallbang = v end)
 page:Slider("穿牆深度", 1, 5, 1, function(v) Flags.WallbangPen = v end)
+page:Toggle("自動偵測牆壁厚度", true, function(v) Flags.WallbangAuto = v end)
+page:Toggle("穿牆伤害衰减", true, function(v) Flags.WallbangDmgFall = v end)
+page:Toggle("穿牆顯示", false, function(v) Flags.WallbangESP = v end)
 page:Separator()
+
+-- Wallbang Engine: calculates wall penetration for each shot
+local WallbangEngine = {}
+BS.Wallbang = WallbangEngine
+
+-- Per-weapon penetration multipliers (higher = better penetration)
+local WEAPON_PENETRATION = {
+    -- Rifles (high penetration)
+    ["ak47"] = 1.0, ["m4a4"] = 0.9, ["m4a1"] = 0.85, ["galil"] = 0.8,
+    ["famas"] = 0.75, ["sg553"] = 0.9, ["aug"] = 0.9,
+    -- Snipers (very high)
+    ["awp"] = 1.0, ["scout"] = 0.9, ["sg556"] = 0.85, ["g3sg1"] = 1.0,
+    ["scar20"] = 1.0, ["ssg08"] = 0.9,
+    -- SMGs (medium)
+    ["mp9"] = 0.5, ["mac10"] = 0.5, ["mp7"] = 0.55, ["ump45"] = 0.5,
+    ["p90"] = 0.45, ["bizon"] = 0.4,
+    -- Pistols (low)
+    ["glock"] = 0.3, ["usp"] = 0.35, ["p250"] = 0.35, ["deagle"] = 0.65,
+    ["five7"] = 0.4, ["tec9"] = 0.35, ["cz75"] = 0.4, ["dualberetta"] = 0.3,
+    -- Shotguns (very low)
+    ["nova"] = 0.2, ["xm1014"] = 0.2, ["mag7"] = 0.25, ["sawedoff"] = 0.2,
+    -- Default
+    default = 0.5,
+}
+
+--- Get weapon penetration value (0-1)
+function WallbangEngine.getWeaponPen()
+    local tool = BS.tool and BS.tool()
+    if not tool then return WEAPON_PENETRATION.default end
+    local name = tool.Name:lower():gsub("%s+", "")
+    return WEAPON_PENETRATION[name] or WEAPON_PENETRATION.default
+end
+
+--- Calculate wall thickness between two points by raycasting through walls
+--- Returns: thickness (studs), wallCount (number of walls hit)
+function WallbangEngine.measureWall(origin, direction, maxDist)
+    if not Flags.WallbangAuto then
+        return Flags.WallbangPen or 1, 0
+    end
+
+    local params = RaycastParams.new()
+    params.FilterType = Enum.RaycastFilterType.Exclude
+    params.FilterDescendantsInstances = {lplr.Character}
+
+    local totalThickness = 0
+    local wallCount = 0
+    local currentOrigin = origin
+    local remaining = maxDist or 200
+    local maxWalls = Flags.WallbangPen or 1
+
+    -- Raycast through walls to measure total thickness
+    while wallCount < maxWalls and remaining > 0 do
+        local result = workspace:Raycast(currentOrigin, direction.Unit * remaining, params)
+        if not result or not result.Instance then break end
+
+        -- Skip non-wall parts (players, tools, etc.)
+        local inst = result.Instance
+        if inst:IsA("BasePart") and not inst:IsDescendantOf(lplr.Character) then
+            local thickness = (result.Position - currentOrigin).Magnitude
+            totalThickness = totalThickness + thickness
+            wallCount = wallCount + 1
+
+            -- Move origin past this wall
+            currentOrigin = result.Position + direction.Unit * 0.1
+            remaining = remaining - thickness - 0.1
+        else
+            break
+        end
+    end
+
+    return totalThickness, wallCount
+end
+
+--- Check if a shot can penetrate to hit the target
+--- Returns: canPenetrate, damageMultiplier
+function WallbangEngine.canPenetrate(origin, targetPos)
+    if not Flags.Wallbang then return true, 1 end
+
+    local direction = (targetPos - origin)
+    local dist = direction.Magnitude
+    local thickness, wallCount = WallbangEngine.measureWall(origin, direction, dist)
+
+    if wallCount == 0 then
+        -- No walls: full damage
+        return true, 1
+    end
+
+    -- Get weapon penetration ability
+    local weaponPen = WallbangEngine.getWeaponPen()
+    local maxPen = (Flags.WallbangPen or 1) * 20 * weaponPen -- max penetrable thickness in studs
+
+    if thickness > maxPen then
+        -- Wall too thick for this weapon
+        return false, 0
+    end
+
+    -- Damage falloff: more walls / thicker walls = less damage
+    local dmgMult = 1.0
+    if Flags.WallbangDmgFall then
+        dmgMult = math.clamp(1 - (thickness / maxPen) * 0.5, 0.3, 1.0)
+        dmgMult = dmgMult * (1 - (wallCount - 1) * 0.15) -- extra penalty per extra wall
+        dmgMult = math.clamp(dmgMult, 0.2, 1.0)
+    end
+
+    return true, dmgMult
+end
 
 -- 1. AIMBOT (Enhanced v2.0  30+ options)
 
@@ -402,8 +511,16 @@ task.spawn(function()
                     end
                     if not aimPos then continue end
 
-                    if Flags.AimbotVis and not Flags.Wallbang and not BS.hasLineOfSight(myPos, aimPos) then continue end
-                    if Flags.AimbotWall and not Flags.Wallbang and e.Head and not BS.hasLineOfSight(myPos, e.Head.Position) then continue end
+                    if Flags.AimbotVis and not BS.hasLineOfSight(myPos, aimPos) then
+                        if not Flags.Wallbang then continue end
+                        local canPen = WallbangEngine.canPenetrate(myPos, aimPos)
+                        if not canPen then continue end
+                    end
+                    if Flags.AimbotWall and e.Head and not BS.hasLineOfSight(myPos, e.Head.Position) then
+                        if not Flags.Wallbang then continue end
+                        local canPen2 = WallbangEngine.canPenetrate(myPos, e.Head.Position)
+                        if not canPen2 then continue end
+                    end
 
                     local pos, vis = cam:WorldToViewportPoint(aimPos)
                     if not vis then continue end
@@ -704,7 +821,12 @@ task.spawn(function()
                         -- Body only
                         if Flags.TBBodyOnly and mouseTarget ~= e.HRP then continue end
                         -- Wall check
-                        if Flags.TBWallCheck and not Flags.Wallbang and e.Head and not BS.hasLineOfSight(myHrp.Position, e.Head.Position) then continue end
+                        if Flags.TBWallCheck and e.Head and not BS.hasLineOfSight(myHrp.Position, e.Head.Position) then
+                            if not Flags.Wallbang then continue end
+                            -- Wallbang: check if we can penetrate this wall
+                            local canPen, dmgMult = WallbangEngine.canPenetrate(myHrp.Position, e.Head.Position)
+                            if not canPen then continue end
+                        end
                         -- FOV check
                         if Flags.TBFovCheck then
                             local pos, vis = cam:WorldToViewportPoint(e.HRP.Position)
@@ -804,7 +926,11 @@ task.spawn(function()
                         and (e.Head and e.Head.Position or e.HRP.Position + Vector3.new(0, 1.5, 0))
                         or e.HRP.Position
 
-                    if Flags.SAWall and not Flags.Wallbang and not BS.hasLineOfSight(myHrp.Position, aimPos) then
+                    if Flags.SAWall and not BS.hasLineOfSight(myHrp.Position, aimPos) then
+                        if not Flags.Wallbang then continue end
+                        local canPen = WallbangEngine.canPenetrate(myHrp.Position, aimPos)
+                        if not canPen then continue end
+                    end
                         continue
                     end
 
@@ -990,7 +1116,11 @@ task.spawn(function()
                 local best, bestDist = nil, Flags.AAFov or 60
                 for _, e in pairs(BS.enemies and BS.enemies() or {}) do
                     local aimPos = e.Head and e.Head.Position or e.HRP.Position + Vector3.new(0, 1.5, 0)
-                    if Flags.AAWall and not Flags.Wallbang and not BS.hasLineOfSight(myHrp.Position, aimPos) then
+                    if Flags.AAWall and not BS.hasLineOfSight(myHrp.Position, aimPos) then
+                        if not Flags.Wallbang then continue end
+                        local canPen = WallbangEngine.canPenetrate(myHrp.Position, aimPos)
+                        if not canPen then continue end
+                    end
                         continue
                     end
                     local pos, vis = cam:WorldToViewportPoint(aimPos)
