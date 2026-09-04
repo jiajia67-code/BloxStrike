@@ -480,7 +480,136 @@ task.spawn(function()
     end
 end)
 
--- 2. MISC FEATURES (in  tab)
+-- 2. NOCLIP / FLY HACK
+
+M:Separator()
+M:Label("  NoClip ")
+M:Toggle("穿牆飛行", false, function(v) Flags.NoClip = v
+    -- Enable/disable collision on character
+    if not BS.alive or not BS.alive() then return end
+    local char = lplr.Character
+    if not char then return end
+    for _, part in pairs(char:GetDescendants()) do
+        if part:IsA("BasePart") then
+            if v then
+                part.CanCollide = false
+            else
+                part.CanCollide = true
+            end
+        end
+    end
+end)
+M:Toggle("飛行模式", false, function(v) Flags.FlyMode = v end)
+M:Slider("飛行速度", 1, 100, 50, function(v) Flags.FlySpeed = v end)
+M:Toggle("持續穿牆", true, function(v) Flags.NoClipAlways = v end)
+M:Toggle("飛行時關閉重力", true, function(v) Flags.FlyNoGravity = v end)
+M:Toggle("飛行加速 (Shift)", true, function(v) Flags.FlySprint = v end)
+M:Separator()
+
+-- NoClip & Fly Logic
+local flyState = {
+    velocity = Vector3.new(0, 0, 0),
+    active = false,
+    bodyVelocity = nil,
+    bodyGyro = nil,
+}
+
+local function disableCollision(char)
+    for _, part in pairs(char:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = false
+        end
+    end
+end
+
+local function getFlyDirection()
+    local cam = Workspace.CurrentCamera
+    if not cam then return Vector3.new(0, 0, 0) end
+
+    local dir = Vector3.new(0, 0, 0)
+    local speed = (Flags.FlySpeed or 50) / 10
+    if Flags.FlySprint and UIS:IsKeyDown(Enum.KeyCode.LeftShift) then
+        speed = speed * 2
+    end
+
+    -- WASD relative to camera
+    local cf = cam.CFrame
+    local right = cf.RightVector
+    local forward = cf.LookVector
+    local up = Vector3.new(0, 1, 0)
+
+    if UIS:IsKeyDown(Enum.KeyCode.W) then dir = dir + forward end
+    if UIS:IsKeyDown(Enum.KeyCode.S) then dir = dir - forward end
+    if UIS:IsKeyDown(Enum.KeyCode.A) then dir = dir - right end
+    if UIS:IsKeyDown(Enum.KeyCode.D) then dir = dir + right end
+    if UIS:IsKeyDown(Enum.KeyCode.Space) then dir = dir + up end
+    if UIS:IsKeyDown(Enum.KeyCode.LeftControl) then dir = dir - up end
+
+    -- Normalize and scale
+    if dir.Magnitude > 0 then
+        dir = dir.Unit * speed
+    end
+
+    return dir
+end
+
+RunService.Heartbeat:Connect(function(dt)
+    local shouldFly = Flags.FlyMode and BS.alive and BS.alive()
+    local shouldNoclip = Flags.NoClip and BS.alive and BS.alive()
+
+    -- Always noclip if NoClip is on
+    if shouldNoclip and Flags.NoClipAlways then
+        pcall(function()
+            disableCollision(lplr.Character)
+        end)
+    end
+
+    -- Fly mode
+    if shouldFly then
+        pcall(function()
+            local char = lplr.Character
+            if not char then return end
+            local hrp = char:FindFirstChild("HumanoidRootPart")
+            local hum = char:FindFirstChildOfClass("Humanoid")
+            if not hrp or not hum then return end
+
+            -- Disable gravity
+            if Flags.FlyNoGravity then
+                hum.PlatformStand = true
+                hrp.Velocity = Vector3.new(0, 0, 0)
+                hrp.RotVelocity = Vector3.new(0, 0, 0)
+            end
+
+            -- Get input direction
+            local dir = getFlyDirection()
+
+            -- Smooth velocity flyState.velocity = flyState.velocity:Lerp(dir, 0.3)
+
+            -- Apply movement
+            hrp.CFrame = hrp.CFrame + flyState.velocity * dt * 60
+
+            -- Keep noclip while flying
+            disableCollision(char)
+        end)
+    else
+        -- Stop flying
+        if flyState.active then
+            pcall(function()
+                local char = lplr.Character
+                if char then
+                    local hum = char:FindFirstChildOfClass("Humanoid")
+                    if hum then hum.PlatformStand = false end
+                end
+            end)
+            flyState.velocity = Vector3.new(0, 0, 0)
+            flyState.active = false
+        end
+    end
+
+    flyState.active = shouldFly
+end)
+
+-- 3. MISC FEATURES (in  tab)
 
 M:Separator()
 -- M:Label("  Misc Features ")
@@ -493,7 +622,7 @@ M:Button({Name="錄製精彩片段", Color=Color3.fromRGB(140,60,60)}, function(
 end)
 M:Separator()
 
--- 3. KILL EFFECTS v2.0 (30+ sounds, 15+ effects)
+-- 4. KILL EFFECTS v2.0 (30+ sounds, 15+ effects)
 
 -- M:Label("  Kill Sounds (20 styles) ")
 -- M:Toggle("擊殺音效", false, function(v) Flags.FxKillSound = v end)
