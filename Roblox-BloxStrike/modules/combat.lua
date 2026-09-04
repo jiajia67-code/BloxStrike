@@ -231,7 +231,7 @@ BS.GetWeaponFireRate = getWeaponFireRate
 
 page:Label(" Wallbang ")
 page:Toggle("子彈穿牆", false, function(v) Flags.Wallbang = v end)
-page:Slider("穿牆深度", 1, 10, 3, function(v) Flags.WallbangPen = v end)
+page:Slider("穿牆深度", 1, 5, 1, function(v) Flags.WallbangPen = v end)
 page:Separator()
 
 -- 1. AIMBOT (Enhanced v2.0  30+ options)
